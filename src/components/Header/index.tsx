@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import NextLink from 'next/link'
+import { useEffect, useState } from 'react';
+
 
 import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/layout'
 import {
@@ -18,22 +20,28 @@ import {
   MenuIcon,
   XIcon
 } from '@heroicons/react/outline'
-import { useConnect, useAccount, defaultChains, defaultL2Chains } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { WalletLinkConnector } from 'wagmi/connectors/walletLink'
-import { shorten } from '../../utils/shorten.ts'
+import { shorten } from '../../utils/shorten'
 import { NavButton } from './NavButton'
 import { NavDrawerItem, NavItem } from './NavItem'
+import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
+
 
 // @ts-ignore
 import { SocialIcon } from 'react-social-icons'
+
+import { useAuth } from '../../lib/auth.js'
+
 
 export const Header = () => {
   const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
     fetchEns: true,
   })
+
+  const {  generateChallenge, signIn, signOut, isSignedIn } = useAuth()
 
   const connector = new InjectedConnector({
     chains: [...defaultChains, ...defaultL2Chains],
@@ -71,6 +79,28 @@ export const Header = () => {
     }
   ]
 
+  const [{ data: signature, error: sigError, loading: SigLoading }, signMessage] = useSignMessage()
+  const [clicked, setClicked] = useState(false);
+
+
+
+  const loginBro = async (address:any) => {
+    setClicked(true);
+    const challenge = await generateChallenge(address);
+    const message = challenge.data.challenge.text;
+    await signMessage({ message })
+  }
+
+  useEffect(() => {
+    const loginFinally = async () => {
+      const address = accountData && accountData.address ? accountData.address : ""
+      await signIn(address, signature)
+    }
+    if(!SigLoading && !sigError && clicked) {
+      loginFinally();
+    }
+  }, [signature])
+
 
 
   return (
@@ -84,8 +114,7 @@ export const Header = () => {
           <Box fontWeight="bold" fontSize={[20, 20, 20]}>
             <NextLink href="/" passHref>
               <Link className="center flex gap-2">
-                <span>👽</span>
-                <span className="text-xl">ilyxium</span>
+                <span className="text-xl">Trove</span>
               </Link>
             </NextLink>
           </Box>
@@ -108,10 +137,22 @@ export const Header = () => {
             <NavButton ml="30px" onClick={() => connect(connector)}>
               {accountData && accountData.address ? (
                 <>
-                  <Box>
-                    <Davatar size={25} address={accountData.address} />
-                  </Box>
-                  <Text>{shorten(accountData.address)}</Text>
+                    {isSignedIn() ? 
+                    <>
+                      <Box>
+                        <Davatar size={25} address={accountData.address} />
+                      </Box>
+                      <Text>{shorten(accountData.address)}</Text>
+                    </>
+                    :
+                    <>
+                      <NavButton ml="10px" onClick={() => {
+                        loginBro(accountData.address);
+                      }}>
+                        Login
+                      </NavButton>
+                    </>
+                    }
                 </>
               ) : (
                 <>
@@ -177,10 +218,18 @@ export const Header = () => {
                 <NavButton ml="30px" onClick={() => connect(connector)}>
                   {accountData && accountData.address ? (
                     <>
+                    {isSignedIn() ? 
+                    <>
                       <Box>
                         <Davatar size={25} address={accountData.address} />
                       </Box>
                       <Text>{shorten(accountData.address)}</Text>
+                    </>
+                    :
+                    <>
+
+                    </>
+                    }
                     </>
                   ) : (
                     <>
@@ -227,7 +276,7 @@ export const Header = () => {
               position="absolute"
             >
               {/* Twitter Link - URL SHOULD BE UPDATED */}
-              <SocialIcon bgColor="white" url="https://twitter.com/ilyxium" target="_blank" />
+              {/* <SocialIcon bgColor="white" url="https://twitter.com/ilyxium" target="_blank" /> */}
 
             </Flex>
           </DrawerBody>
