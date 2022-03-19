@@ -25,6 +25,19 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
+
+export const createApolloClient = () => {
+  const link = new HttpLink({
+    uri: 'https://api-mumbai.lens.dev',
+    // headers: getAuthHeaders(),
+  })
+
+  return new ApolloClient({
+    link,
+    cache: new InMemoryCache(),
+  })
+}
+
 function useProvideAuth() {
   const [authToken, setAuthToken] = useState(null)
 
