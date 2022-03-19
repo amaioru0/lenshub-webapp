@@ -28,11 +28,13 @@ import { NavButton } from './NavButton'
 import { NavDrawerItem, NavItem } from './NavItem'
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
 
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+import GET_CHALLENGE from '../../lib/graphql/challenge';
+import AUTHENTICATE from '../../lib/graphql/authenticate';
+import { getAccessToken, setAccessToken } from '../../lib/accessToken';
 
 // @ts-ignore
 import { SocialIcon } from 'react-social-icons'
-
-import { useAuth } from '../../lib/auth.js'
 
 
 export const Header = () => {
@@ -41,8 +43,86 @@ export const Header = () => {
     fetchEns: true,
   })
 
-  const {  generateChallenge, signIn, signOut, isSignedIn } = useAuth()
+  const [getChallenge, { loading:challengeLoading, data:challengeData }] = useLazyQuery(GET_CHALLENGE, {
+    variables: {
+      request: {
+        address: accountData ? accountData.address : "",
+     },
+    }
+  });
 
+  const [{ data: signature, error: sigError, loading: SigLoading }, signMessage] = useSignMessage()
+  const [clicked, setClicked] = useState(false);
+
+  const [authenticate, { loading:authLoading, data:authData }] = useMutation(AUTHENTICATE, {
+    variables: {
+      request: {
+        address: accountData ? accountData.address : "",
+        signature: signature ? signature : "",
+      },
+    }
+  });
+
+// check if user signed in
+
+const [isSignedIn, setIsSignedIn] = useState(false);
+
+useEffect(() => {
+  const checkSignedIn = async () => {
+    const token = getAccessToken();
+    if(token !== "") {
+      setIsSignedIn(true);
+    }
+    console.log(token);
+  }
+  checkSignedIn();
+}, [getAccessToken()])
+
+
+
+  // user clicks button to request challenge
+  const loginBro = async (address:any) => {
+    setClicked(true);
+    await getChallenge()
+  }
+
+  // when challenge comes user signs message
+  useEffect(() => {
+    const askToSign = async () => {
+      console.log(challengeData)
+        const message = challengeData.challenge.text;
+        await signMessage({ message })
+        setClicked(false);
+    }
+    if(!challengeLoading && clicked) {
+      askToSign();
+    }
+  }, [challengeData])
+
+  // after user signed message we login
+  useEffect(() => {
+    const loginFinally = async () => {
+      // const address = accountData && accountData.address ? accountData.address : ""
+      console.log("login here")
+      console.log(signature)
+      await authenticate();
+    }
+    if(!SigLoading && !sigError && clicked) {
+      loginFinally();
+    }
+  }, [signature])
+
+  // after auth set the token
+
+  useEffect(() => {
+    const setTokenAndDone = async () => {
+      console.log(authData)
+      setAccessToken(authData.authenticate.accessToken)
+    }
+    if(authData && authData.authenticate.accessToken) setTokenAndDone();
+  }, [authData])
+
+  // 
   const connector = new InjectedConnector({
     chains: [...defaultChains, ...defaultL2Chains],
   })
@@ -79,30 +159,6 @@ export const Header = () => {
     }
   ]
 
-  const [{ data: signature, error: sigError, loading: SigLoading }, signMessage] = useSignMessage()
-  const [clicked, setClicked] = useState(false);
-
-
-
-  const loginBro = async (address:any) => {
-    setClicked(true);
-    const challenge = await generateChallenge(address);
-    const message = challenge.data.challenge.text;
-    await signMessage({ message })
-  }
-
-  useEffect(() => {
-    const loginFinally = async () => {
-      const address = accountData && accountData.address ? accountData.address : ""
-      await signIn(address, signature)
-    }
-    if(!SigLoading && !sigError && clicked) {
-      loginFinally();
-    }
-  }, [signature])
-
-
-
   return (
     <header>
       <Stack direction={['column', 'column', 'row']} px={2} py={4}>
@@ -137,7 +193,7 @@ export const Header = () => {
             <NavButton ml="30px" onClick={() => connect(connector)}>
               {accountData && accountData.address ? (
                 <>
-                    {isSignedIn() ? 
+                    {isSignedIn ? 
                     <>
                       <Box>
                         <Davatar size={25} address={accountData.address} />
@@ -218,7 +274,7 @@ export const Header = () => {
                 <NavButton ml="30px" onClick={() => connect(connector)}>
                   {accountData && accountData.address ? (
                     <>
-                    {isSignedIn() ? 
+                    {/* {isSignedIn() ? 
                     <>
                       <Box>
                         <Davatar size={25} address={accountData.address} />
@@ -229,7 +285,7 @@ export const Header = () => {
                     <>
 
                     </>
-                    }
+                    } */}
                     </>
                   ) : (
                     <>

@@ -5,20 +5,30 @@ import { WagmiProvider } from 'wagmi'
 // import { WalletProvider } from '../context/wallet-provider'
 import { Page } from '../components/Page'
 import { theme } from '../styles/theme'
-import { AuthProvider } from '../lib/auth.js'
+// import { AuthProvider } from '../lib/auth.js'
 
-function MyApp({ Component, pageProps }: AppProps) {
+import { ApolloProvider } from "@apollo/react-hooks";
+import { withApollo } from "../lib/apollo";
+
+function MyApp({ Component, pageProps, apolloClient }: any) {
+  // if(!client) {
+  //   return(
+  //     <div>loading../</div>
+  //   )
+  // }
   return (
     <WagmiProvider autoConnect>
-      <AuthProvider>
+      {/* <AuthProvider> */}
+      <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
           <Page>
             <Component {...pageProps} />
           </Page>
         </ChakraProvider>
-      </AuthProvider>
+      </ApolloProvider>
+      {/* </AuthProvider> */}
     </WagmiProvider>
   )
 }
 
-export default MyApp
+export default withApollo(MyApp);
