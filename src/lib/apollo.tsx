@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { ApolloClient } from "apollo-client";
-import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory";
+import { InMemoryCache, NormalizedCacheObject, IntrospectionFragmentMatcher } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { setContext } from "apollo-link-context";
 import fetch from "isomorphic-unfetch";
@@ -12,7 +12,13 @@ import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import cookie from "cookie";
 
+import introspectionQueryResultData from './fragmentTypes.json';
+
 const isServer = () => typeof window === "undefined";
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData
+  });
 
 /**
  * Creates and provides the apolloContext
@@ -71,6 +77,7 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 
         const cookies = cookie.parse(headerCookie);
         if (cookies.jid) {
+          console.log("we have cookie jid on server")
           const response = await fetch("http://localhost:4000/refresh_token", {
             method: "POST",
             credentials: "include",
@@ -218,7 +225,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
     return {
       headers: {
         ...headers,
-        authorization: token ? `bearer ${token}` : ""
+        'x-access-token': token ? `Bearer ${token}` : ""
       }
     };
   });
@@ -231,6 +238,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined", // Disables forceFetch on the server (so queries are only run once)
     link: ApolloLink.from([refreshLink, authLink, errorLink, httpLink]),
-    cache: new InMemoryCache().restore(initialState)
+    // cache: new InMemoryCache().restore(initialState)
+    cache: new InMemoryCache({fragmentMatcher})
   });
 }

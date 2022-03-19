@@ -11,6 +11,7 @@ import Profile from '../components/lens/Profile/Profile';
 
 import { Grid, GridItem } from '@chakra-ui/react'
 
+
 const Home: NextPage = () => {
   
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
@@ -43,4 +44,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Home;

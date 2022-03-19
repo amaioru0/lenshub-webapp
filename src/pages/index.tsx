@@ -6,17 +6,13 @@ import styles from '../styles/Home.module.css'
 import { useTransaction, useAccount } from 'wagmi'
 import { BigNumber } from '@ethersproject/bignumber'
 
-import { useAuth } from '../lib/auth.js'
+import Post from '../components/lens/publications/Post/Post';
+import ExplorePublications from '../components/lens/publications/ExplorePublications/ExplorePublications';
 
-import { recommendedProfiles } from '../lib/lens/profile/recommended-profiles';
-import { getProfiles } from '../lib/lens/profile/get-profiles';
-
-import Post from '../components/lens/Post/Post';
-import ExplorePosts from '../components/lens/ExplorePost/ExplorePost';
-
-import Profile from '../components/lens/Profile/Profile';
+import Profile from '../components/lens/profile/Profile/Profile';
 
 import { Grid, GridItem } from '@chakra-ui/react'
+import {useSelector, useDispatch} from 'react-redux'
 
 const Home: NextPage = () => {
   
@@ -24,20 +20,16 @@ const Home: NextPage = () => {
     fetchEns: true,
   })
 
-  const [recomendedProfiles, setRecomendedProfiles] = useState({})
   
+  const dispatch = useDispatch()
+  const state = useSelector((state) => state)
+  // const reduxLocation = useSelector(state => state.router.location)
+
+
   useEffect(() => {
-    const fetch = async () => {
-      const recomendedProfilesRes = await recommendedProfiles(accountData ? accountData?.address : "");
-      console.log(recomendedProfilesRes)
-      setRecomendedProfiles(recomendedProfilesRes)
-
-      const myProfiles = await getProfiles(accountData ? accountData?.address : "")
-      console.log(myProfiles)
-    }
-    fetch();
-  },[])
-
+    console.log("here comes the state")
+    console.log(state)
+  }, [])
   // const handleClick = () => {
   //   sendTransaction({ to: "0x0FfCfcC9EB64597c1522b5e4507020Ccc29054e5", value: utils.parseEther("0.01") })
   // }
@@ -59,7 +51,7 @@ const Home: NextPage = () => {
 
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
-      <ExplorePosts />
+      <ExplorePublications />
       </div>
 
       </main>

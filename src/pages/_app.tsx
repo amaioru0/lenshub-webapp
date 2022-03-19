@@ -9,6 +9,7 @@ import { theme } from '../styles/theme'
 
 import { ApolloProvider } from "@apollo/react-hooks";
 import { withApollo } from "../lib/apollo";
+import { wrapper } from '../store';
 
 function MyApp({ Component, pageProps, apolloClient }: any) {
   // if(!client) {
@@ -31,4 +32,4 @@ function MyApp({ Component, pageProps, apolloClient }: any) {
   )
 }
 
-export default withApollo(MyApp);
+export default withApollo(wrapper.withRedux(MyApp));

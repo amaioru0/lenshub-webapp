@@ -7,7 +7,8 @@ import {
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
-import { ipfsToImg } from '../../../utils/ipfsImg';
+import { ipfsToImg } from '../../../../utils/ipfsImg';
+
 import Moment from 'react-moment';
 
 const Post = ({post}:{post:any}) => {
