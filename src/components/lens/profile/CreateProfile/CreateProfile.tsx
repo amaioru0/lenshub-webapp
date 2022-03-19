@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-import { useTransaction, useAccount } from 'wagmi'
+import { useTransaction, useAccount, useContract, useProvider, useSigner } from 'wagmi'
 import {useSelector, useDispatch} from 'react-redux'
 import allActions from '../../../../store/actions';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
-import { BigNumber } from '@ethersproject/bignumber'
+
+import useLensHub from '../../../../lib/wagmi/hooks/useLensHub';
+import useMockProfile from '../../../../lib/wagmi/hooks/useMockProfile';
 
 import {
     Button,
@@ -20,110 +21,73 @@ import {
 import Loader from '../../../Loader/Loader';
 
 import Profile from '../Profile/Profile';
-
-import GET_PROFILES, { ProfilesRequest} from '../../../../lib/graphql/profile/get-profiles';
-
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
+import { useIpfs } from '@onichandame/react-ipfs-hook'
 
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-
-const styles = {
-    slide: {
-      padding: 15,
-      minHeight: 100,
-      color: '#fff',
-    },
-    slide1: {
-      background: '#FEA900',
-    },
-    slide2: {
-      background: '#B3DC4A',
-    },
-    slide3: {
-      background: '#6AC0FF',
-    },
-  };
-  
-const SelectProfile = () => {
+const CreateProfile = () => {
     const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
         fetchEns: true,
       })
       const dispatch = useDispatch()
       const state = useSelector(state => state)
 
-    const { loading:loadingProfiles, error:errorProfiles, data:dataProfiles} = useQuery(GET_PROFILES, {
-    variables: {
-        request: {
-            ownedBy: accountData?.address
-        },
-    }
-    });
+      const provider = useProvider()
+      const signer = useSigner()
+      const { createProfile } = useMockProfile();
 
-    useEffect(() => {
-    console.log("here")
-    console.log(dataProfiles)
-    console.log(state)
-    }, [dataProfiles])
+      useEffect(() => {
+        console.log(signer[0].data)
+      }, [signer])
 
-
-    const [cardIndex, setCardIndex] = useState(0)
-
-    if(loadingProfiles) return <Loader />
-
-    if(errorProfiles) return <h1>error</h1>
+      const { ipfs, error } = useIpfs()
       
+      useEffect(() => {
+        // if (ipfs && ipfs.id) ipfs.id().then(val => setId(val.id))
+        console.log(ipfs)
+      }, [ipfs])
+
+      const [ followNFTURICID, setFollowNFTURICID ] = useState("")
+
+
+      const createFollowNFTURI = async () => {
+      // create the metadata object we'll be storing
+        const uriData = {
+          "description": "Test Profile", 
+          "external_url": "https://minthunt.io", 
+          "image": "ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry", 
+          "name": "TestProfile44",
+          "attributes": [], 
+        }
+        const jsonObj = JSON.stringify(uriData);
+
+        if(ipfs) {
+         const res = await ipfs.add(jsonObj)
+         setFollowNFTURICID(res.path)
+        return res.path;
+        }
+      }
+
+      useEffect(() => {
+        console.log(followNFTURICID)
+        createProfile({ to: "0x7084C8A2943df2115C4Ca9b70ce6b963A5993906", handle: "TestProfile44", imageURI: "ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry", followModule: "", followModuleData: [], followNFTURI: `ipfs://${followNFTURICID}` })
+      }, [followNFTURICID])
+
     return(
      <>
-    <SwipeableViews
-    index={cardIndex}
-    onSwitching={(index:any, type:any) => {
-        if(Number.isInteger(index)) {
-        // dispatch(allActions.lensActions.selectProfile(dataProfiles.profiles.items[index].profile));
-        }
-    }}>
-    {dataProfiles.profiles.items.map((profile:any, index:any) => {
-        return(
-            <Profile key={index} profile={profile}/>
-        )
-    })}
-
-    </SwipeableViews>
-
-    <div style={{marginTop: "16px"}}>
-    <span style={{display: "table", margin: "0 auto"}}>Selected profile: {state.lens.selectedProfile}</span>
-    </div>
-
-    <div style={{marginTop: "16px"}}>
-    <span style={{display: "table", margin: "0 auto"}}>
-    <ButtonGroup variant='outline' spacing='6'>
-
-    {dataProfiles.profiles.items.map((profile:any, index:any) => {
-        return(
-        <Button
-        key={index}
-        borderColor={"#eb4034"}
-        backgroundColor={"#eb4034"}
-        onClick={() => {
-            console.log(dataProfiles.profiles.items[index])    
-        dispatch(allActions.lensActions.selectProfile(parseInt(dataProfiles.profiles.items[index].id.replace("0x", ""))))
-        setCardIndex(index)
-        }}
-        >
-        {profile.id.replace("0x", "")}
-        </Button>
-        )
-    })}
-    </ButtonGroup>
-    </span>
-    </div>
-
-
+      <Button onClick={async () => {
+        await createFollowNFTURI();
+      }}>Create Profile</Button>
      </>
     )
 }
 
-export default SelectProfile;
+// address to;
+// string handle;
+// string imageURI;
+// address followModule;
+// bytes followModuleData;
+// string followNFTURI;
+
+
+export default CreateProfile;
 

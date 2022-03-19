@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "LensHubStorage",
+  "sourceName": "contracts/core/storage/LensHubStorage.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220d7952dd68476940dae0d00dbdf510554c5fc24821267740ecc7d6bc76c7ae82864736f6c634300080a0033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220d7952dd68476940dae0d00dbdf510554c5fc24821267740ecc7d6bc76c7ae82864736f6c634300080a0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

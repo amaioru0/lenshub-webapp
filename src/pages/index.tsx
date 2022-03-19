@@ -12,6 +12,7 @@ import ExplorePublications from '../components/lens/publications/ExplorePublicat
 import Profile from '../components/lens/profile/Profile/Profile';
 
 import SelectProfile from '../components/lens/profile/SelectProfile/SelectProfile';
+import CreateProfile from '../components/lens/profile/CreateProfile/CreateProfile';
 
 import { Grid, GridItem } from '@chakra-ui/react'
 import {useSelector, useDispatch} from 'react-redux'
@@ -21,7 +22,6 @@ const Home: NextPage = () => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
     fetchEns: true,
   })
-
   
   const dispatch = useDispatch()
   const state = useSelector((state) => state)
@@ -52,6 +52,10 @@ const Home: NextPage = () => {
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <SelectProfile />
+      </div>
+
+      <div style={{marginBottom: "20px", marginTop: "40px"}}>
+      <CreateProfile />
       </div>
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>

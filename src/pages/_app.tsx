@@ -10,6 +10,8 @@ import { theme } from '../styles/theme'
 import { ApolloProvider } from "@apollo/react-hooks";
 import { withApollo } from "../lib/apollo";
 import { wrapper } from '../store';
+import { IpfsProvider } from '@onichandame/react-ipfs-hook'
+import provider from '../lib/provider';
 
 function MyApp({ Component, pageProps, apolloClient }: any) {
   // if(!client) {
@@ -18,13 +20,19 @@ function MyApp({ Component, pageProps, apolloClient }: any) {
   //   )
   // }
   return (
-    <WagmiProvider autoConnect>
+    <WagmiProvider provider={provider} autoConnect>
       {/* <AuthProvider> */}
       <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
+        <IpfsProvider
+          opts={{ host: `minthunt.io`, port: 5001, protocol: `http` }}
+          livelinessProbe={true}
+          probeInterval={5000}
+        >
           <Page>
             <Component {...pageProps} />
           </Page>
+          </IpfsProvider>
         </ChakraProvider>
       </ApolloProvider>
       {/* </AuthProvider> */}
