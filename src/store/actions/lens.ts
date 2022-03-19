@@ -1,6 +1,8 @@
 
 export const selectProfile = (id:Number) => (dispatch:any) => {
-    dispatch({type: "SELECT_PROFILE", payload: { selectProfile: id }})
+    console.log("SELECT_PROFILE")
+    console.log(id)
+    dispatch({type: "SELECT_PROFILE", payload: { selectedProfile: id }})
 };
 
 

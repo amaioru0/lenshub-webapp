@@ -3,7 +3,7 @@ const lens = (state = {selectedProfile: 0}, action:any) => {
         case "SELECT_PROFILE":
             return {
                 ...state,
-                selectedProfile: action.selectedProfile
+                selectedProfile: action.payload.selectedProfile
             }
         default: 
             return state;

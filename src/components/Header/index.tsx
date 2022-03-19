@@ -31,7 +31,7 @@ import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage 
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import GET_CHALLENGE from '../../lib/graphql/challenge';
 import AUTHENTICATE from '../../lib/graphql/authenticate';
-import { getAccessToken, setAccessToken } from '../../lib/accessToken';
+import { getAccessToken, setAccessToken, logOut } from '../../lib/accessToken';
 
 // @ts-ignore
 import { SocialIcon } from 'react-social-icons'
@@ -144,19 +144,14 @@ useEffect(() => {
 
   const navItems = [
     {
-      text: 'home',
+      text: 'index',
       href: '/'
     },
     {
-      text: 'about',
-      href: '/about',
+      text: 'index2',
+      href: '/index2',
       icon: <InformationCircleIcon className="h-6 w-6" />
     },
-    {
-      text: '404 page',
-      href: '/error',
-      icon: <InformationCircleIcon className="h-6 w-6" />
-    }
   ]
 
   return (
@@ -198,7 +193,7 @@ useEffect(() => {
                       <Box>
                         <Davatar size={25} address={accountData.address} />
                       </Box>
-                      <Text>{shorten(accountData.address)}</Text>
+                      <Text>{shorten(accountData.address)}</Text>   
                     </>
                     :
                     <>
@@ -207,6 +202,7 @@ useEffect(() => {
                       }}>
                         Login
                       </NavButton>
+
                     </>
                     }
                 </>
@@ -217,6 +213,14 @@ useEffect(() => {
                 </>
               )}
             </NavButton>
+
+            {isSignedIn &&
+            <NavButton ml="10px" onClick={() => {
+              logOut();
+            }}>
+              Logout
+            </NavButton>
+            }
 
             {/* Drawer Toggle Button */}
             <Button

@@ -11,6 +11,8 @@ import ExplorePublications from '../components/lens/publications/ExplorePublicat
 
 import Profile from '../components/lens/profile/Profile/Profile';
 
+import SelectProfile from '../components/lens/profile/SelectProfile/SelectProfile';
+
 import { Grid, GridItem } from '@chakra-ui/react'
 import {useSelector, useDispatch} from 'react-redux'
 
@@ -48,7 +50,9 @@ const Home: NextPage = () => {
         </h2>
       </div>
 
-
+      <div style={{marginBottom: "20px", marginTop: "40px"}}>
+      <SelectProfile />
+      </div>
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <ExplorePublications />
