@@ -1,19 +1,37 @@
 import {
-    Textarea,
-    Flex,
-    Stack,
-    Avatar,
-    Button,
-    Box,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    HStack,
-  } from '@chakra-ui/react';
+  Button,
+  ButtonGroup,
+  Container,
+  Grid,
+  GridItem,
+  Flex,
+  Box,
+  Text,
+  Heading,
+  chakra,
+  useColorModeValue,
+  Stack,
+  Textarea,
+  Link,
+  useDisclosure
+} from '@chakra-ui/react';
+import {
+  IconButton,
+  Avatar,
+  CloseButton,
+  HStack,
+  VStack,
+  Icon,
+  Drawer,
+  DrawerContent,
+  BoxProps,
+  FlexProps,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react';
   import React, { useState, useEffect, useRef } from 'react';
 
   import { useTransaction, useAccount } from 'wagmi'
@@ -162,11 +180,17 @@ import { NFTStorage, File, Blob } from 'nft.storage'
         }, [typedData])
 
     return (
+      <Box
+      rounded="lg"
+      shadow="lg"
+      bg={useColorModeValue("white", "gray.800")}
+      maxW="2xl"
+        transition="3s ease"
+        style={{color: "black", marginLeft: "60px", maxHeight: "500px", border: "0px", outline: "none", maxWidth: "480px"}}
+        >
       <Flex
         direction='column'
         border={1}
-        // borderColor={colors.border}
-        borderStyle='solid'
         boxSizing='content-box'
       >
         <HStack margin={2} p={2}>
@@ -208,6 +232,7 @@ import { NFTStorage, File, Blob } from 'nft.storage'
           </Button>
         </Stack>
       </Flex>
+      </Box>
     );
   }
 

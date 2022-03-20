@@ -18,46 +18,45 @@ import allActions from '../../../../store/actions';
 import { useAccount } from 'wagmi'
 
 import useLensHub from "../../../../lib/wagmi/hooks/useLensHub";
-import Davatar from '@davatar/react'
 
-const Post = ({post}:{post:any}) => {
+const Mirror = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
     fetchEns: true,
   })
   const dispatch = useDispatch()
   const state = useSelector(state => state)
 
-  const { mirror } = useLensHub()
-  const [clickedMirror, setClickedMirror] = useState(false);
+//   const { mirror } = useLensHub()
+//   const [clickedMirror, setClickedMirror] = useState(false);
 
-  const [createMirrorTypedData, { loading, error, data }] = useMutation(CREATE_MIRROR_TYPED_DATA, {
-    variables: {
-  request: {
-    profileId: `${state.lens.selectedProfile}`,
-    // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: post.id,
-    referenceModule: {
-      followerOnlyReferenceModule: true,
-    }
-   }
-  }
-  })
+//   const [createMirrorTypedData, { loading, error, data }] = useMutation(CREATE_MIRROR_TYPED_DATA, {
+//     variables: {
+//   request: {
+//     profileId: `${state.lens.selectedProfile}`,
+//     // remember it has to be indexed and follow metadata standards to be traceable!
+//     publicationId: post.id,
+//     referenceModule: {
+//       followerOnlyReferenceModule: true,
+//     }
+//    }
+//   }
+//   })
+
+//   useEffect(() => {
+//     if(!loading && !error && clickedMirror) {
+//       mirror(data.createMirrorTypedData.typedData.value)
+//     } else if(error) {
+//       console.log(error)
+//     }
+//   }, [data])
 
   useEffect(() => {
-    if(!loading && !error && clickedMirror) {
-      mirror(data.createMirrorTypedData.typedData.value)
-    } else if(error) {
-      console.log(error)
-    }
-  }, [data])
-
-  useEffect(() => {
-    if(post.__typename === "Post"){ 
+    if(post.__typename === "Mirror"){ 
       console.log(post)
     }
   }, [])
 
-  if(post.__typename !== "Post") return <></>
+  if(post.__typename !== "Mirror") return <></>
 
   return (
       <Box
@@ -70,11 +69,6 @@ const Post = ({post}:{post:any}) => {
         maxW="2xl"
       >
         <Flex justifyContent="space-between" alignItems="center">
-
-          <div style={{flexDirection: "row", display: "flex"}}>
-            <Davatar size={28} address={post.profile.ownedBy} />
-            <chakra.h1 style={{fontSize: "18px", fontWeight: "700",marginLeft: "10px", color: "#171923"}}>@{post.profile.handle}</chakra.h1>
-          </div>
           <chakra.span
             fontSize="sm"
             color={useColorModeValue("gray.600", "gray.400")}
@@ -98,11 +92,11 @@ const Post = ({post}:{post:any}) => {
 
         <Box mt={2}>
 
-        {post.metadata.name && <chakra.h1
-        color={useColorModeValue("gray.700", "white")}
-        fontWeight="300"
-        fontSize="1xl"
-        >{post.metadata.name}</chakra.h1>}
+            {post.metadata.name && <chakra.h1
+            color={useColorModeValue("gray.700", "white")}
+            fontWeight="700"
+            fontSize="2xl"
+            >{post.metadata.name}</chakra.h1>}
 
           <chakra.p mt={2} color={useColorModeValue("gray.600", "gray.300")}>
             {post.metadata.content && post.metadata.content}
@@ -110,6 +104,12 @@ const Post = ({post}:{post:any}) => {
         </Box>
 
         <Flex justifyContent="space-between" alignItems="center" mt={4}>
+          {/* <Link
+            color={useColorModeValue("brand.600", "brand.400")}
+            _hover={{ textDecor: "underline" }}
+          >
+            Read more
+          </Link> */}
 
           <Flex alignItems="center">
   
@@ -123,22 +123,29 @@ const Post = ({post}:{post:any}) => {
               src={post.metadata.media[0] ? ipfsToImg(post.metadata.media[0].original.url) : ""}
               alt="avatar"
             />}
+            <Link
+              color={useColorModeValue("gray.700", "gray.200")}
+              fontWeight="700"
+              cursor="pointer"
+            >
+              {post.profile.handle}
+            </Link>
 
-
-
-            <Box style={{marginLeft: "15px"}}>
+            {/* <Box style={{marginLeft: "15px"}}>
               <Button 
               onClick={() => {
                 setClickedMirror(true);
                 createMirrorTypedData();
               }}
               colorScheme={"green"}>Mirror</Button>
-            </Box>
+            </Box> */}
 
           </Flex>
+          <span style={{color: "black", fontWeight: "800", fontStyle: "italic"}}>Mirror</span>
+
         </Flex>
       </Box>
   );
 };
 
-export default Post;
+export default Mirror;

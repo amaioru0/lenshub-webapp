@@ -5,7 +5,7 @@ export const NavButton: FC<ButtonProps> = ({ children, onClick }) => {
   return (
     <Button
       className="nav-button"
-      backgroundColor="#BB86FC"
+      backgroundColor="#6FDB2C"
       borderRadius="25px"
       _hover={{
         bg: '#121212'

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-import { useTransaction, useAccount } from 'wagmi'
+import React, { useState, useEffect, useRef, ReactNode, ReactText } from 'react';
+import { IconType } from 'react-icons';
 import {useSelector, useDispatch} from 'react-redux'
 import allActions from '../../store/actions';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
@@ -20,7 +19,35 @@ import {
     useColorModeValue,
     Stack,
     Link,
+    useDisclosure
   } from '@chakra-ui/react';
+  import {
+    IconButton,
+    Avatar,
+    CloseButton,
+    HStack,
+    VStack,
+    Icon,
+    Drawer,
+    DrawerContent,
+    BoxProps,
+    FlexProps,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+  } from '@chakra-ui/react';
+  import {
+    FiHome,
+    FiTrendingUp,
+    FiCompass,
+    FiStar,
+    FiSettings,
+    FiMenu,
+    FiBell,
+    FiChevronDown,
+  } from 'react-icons/fi';
 import Loader from '../../components/Loader/Loader';
 
 import Profile from '../../components/lens/profile/Profile/Profile';
@@ -44,11 +71,17 @@ import {
     Top,
     Btm
 } from './LensHub.style';
+import { NavButton } from '../../components/Header/NavButton/index';
+import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const LensHub = () => {
+    const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
     const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
-        fetchEns: true,
-      })
+      fetchEns: true,
+    })
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
       const dispatch = useDispatch()
       const state = useSelector(state => state)
 
@@ -59,6 +92,9 @@ const LensHub = () => {
     //     },
     // }
     // });
+    const connector = new InjectedConnector({
+        chains: [...defaultChains, ...defaultL2Chains],
+      })
 
     const [isSignedIn, setIsSignedIn] = useState(false);
 
@@ -77,13 +113,24 @@ const LensHub = () => {
     // const { isSignedIn } = useAuth();
       
     return(
+    <Box minH="100vh" >
+    <Widget>
+    {LinkItems.map((link) => (
+    <NavItem key={link.name} icon={link.icon}>
+        {link.name}
+    </NavItem>
+    ))}
+    </Widget>
+
+    
     <ContainerWrapper>
     {isSignedIn && <h1>signed in</h1>}
- 
+
 
     <HubWrapper>
+        
         <Top>
-        <SelectProfile />
+        {isSignedIn && <SelectProfile />}
         <Box
         mx="auto"
         py={{ base: 12, lg: 16 }}
@@ -101,6 +148,7 @@ const LensHub = () => {
         color={useColorModeValue("gray.900", "gray.100")}
         >
         {!isSignedIn && <chakra.span display="block">Ready to dive in?</chakra.span>}
+        {!isSignedIn && !accountData?.address && <div>connect</div>}
         {isSignedIn && <chakra.span style={{marginBottom: "10px"}} display="block">New profile?</chakra.span>}
         </chakra.h2>
 
@@ -108,14 +156,22 @@ const LensHub = () => {
             display="block"
             color={useColorModeValue("brand.600", "gray.500")}
         >
-            <CreateProfile />
+            {isSignedIn && accountData?.address && <CreateProfile />}
+
+            {!accountData?.address && 
+            <>
+            <NavButton ml="30px" onClick={() => connect(connector)}>
+              Connect  
+            </NavButton>
+            </>
+            }
         </chakra.div>
         </Box>
         </Top>
 
 
         <Btm>
-        <PostPublication />
+        {isSignedIn && <PostPublication />}
         </Btm>
 
     </HubWrapper>
@@ -132,16 +188,18 @@ const LensHub = () => {
         </div>
         </Flex>
       
-    { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
+    {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <GetPublications />
-      </div>}
+      </div>} */}
         
         
-      {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
+       {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <UserTimeline />
       </div>} */}
 
-      <div style={{marginBottom: "20px", marginTop: "40px"}}>
+      <div style={{marginBottom: "10px", marginTop: "30px"}}>
+       {isSignedIn && <GetPublications />}
+       {isSignedIn && <UserTimeline />}
       <ExplorePublications />
       </div>
 
@@ -149,8 +207,89 @@ const LensHub = () => {
 
       </div>
      </ContainerWrapper>
+     </Box>
+
     )
 }
 
 export default LensHub;
 
+interface LinkItemProps {
+  name: string;
+  icon: IconType;
+}
+const LinkItems: Array<LinkItemProps> = [
+  { name: 'Home', icon: FiHome },
+  { name: 'Trending', icon: FiTrendingUp },
+  { name: 'Explore', icon: FiCompass },
+  { name: 'Favourites', icon: FiStar },
+  { name: 'Settings', icon: FiSettings },
+];
+
+
+interface SidebarProps extends BoxProps {
+  onClose: () => void;
+}
+
+
+const Widget = ({children}:{children:any}) => {
+  return (
+    <Box
+    mx="auto"
+    rounded="lg"
+    shadow="lg"
+    bg={useColorModeValue("white", "gray.800")}
+    maxW="2xl"
+      transition="3s ease"
+      borderRight="1px"
+      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      pos="absolute"
+      left={1}
+      h="full"
+      style={{color: "black", marginLeft: "60px", maxHeight: "500px", minWidth: "220px"}}
+      >
+      <Flex h="10" alignItems="center" mx="8" justifyContent="space-between">
+      </Flex>
+    {children}
+    </Box>
+  );
+};
+
+interface NavItemProps extends FlexProps {
+  icon: IconType;
+  children: ReactText;
+}
+const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+  return (
+    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+      <Flex
+        align="center"
+        p="4"
+        mx="4"
+        borderRadius="lg"
+        role="group"
+        cursor="pointer"
+        _hover={{
+          bg: 'cyan.400',
+          color: 'white',
+        }}
+        {...rest}>
+        {icon && (
+          <Icon
+            mr="4"
+            fontSize="16"
+            _groupHover={{
+              color: 'white',
+            }}
+            as={icon}
+          />
+        )}
+        {children}
+      </Flex>
+    </Link>
+  );
+};
+
+interface MobileProps extends FlexProps {
+  onOpen: () => void;
+}

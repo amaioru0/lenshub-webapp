@@ -16,7 +16,8 @@ import {
 
   import {useSelector, useDispatch} from 'react-redux'
   import allActions from '../../../../store/actions';
-
+  import Mirror from '../Mirror/Mirror';
+  
 const GetPublications = () => {
     
   const dispatch = useDispatch()
@@ -51,15 +52,15 @@ const GetPublications = () => {
 
         <Box>
         <Grid templateColumns='repeat(1, 1fr)' gap={6}>
-        {/* {
+        {
           //@ts-ignore
-        data.GetPublications.items.map((post, index) => {
+        data.publications.items.map((post, index) => {
           return(
             <GridItem key={index} >
-            <Post post={post} />
+            <Mirror post={post} />
             </GridItem>
           )
-        })} */}
+        })}
 
       </Grid>
         </Box>

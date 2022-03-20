@@ -1,9 +1,18 @@
-import { FC } from 'react'
-import { Flex } from '@chakra-ui/layout'
+import { FC, ReactNode } from 'react'
 import { Header } from '../Header'
 import Head from 'next/head'
 // import { useWallet } from '../../context/wallet-provider'
-
+import {
+  Box,
+  Container,
+  Link,
+  SimpleGrid,
+  Stack,
+  Text,
+  Flex,
+  Tag,
+  useColorModeValue,
+} from '@chakra-ui/react';
 export const Page: FC = ({ children }) => {
   // const { activateBrowserWallet, account } = useWallet()
 
@@ -24,7 +33,7 @@ export const Page: FC = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex direction="column" backgroundColor="#1F1B24">
+      <Flex direction="column" backgroundColor="#F3F3F6">
         <Header />
         <main>{children}</main>
         <Footer />
@@ -33,6 +42,59 @@ export const Page: FC = ({ children }) => {
   )
 }
 
-const Footer = () => {
-  return <Flex height="10%"></Flex>
+
+
+const Logo = (props: any) => {
+  return (
+    <svg
+      height={32}
+      viewBox="0 0 120 28"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}>
+    
+    </svg>
+  );
+};
+
+const ListHeader = ({ children }: { children: ReactNode }) => {
+  return (
+    <Text fontWeight={'500'} fontSize={'lg'} mb={2}>
+      {children}
+    </Text>
+  );
+};
+
+function Footer() {
+  return (
+    <Box
+      bg={useColorModeValue('gray.50', 'gray.900')}
+      color={useColorModeValue('gray.700', 'gray.200')}
+      style={{marginTop: "80px"}}
+      >
+        
+      <Box py={10}>
+        <Flex
+          align={'center'}
+          _before={{
+            content: '""',
+            borderBottom: '1px solid',
+            borderColor: useColorModeValue('gray.200', 'gray.700'),
+            flexGrow: 1,
+            mr: 8,
+          }}
+          _after={{
+            content: '""',
+            borderBottom: '1px solid',
+            borderColor: useColorModeValue('gray.200', 'gray.700'),
+            flexGrow: 1,
+            ml: 8,
+          }}>
+          <Logo />
+        </Flex>
+        <Text pt={6} fontSize={'sm'} textAlign={'center'}>
+       
+        </Text>
+      </Box>
+    </Box>
+  );
 }
