@@ -72,6 +72,7 @@
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@types/react-stickynode": "^4.0.0",
     "@types/react-swipeable-views": "^0.13.1",
+    "@types/react-swipeable-views-utils": "^0.13.3",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.24",
     "autoprefixer": "^10.4.2",

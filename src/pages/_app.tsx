@@ -11,7 +11,10 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { withApollo } from "../lib/apollo";
 import { wrapper } from '../store';
 import { IpfsProvider } from '@onichandame/react-ipfs-hook'
-import provider from '../lib/provider';
+// import provider from '../lib/provider';
+import { providers } from 'ethers';
+
+const provider = new providers.JsonRpcProvider('https://polygon.infura.io/v3/16730a405a254c81b8721025f50b815f')
 
 function MyApp({ Component, pageProps, apolloClient }: any) {
   // if(!client) {
