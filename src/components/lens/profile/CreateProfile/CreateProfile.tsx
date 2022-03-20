@@ -69,7 +69,7 @@ const CreateProfile = () => {
 
       useEffect(() => {
         console.log(followNFTURICID)
-        createProfile({ to: "0x7084C8A2943df2115C4Ca9b70ce6b963A5993906", handle: "bobobo", imageURI: "ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry", followModule: "0x0000000000000000000000000000000000000000", followModuleData: "0x0000000000000000000000000000000000000000", followNFTURI: `ipfs://${followNFTURICID}` })
+        createProfile({ to: accountData?.address, handle: "dd", imageURI: "ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry", followModule: "0x0000000000000000000000000000000000000000", followModuleData: "0x0000000000000000000000000000000000000000", followNFTURI: `ipfs://${followNFTURICID}` })
       }, [followNFTURICID])
 
     return(

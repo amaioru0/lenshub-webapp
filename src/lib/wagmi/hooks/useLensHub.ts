@@ -16,6 +16,7 @@ import { useContract, useSigner, useAccount } from 'wagmi'
 
 import { Signer } from 'ethers';
 
+
 // Create PRofile
 // address to;
 // string handle;
@@ -26,6 +27,7 @@ import { Signer } from 'ethers';
 
 import { CreateProfileDataStruct } from '../../../typechain-types/MockProfileCreationProxy';
 
+import { PostDataStruct } from '../../../typechain-types/ILensHub';
 
 const useLensHub = () => {
   // const [{ data, error, loading }, getSigner] = useSigner()
@@ -74,6 +76,23 @@ const useLensHub = () => {
   //     finallyCreateProfile();
   // }, [data])
 
+  // profileId: BigNumberish;
+  // contentURI: string;
+  // collectModule: string;
+  // collectModuleData: BytesLike;
+  // referenceModule: string;
+  // referenceModuleData: BytesLike;
+
+  async function post({ profileId, contentURI, collectModule, collectModuleData, referenceModule, referenceModuleData }: PostDataStruct) {
+    try {
+      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
+      const result = await contract.functions.post({ profileId, contentURI, collectModule, collectModuleData, referenceModule, referenceModuleData });
+      console.log(result);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function createProfile({ to, handle, imageURI, followModule, followModuleData, followNFTURI }: CreateProfileDataStruct) {
     try {
@@ -86,7 +105,7 @@ const useLensHub = () => {
     }
   }
 
-  return { createProfile };
+  return { createProfile, post };
 };
 
 export default useLensHub;

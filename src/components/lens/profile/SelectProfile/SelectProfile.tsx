@@ -108,7 +108,9 @@ const SelectProfile = () => {
         backgroundColor={"#eb4034"}
         onClick={() => {
             console.log(dataProfiles.profiles.items[index])    
-        dispatch(allActions.lensActions.selectProfile(parseInt(dataProfiles.profiles.items[index].id.replace("0x", ""))))
+        // dispatch(allActions.lensActions.selectProfile(parseInt(dataProfiles.profiles.items[index].id.replace("0x", ""))))
+        dispatch(allActions.lensActions.selectProfile(dataProfiles.profiles.items[index].id))
+
         setCardIndex(index)
         }}
         >

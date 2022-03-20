@@ -14,7 +14,7 @@ import { IpfsProvider } from '@onichandame/react-ipfs-hook'
 // import provider from '../lib/provider';
 import { providers } from 'ethers';
 
-const provider = new providers.JsonRpcProvider('https://polygon.infura.io/v3/16730a405a254c81b8721025f50b815f')
+const provider = new providers.JsonRpcProvider('https://polygon-mumbai.g.alchemy.com/v2/mreBORU2DbTDLNPVt88CNrFYNzwvEOUV')
 
 function MyApp({ Component, pageProps, apolloClient }: any) {
   // if(!client) {
