@@ -114,6 +114,7 @@ const LensHub = () => {
       
     return(
     <Box minH="100vh" >
+    <Layout>
     <Widget>
     {LinkItems.map((link) => (
     <NavItem key={link.name} icon={link.icon}>
@@ -121,6 +122,11 @@ const LensHub = () => {
     </NavItem>
     ))}
     </Widget>
+
+    <Widget>
+        <h1>hello</h1>
+    </Widget>
+    </Layout>
 
     
     <ContainerWrapper>
@@ -233,23 +239,35 @@ interface SidebarProps extends BoxProps {
 
 
 const Widget = ({children}:{children:any}) => {
+    return(
+        <>
+        <Box
+        mx="auto"
+        rounded="lg"
+        shadow="lg"
+        bg={useColorModeValue("white", "gray.800")}
+        maxW="2xl"
+          transition="3s ease"
+          borderRight="1px"
+          borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+          left={1}
+          h="full"
+          style={{color: "black", marginLeft: "60px", maxHeight: "500px", minWidth: "220px", marginTop: "10px", marginBottom: "10px"}}
+          >
+        {children}
+        </Box>
+        </>
+    )
+}
+
+const Layout = ({children}:{children:any}) => {
   return (
     <Box
-    mx="auto"
-    rounded="lg"
-    shadow="lg"
-    bg={useColorModeValue("white", "gray.800")}
-    maxW="2xl"
-      transition="3s ease"
-      borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       pos="absolute"
-      left={1}
+      left={-16}
       h="full"
-      style={{color: "black", marginLeft: "60px", maxHeight: "500px", minWidth: "220px"}}
+      style={{color: "black", marginLeft: "60px", maxHeight: "1000px", minWidth: "220px", display: "flex", flexDirection: "column"}}
       >
-      <Flex h="10" alignItems="center" mx="8" justifyContent="space-between">
-      </Flex>
     {children}
     </Box>
   );
