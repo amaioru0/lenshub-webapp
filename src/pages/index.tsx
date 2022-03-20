@@ -8,6 +8,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 
 import Post from '../components/lens/publications/Post/Post';
 import ExplorePublications from '../components/lens/publications/ExplorePublications/ExplorePublications';
+import UserTimeline from '../components/lens/timeline/UserTimeline';
 
 import Profile from '../components/lens/profile/Profile/Profile';
 
@@ -56,6 +57,10 @@ const Home: NextPage = () => {
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <CreateProfile />
+      </div>
+
+      <div style={{marginBottom: "20px", marginTop: "40px"}}>
+      <UserTimeline />
       </div>
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
