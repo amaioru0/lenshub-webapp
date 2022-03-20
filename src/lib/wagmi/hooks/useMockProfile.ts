@@ -1,20 +1,20 @@
 // import { ethers } from 'ethers';
 import { useState, useEffect } from 'react';
 import { useContract, useSigner, useAccount } from 'wagmi'
-// import {
-//   BaseContract,
-//   BigNumber,
-//   BytesLike,
-//   CallOverrides,
-//   ContractTransaction,
-//   Overrides,
-//   PopulatedTransaction,
-//   Signer,
-//   utils,
-// } from "ethers";
+import {
+  BaseContract,
+  BigNumber,
+  BytesLike,
+  CallOverrides,
+  ContractTransaction,
+  Overrides,
+  PopulatedTransaction,
+  utils,
+} from "ethers";
 
 import { Signer } from 'ethers';
-import { abi }  from '../../../artifacts/contracts/mocks/MockProfileCreationProxy.sol/MockProfileCreationProxy.json'
+// import { abi }  from '../../../artifacts/contracts/mocks/MockProfileCreationProxy.sol/MockProfileCreationProxy.json'
+import { MockProfileCreationProxyABI } from '../ABIs';
 
 // Create PRofile
 // address to;
@@ -46,14 +46,14 @@ const useMockProfile = () => {
 }, [account?.connector]);
   
     const contract = useContract({
-      addressOrName: "0x9BB48d8F9c4596b98C8bB1fB6D67aaE238F81CC2",
-      contractInterface: abi,
+      addressOrName: '0x9BB48d8F9c4596b98C8bB1fB6D67aaE238F81CC2',
+      contractInterface: MockProfileCreationProxyABI,
       signerOrProvider: signer
     });
 
     useEffect(() => {
       // this is incorrectly `null` even after `signer` is available
-      console.log(contract.signer);
+      console.log(contract);
     }, [contract]);
   
 
@@ -78,6 +78,7 @@ const useMockProfile = () => {
   async function createProfile({ to, handle, imageURI, followModule, followModuleData, followNFTURI }: CreateProfileDataStruct) {
     try {
       // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
+      console.log(contract)
       const result = await contract.functions.proxyCreateProfile({to, handle, imageURI, followModule, followModuleData, followNFTURI});
       console.log(result);
 
