@@ -25,7 +25,6 @@ import {
   import { useIpfs } from '@onichandame/react-ipfs-hook'
 
   import CREATE_POST_TYPED_DATA from '../../../../lib/graphql/publications/post';
-  import HAS_TX_BEEN_INDEXED from '../../../../lib/graphql/indexer/has-transaction-been-indexed';
   import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from './MetadataStandard';
   import { v4 as uuidv4 } from 'uuid';
   import { CID } from 'cids';
@@ -35,7 +34,7 @@ import { NFTStorage, File, Blob } from 'nft.storage'
   import path from 'path'
   import axios from 'axios';
 
-  const NFT_STORAGE_KEY = ''
+  const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEU1ODVDQTEwMTRlOTIyZDljNTYxRWU0OURmNTE3Q2MwRTBDQ2M2RGMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0Nzc2ODEzODM1NiwibmFtZSI6Im5leHQifQ.CAOENM6f3EOUSq4f2Wmd1OTueBLfUJDmr9x6JLrYKRI'
 
   const PostPublication = () => {
 
@@ -52,29 +51,20 @@ import { NFTStorage, File, Blob } from 'nft.storage'
     const [typedData, setTypedData] = useState();
     const [clicked, setClicked] = useState(false);
 
-    const [txHash, setTxHash] = useState("");
-    const [getTx, {loading: txLoading, error: txError, data: txData}] = useLazyQuery(HAS_TX_BEEN_INDEXED, {
-        variables: {
-            request: {
-                txHash: txHash
-            }
-        }
-    })
-
-    useEffect(() => {
-        console.log(txData)
-    }, [txData])
 
 
     const createContentURI = async (metadata: Metadata) => {
         // create the metadata object we'll be storing
-          const jsonObj = JSON.stringify(metadata);
-        //   const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
-
+        //   const jsonObj = JSON.stringify(metadata);
+          const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
+        //   await nftstorage.store({
+        //     name,
+        //     description,
+        // })
         const response = await axios.get("https://picsum.photos/seed/picsum/200/300",  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 
-        const imageFile = new File([ buffer ], 'nft.png', { type: 'image/png' })
+        const imageFile = new File([ buffer ], '300.jpg', { type: 'image/jpg' })
 
 
         // version: MetadataVersions.one,
@@ -86,17 +76,29 @@ import { NFTStorage, File, Blob } from 'nft.storage'
         // attributes: [],
         // image: "",
 
+        const nft = {
+            image: imageFile,
+            description: "The metaverse is here. Where is it all being stored?",
+            //   authors: [{ name: "" }],
+            //   content: {
+            //     "text/markdown": "The last year has witnessed the explosion of NFTs onto the world’s mainstage. From fine art to collectibles to music and media, NFTs are quickly demonstrating just how quickly grassroots Web3 communities can grow, and perhaps how much closer we are to mass adoption than we may have previously thought. <... remaining content omitted ...>"
+            //   },
+              ...metadata
+            }
+            console.log(nft)
+            const cid = await nftstorage.store(nft)
+            console.log(cid)
+        
+        //   console.log(jsonObj)
 
-          console.log(jsonObj)
-
-          if(ipfs) {
-           const res = await ipfs.add(jsonObj)
-           console.log(res)
-           setContentURICID(res.path)
-           const pinset = await ipfs.pin.add(res.path)
-           console.log(pinset)
-            return res.path;
-          }
+        //   if(ipfs) {
+        //    const res = await ipfs.add(jsonObj)
+        //    console.log(res)
+        //    setContentURICID(res.path)
+        //    const pinset = await ipfs.pin.add(res.path)
+        //    console.log(pinset)
+        //     return res.path;
+        //   }
         }
 
     useEffect(() => {
@@ -137,8 +139,8 @@ import { NFTStorage, File, Blob } from 'nft.storage'
 
         useEffect(() => {
             console.log(typedData)
-            const goClick = async () => {
-                const tx = await post({
+            if(clicked) {
+                post({
                     //@ts-ignore
                   // profileId: 23,
                   // contentURI: `ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry`,
@@ -153,11 +155,6 @@ import { NFTStorage, File, Blob } from 'nft.storage'
                   referenceModule: typedData?.value?.referenceModule,
                   referenceModuleData: typedData?.value.referenceModuleData,
                  })
-                 setTxHash(tx.hash)
-                 getTx();
-            }
-            if(clicked) {
-                goClick()
             }
         }, [typedData])
 
@@ -196,7 +193,6 @@ import { NFTStorage, File, Blob } from 'nft.storage'
                     external_url: "",
                     name: postContent,
                     attributes: [],
-                    image: "",
                     // imageMimeType: "",
                     // media: [],
                     // animation_url: "",

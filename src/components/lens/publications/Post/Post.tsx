@@ -13,9 +13,13 @@ import Moment from 'react-moment';
 
 const Post = ({post}:{post:any}) => {
 
-  // useEffect(() => {
-  //   console.log(post.metadata)
-  // }, [])
+  useEffect(() => {
+    if(post.__typename === "Post"){
+      console.log(post)
+    }
+  }, [])
+
+  if(post.__typename !== "Post") return <></>
 
   return (
       <Box
@@ -32,9 +36,9 @@ const Post = ({post}:{post:any}) => {
             fontSize="sm"
             color={useColorModeValue("gray.600", "gray.400")}
           >
-            
             {post.createdAt && <Moment>{post.createdAt}</Moment>}
           </chakra.span>
+
           {/* <Link
             px={3}
             py={1}
@@ -45,7 +49,7 @@ const Post = ({post}:{post:any}) => {
             rounded="md"
             _hover={{ bg: "gray.500" }}
           >
-            Design
+            Design  
           </Link> */}
         </Flex>
 
