@@ -28,7 +28,7 @@ import Profile from '../../components/lens/profile/Profile/Profile';
 import Post from '../../components/lens/publications/Post/Post';
 import ExplorePublications from '../../components/lens/publications/ExplorePublications/ExplorePublications';
 import UserTimeline from '../../components/lens/timeline/UserTimeline';
-
+import GetPublications from '../../components/lens/publications/GetPublications/GetPublications'
 
 import SelectProfile from '../../components/lens/profile/SelectProfile/SelectProfile';
 import CreateProfile from '../../components/lens/profile/CreateProfile/CreateProfile';
@@ -132,11 +132,14 @@ const LensHub = () => {
         </div>
         </Flex>
       
-
-        
-      { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
-      <UserTimeline />
+    { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
+      <GetPublications />
       </div>}
+        
+        
+      {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
+      <UserTimeline />
+      </div>} */}
 
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <ExplorePublications />

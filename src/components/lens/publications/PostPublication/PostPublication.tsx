@@ -25,6 +25,9 @@ import {
   import { useIpfs } from '@onichandame/react-ipfs-hook'
 
   import CREATE_POST_TYPED_DATA from '../../../../lib/graphql/publications/post';
+  import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from './MetadataStandard';
+  import { v4 as uuidv4 } from 'uuid';
+  import { CID } from 'cids';
 
   const PostPublication = () => {
 
@@ -41,33 +44,33 @@ import {
     const [typedData, setTypedData] = useState();
     const [clicked, setClicked] = useState(false);
 
-    const createContentURI = async () => {
+
+    
+    const createContentURI = async (metadata: Metadata) => {
         // create the metadata object we'll be storing
-          const uriData = {
-            "description": postContent, 
-            "external_url": "https://minthunt.io", 
-            "image": "ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry", 
-            "name": "test",
-            "attributes": [], 
-          }
-          const jsonObj = JSON.stringify(uriData);
+          const jsonObj = JSON.stringify(metadata);
+
+          console.log(jsonObj)
   
           if(ipfs) {
            const res = await ipfs.add(jsonObj)
            setContentURICID(res.path)
-          return res.path;
+           const pinset = await ipfs.pin.add(res.path)
+           console.log(pinset)
+            return res.path;
           }
         }
 
     useEffect(() => {
+        console.log(contentURICID)
         createPostDataType();
     }, [contentURICID])
 
     const [createPostDataType, { loading, error, data }] = useMutation(CREATE_POST_TYPED_DATA, {
         variables: {
             request: {
-                profileId: "0x23",
-                contentURI: `ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry`,
+                profileId: state.lens.id ? state.lens.id : "0x23",
+                contentURI: `ipfs://${contentURICID}`,
                 collectModule: {
                 // feeCollectModule: {
                 //   amount: {
@@ -142,7 +145,20 @@ import {
             alignSelf='flex-end'
             onClick={async () => {
                 setClicked(true);
-                 createContentURI()
+                createContentURI({
+                    version: MetadataVersions.one,
+                    metadata_id: uuidv4(),
+                    description: "",
+                    content: postContent,
+                    external_url: "",
+                    name: postContent,
+                    attributes: [],
+                    image: "ipfs://bafkreia3rtwd6rsddu5igu7no3oaxdz5i3rknvnmiz5zr5j7dt5atv5sry",
+                    // imageMimeType: "",
+                    // media: [],
+                    // animation_url: "",
+                    // appId: ""
+                })
             }}
           >
             Post
