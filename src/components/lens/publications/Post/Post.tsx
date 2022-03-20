@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   chakra,
   Box,
@@ -6,12 +6,49 @@ import {
   Flex,
   useColorModeValue,
   Link,
+  Button
 } from "@chakra-ui/react";
 import { ipfsToImg } from '../../../../utils/ipfsImg';
 
 import Moment from 'react-moment';
+import CREATE_MIRROR_TYPED_DATA from '../../../../lib/graphql/publications/mirror';
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+import {useSelector, useDispatch} from 'react-redux'
+import allActions from '../../../../store/actions';
+import { useAccount } from 'wagmi'
+
+import useLensHub from "../../../../lib/wagmi/hooks/useLensHub";
 
 const Post = ({post}:{post:any}) => {
+  const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
+    fetchEns: true,
+  })
+  const dispatch = useDispatch()
+  const state = useSelector(state => state)
+
+  const { mirror } = useLensHub()
+  const [clickedMirror, setClickedMirror] = useState(false);
+
+  const [createMirrorTypedData, { loading, error, data }] = useMutation(CREATE_MIRROR_TYPED_DATA, {
+    variables: {
+  request: {
+    profileId: `${state.lens.selectedProfile}`,
+    // remember it has to be indexed and follow metadata standards to be traceable!
+    publicationId: post.id,
+    referenceModule: {
+      followerOnlyReferenceModule: true,
+    }
+   }
+  }
+  })
+
+  useEffect(() => {
+    if(!loading && !error && clickedMirror) {
+      mirror(data.createMirrorTypedData.typedData.value)
+    } else if(error) {
+      console.log(error)
+    }
+  }, [data])
 
   useEffect(() => {
     if(post.__typename === "Post"){
@@ -75,6 +112,7 @@ const Post = ({post}:{post:any}) => {
           </Link> */}
 
           <Flex alignItems="center">
+  
             {post.metadata.media[0] && <Image
               mx={4}
               w={10}
@@ -92,6 +130,16 @@ const Post = ({post}:{post:any}) => {
             >
               {post.profile.handle}
             </Link>
+
+            <Box style={{marginLeft: "15px"}}>
+              <Button 
+              onClick={() => {
+                setClickedMirror(true);
+                createMirrorTypedData();
+              }}
+              colorScheme={"green"}>Mirror</Button>
+            </Box>
+
           </Flex>
         </Flex>
       </Box>

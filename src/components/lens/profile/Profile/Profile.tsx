@@ -21,6 +21,15 @@ import {
 // stats: {totalFollowers: 0, totalFollowing: 0, totalPosts: 0, totalComments: 0, totalMirrors: 0, …}
 // twitterUrl: null
 // website: null
+import CREATE_FOLLOW_TYPED_DATA from '../../../../lib/graphql/follow/follow';
+import DOES_FOLLOW from '../../../../lib/graphql/follow/does-follow';
+import UNFOLLOW from '../../../../lib/graphql/follow/unfollow';
+import APPROVE_FOLLOW from '../../../../lib/graphql/follow/approve-follow';
+import GET_FOLLOWING from '../../../../lib/graphql/follow/following';
+import GET_FOLLOWERS from '../../../../lib/graphql/follow/followers';
+
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+
 
 const Profile = (profile:any) => {
   return (

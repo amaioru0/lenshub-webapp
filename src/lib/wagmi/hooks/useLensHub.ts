@@ -27,7 +27,7 @@ import { Signer } from 'ethers';
 
 import { CreateProfileDataStruct } from '../../../typechain-types/MockProfileCreationProxy';
 
-import { PostDataStruct } from '../../../typechain-types/ILensHub';
+import { PostDataStruct, MirrorDataStruct } from '../../../typechain-types/ILensHub';
 
 const useLensHub = () => {
   // const [{ data, error, loading }, getSigner] = useSigner()
@@ -94,6 +94,25 @@ const useLensHub = () => {
     }
   }
 
+
+  // profileId: BigNumberish;
+  // profileIdPointed: BigNumberish;
+  // pubIdPointed: BigNumberish;
+  // referenceModule: string;
+  // referenceModuleData: BytesLike;
+
+  async function mirror({ profileId, profileIdPointed, pubIdPointed, referenceModule, referenceModuleData }: MirrorDataStruct) {
+    try {
+      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
+      const result = await contract.functions.mirror({ profileId, profileIdPointed, pubIdPointed, referenceModule, referenceModuleData });
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  
   async function createProfile({ to, handle, imageURI, followModule, followModuleData, followNFTURI }: CreateProfileDataStruct) {
     try {
       // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
@@ -105,7 +124,7 @@ const useLensHub = () => {
     }
   }
 
-  return { createProfile, post };
+  return { createProfile, post, mirror };
 };
 
 export default useLensHub;

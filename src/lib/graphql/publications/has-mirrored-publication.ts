@@ -14,35 +14,15 @@ const HAS_MIRRORED = `
   }
 `;
 
-const hasMirroredRequest = (
-  profilesRequest: { profileId: string; publicationIds: string[] }[]
-) => {
-  return apolloClient.query({
-    query: gql(HAS_MIRRORED),
-    variables: {
-      request: {
-        profilesRequest,
-      },
-    },
-  });
-};
+export default HAS_MIRRORED;
 
-export const hasMirrored = async () => {
-  const result = await hasMirroredRequest([
-    {
-      profileId: '0x032f1a',
-      publicationIds: ['0x032f1a-0x02'],
-    },
-    {
-      profileId: '0x05',
-      publicationIds: ['0x032e32-0x01'],
-    },
-  ]);
-  prettyJSON('has mirrored: result', result.data);
-
-  return result.data;
-};
-
-(async () => {
-  await hasMirrored();
-})();
+// const result = await hasMirroredRequest([
+//   {
+//     profileId: '0x032f1a',
+//     publicationIds: ['0x032f1a-0x02'],
+//   },
+//   {
+//     profileId: '0x05',
+//     publicationIds: ['0x032e32-0x01'],
+//   },
+// ]);

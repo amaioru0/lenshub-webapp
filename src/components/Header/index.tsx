@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react';
-
+import Image from 'next/image'
 
 import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/layout'
 import {
@@ -165,7 +165,13 @@ useEffect(() => {
           <Box fontWeight="bold" fontSize={[20, 20, 20]}>
             <NextLink href="/" passHref>
               <Link className="center flex gap-2">
-                <span className="text-xl">Trove</span>
+                <span className="text-xl">
+                {/* <Image
+                src="/static/LensHub.png"
+                width="350px"
+                height="300px" 
+              /> */} LensHub
+                </span>
               </Link>
             </NextLink>
           </Box>

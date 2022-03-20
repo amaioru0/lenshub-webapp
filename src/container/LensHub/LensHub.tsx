@@ -144,6 +144,10 @@ const LensHub = () => {
       <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <ExplorePublications />
       </div>
+
+      <div>
+
+      </div>
      </ContainerWrapper>
     )
 }
