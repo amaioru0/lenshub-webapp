@@ -142,17 +142,17 @@ useEffect(() => {
 
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
 
-  const navItems = [
-    {
-      text: 'index',
-      href: '/'
-    },
-    {
-      text: 'index2',
-      href: '/index2',
-      icon: <InformationCircleIcon className="h-6 w-6" />
-    },
-  ]
+  // const navItems = [
+  //   {
+  //     text: 'index',
+  //     href: '/'
+  //   },
+  //   {
+  //     text: 'index2',
+  //     href: '/index2',
+  //     icon: <InformationCircleIcon className="h-6 w-6" />
+  //   },
+  // ]
 
   return (
     <header>
@@ -171,7 +171,7 @@ useEffect(() => {
           </Box>
 
           <HStack>
-            <HStack
+            {/* <HStack
               px={[4, 4, 0]}
               display={['none', 'none', 'none', 'flex']}
               gap={{ lg: '0.4rem', xl: '1.5rem' }}
@@ -182,7 +182,7 @@ useEffect(() => {
                   <Text className="capitalize">{navItem.text}</Text>
                 </NavItem>
               ))}
-            </HStack>
+            </HStack> */}
 
             {/* Connect Wallet Button */}
             <NavButton ml="30px" onClick={() => connect(connector)}>
@@ -316,7 +316,7 @@ useEffect(() => {
             </Box>
 
             {/* Mapping through Links */}
-            {navItems.map((navItem, index) => (
+            {/* {navItems.map((navItem, index) => (
               <NavDrawerItem onClick={onToggle} key={index} href={navItem.href}>
                 <Flex alignItems="center" gap={2}>
                   <Text padding="0" fontSize={'2rem'}>
@@ -324,7 +324,7 @@ useEffect(() => {
                   </Text>
                 </Flex>
               </NavDrawerItem>
-            ))}
+            ))} */}
             {/* Twitter and Language Menu Wrapper */}
             <Flex
               width="100%"
@@ -335,8 +335,6 @@ useEffect(() => {
               paddingX="1.5rem"
               position="absolute"
             >
-              {/* Twitter Link - URL SHOULD BE UPDATED */}
-              {/* <SocialIcon bgColor="white" url="https://twitter.com/ilyxium" target="_blank" /> */}
 
             </Flex>
           </DrawerBody>
