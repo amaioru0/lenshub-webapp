@@ -30,23 +30,6 @@ import { autoPlay } from 'react-swipeable-views-utils';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 
-const styles = {
-    slide: {
-      padding: 15,
-      minHeight: 100,
-      color: '#fff',
-    },
-    slide1: {
-      background: '#FEA900',
-    },
-    slide2: {
-      background: '#B3DC4A',
-    },
-    slide3: {
-      background: '#6AC0FF',
-    },
-  };
-  
 const SelectProfile = () => {
     const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
         fetchEns: true,
@@ -76,8 +59,9 @@ const SelectProfile = () => {
     if(errorProfiles) return <h1>error</h1>
       
     return(
-     <>
+     <Box>
     <SwipeableViews
+    style={{maxWidth: "320px"}}
     index={cardIndex}
     onSwitching={(index:any, type:any) => {
         if(Number.isInteger(index)) {
@@ -104,8 +88,9 @@ const SelectProfile = () => {
         return(
         <Button
         key={index}
-        borderColor={"#eb4034"}
-        backgroundColor={"#eb4034"}
+        borderColor={"#6FDB2C"}
+        backgroundColor={"#6FDB2C"}
+        size="sm"
         onClick={() => {
             console.log(dataProfiles.profiles.items[index])    
         // dispatch(allActions.lensActions.selectProfile(parseInt(dataProfiles.profiles.items[index].id.replace("0x", ""))))
@@ -123,7 +108,7 @@ const SelectProfile = () => {
     </div>
 
 
-     </>
+     </Box>
     )
 }
 

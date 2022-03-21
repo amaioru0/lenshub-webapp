@@ -20,6 +20,8 @@ import { useAccount } from 'wagmi'
 import useLensHub from "../../../../lib/wagmi/hooks/useLensHub";
 import Davatar from '@davatar/react'
 
+import GET_PUBLICATION from '../../../../lib/graphql/publications/get-publication';
+
 const Post = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
     fetchEns: true,
@@ -42,6 +44,18 @@ const Post = ({post}:{post:any}) => {
    }
   }
   })
+
+  // const {loading:publicationLoading, error:publicationError, data:publicationData} = useQuery(GET_PUBLICATION, {
+  //   variables: {
+  //       request: {
+  //   publicationId: post.id,
+  // },
+  //   }
+  // })
+
+  // useEffect(() => {
+  //   console.log(publicationData)
+  // }, [publicationData])
 
   useEffect(() => {
     if(!loading && !error && clickedMirror) {

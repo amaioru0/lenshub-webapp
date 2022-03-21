@@ -39,7 +39,7 @@ const ExplorePublications = () => {
     return(
         <>
         <Box marginBottom={"30px"} >
-        <Heading as={'h2'}>Explore Posts</Heading>
+        <Heading as={'h2'}>Explore </Heading>
         </Box>
 
         <Box>

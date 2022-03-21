@@ -52,6 +52,12 @@ import { NFTStorage, File, Blob } from 'nft.storage'
   import fs from 'fs'
   import path from 'path'
   import axios from 'axios';
+  import dynamic from "next/dynamic";
+
+  const MDEditor = dynamic(
+    () => import("@uiw/react-md-editor"),
+    { ssr: false }
+  );
 
   const NFT_STORAGE_KEY = ''
 
@@ -196,12 +202,15 @@ import { NFTStorage, File, Blob } from 'nft.storage'
         <HStack margin={2} p={2}>
           {/* <Avatar src={} /> */}
           <Textarea
-          style={{background: "white", color: "black"}}
             placeholder="What's happening?"
             resize='none'
             onChange={handleInputChange}
             value={postContent}
           ></Textarea>
+      {/* <MDEditor 
+          style={{background: "white", color: "black"}}
+      value={postContent} onChange={handleInputChange} /> */}
+
         </HStack>
 
         <Stack margin={2}>

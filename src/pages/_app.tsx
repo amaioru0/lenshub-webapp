@@ -13,6 +13,8 @@ import { wrapper } from '../store';
 import { IpfsProvider } from '@onichandame/react-ipfs-hook'
 // import provider from '../lib/provider';
 import { providers } from 'ethers';
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 
 const provider = new providers.JsonRpcProvider('https://polygon-mumbai.g.alchemy.com/v2/mreBORU2DbTDLNPVt88CNrFYNzwvEOUV')
 

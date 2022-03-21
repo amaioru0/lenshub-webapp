@@ -60,6 +60,8 @@ import GetPublications from '../../components/lens/publications/GetPublications/
 import SelectProfile from '../../components/lens/profile/SelectProfile/SelectProfile';
 import CreateProfile from '../../components/lens/profile/CreateProfile/CreateProfile';
 import PostPublication from '../../components/lens/publications/PostPublication/PostPublication';
+import Wallet from '../../components/lens/nfts/Wallet/Wallet';
+
 // import useAuth from '../../lib/useAuth';
 import { getAccessToken, setAccessToken } from '../../lib/accessToken';
 
@@ -74,6 +76,7 @@ import {
 import { NavButton } from '../../components/Header/NavButton/index';
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { useRouter } from 'next/router';
 
 const LensHub = () => {
     const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -81,9 +84,16 @@ const LensHub = () => {
       fetchEns: true,
     })
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const router = useRouter()
+    const [currentRoute, setCurrentRoute] = useState(router.query.page ? router.query.page   : 'Home');
 
       const dispatch = useDispatch()
       const state = useSelector(state => state)
+
+      useEffect(() => {
+        console.log("state")
+        console.log(state)
+      }, [state])
 
     // const { loading:loadingProfiles, error:errorProfiles, data:dataProfiles} = useQuery(GET_PROFILES, {
     // variables: {
@@ -116,27 +126,30 @@ const LensHub = () => {
     <Box minH="100vh" >
     <Layout>
     <Widget>
+    <>
+    {isSignedIn && <SelectProfile />}
     {LinkItems.map((link) => (
-    <NavItem key={link.name} icon={link.icon}>
+    <NavItem key={link.name} icon={link.icon}
+    onClick={() => setCurrentRoute(link.name)}
+    >
         {link.name}
     </NavItem>
     ))}
+    </>
     </Widget>
 
-    <Widget>
-        <h1>hello</h1>
-    </Widget>
+
     </Layout>
 
     
     <ContainerWrapper>
     {isSignedIn && <h1>signed in</h1>}
 
-
     <HubWrapper>
+    {currentRoute === 'Home' && <div>
         
         <Top>
-        {isSignedIn && <SelectProfile />}
+        {/* {isSignedIn && <SelectProfile />} */}
         <Box
         mx="auto"
         py={{ base: 12, lg: 16 }}
@@ -179,10 +192,9 @@ const LensHub = () => {
         <Btm>
         {isSignedIn && <PostPublication />}
         </Btm>
+          </div>}
 
-    </HubWrapper>
-
-    <Flex alignItems={"center"} flexDirection={"column"} >
+    {/* <Flex alignItems={"center"} flexDirection={"column"} >
         <div>
         <Flex alignItems={"center"} flexDirection={"row"} justifyContent={"space-around"}>
 
@@ -192,7 +204,7 @@ const LensHub = () => {
 
         <div>
         </div>
-        </Flex>
+        </Flex> */}
       
     {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
       <GetPublications />
@@ -203,18 +215,27 @@ const LensHub = () => {
       <UserTimeline />
       </div>} */}
 
+
+      
       <div style={{marginBottom: "10px", marginTop: "30px"}}>
-       {isSignedIn && <GetPublications />}
-       {isSignedIn && <UserTimeline />}
-      <ExplorePublications />
+      {currentRoute === "Home" && isSignedIn && <GetPublications />}
+      {currentRoute === 'Home' && isSignedIn && <UserTimeline />}
+     {currentRoute === 'Explore' && <ExplorePublications />}
+     </div>
+
+    {currentRoute === 'Wallet' && isSignedIn && accountData?.address &&
+      <div>
+        <Wallet />
       </div>
+    }
 
       <div>
 
       </div>
+      </HubWrapper>
      </ContainerWrapper>
      </Box>
-
+    
     )
 }
 
@@ -226,10 +247,9 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
   { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
+  { name: 'Profiles', icon: FiStar },
+  { name: 'Wallet', icon: FiSettings },
 ];
 
 
@@ -282,13 +302,13 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
     <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
-        p="4"
-        mx="4"
+        p="2"
+        mx="2"
         borderRadius="lg"
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: '#6FDB2C',
           color: 'white',
         }}
         {...rest}>
