@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { explore } from '../../../../lib/lens/explore/explore-publications';
+// import { explore } from '../../../lib/lens/explore/explore-publications';
 import Loader from '../../../Loader/Loader';
 import Post from '../Post/Post';
 import {
@@ -10,53 +10,88 @@ import {
     Box,
     Text,
     Heading,
+    Select
   } from '@chakra-ui/react';
 
   import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
   import EXPLORE_PUBLICATIONS from '../../../../lib/graphql/explore-publications';;
-
+import PostsList from './PostsList'
+import { Query } from '@apollo/react-components';
+import Toolbar from './Toolbar';
 
 const ExplorePublications = () => {
-  const { loading, error, data} = useQuery(EXPLORE_PUBLICATIONS, {
-    variables: {
-      request: {
-        sortCriteria: "TOP_COMMENTED",
-        limit: 50
-      },
-    }
-  });
 
-  useEffect(() => {
-    console.log("here")
-    console.log(data)
-  }, [data])
-
-
-    if(loading) return <Loader />
-
-    if(error) return <h1>error</h1>
+  const [sortCriteria, setSortCriteria] = useState("TOP_COMMENTED")
     
     return(
-        <>
-        <Box marginBottom={"30px"} >
-        <Heading as={'h2'}>Explore </Heading>
-        </Box>
+      <>
+    <Toolbar>
+      <Select value={sortCriteria} onChange={(e:any) => {
+        setSortCriteria(e.target.value)
+      }}>
+        <option value='TOP_COMMENTED'>Most commented</option>
+        <option value='TOP_COLLECTED'>Most collected</option>
+      </Select>
+    </Toolbar>
+<Query query={EXPLORE_PUBLICATIONS} variables={{request: {
+        sortCriteria: sortCriteria,
+        limit: 10,  
+      }}}>
+    {({ data, fetchMore }: { data:any, fetchMore:any }) => {
+      if(!data) return null;
+      console.log("explore data")
+      console.log(data)
+      return(
+        data && (
+          <PostsList
+              posts={data.explorePublications.items || []}
+              onLoadMore={() =>
+                fetchMore({
+                  variables: {
+                    request: {
+                      cursor: data.explorePublications.pageInfo.next,
+                      sortCriteria: sortCriteria,
+                      limit: 10,  
+                    }
+                  },
+                  updateQuery: (prev:any, { fetchMoreResult }:{ fetchMoreResult:any }) => {
+                    console.log("update query")
+                    console.log(fetchMoreResult)
+                    if (!fetchMoreResult) return prev;
+                    return Object.assign({}, prev, {
+                      explorePublications: { pageInfo: fetchMoreResult.explorePublications.pageInfo, items: [...prev.explorePublications.items, ...fetchMoreResult.explorePublications.items], __typename: "ExplorePublicationResult"}
+                    });
+                  }
+                })
+              }
+            />
+        )
+      )
+    }
+  
+    }
+  </Query>
+    </>
+      //   <>
+      //   <Box marginBottom={"30px"} >
+      //   <Heading as={'h2'}>Explore </Heading>
+      //   </Box>
 
-        <Box>
-        <Grid templateColumns='repeat(1, 1fr)' gap={6}>
-        {
-          //@ts-ignore
-        data.explorePublications.items.map((post, index) => {
-          return(
-            <GridItem key={index} >
-            <Post post={post} />
-            </GridItem>
-          )
-        })}
+      //   <Box>
+      //   <Grid templateColumns='repeat(1, 1fr)' gap={6}>
+      //   {
+      //     //@ts-ignore
+      //   data.explorePublications.items.map((post, index) => {
+      //     return(
+      //       <GridItem key={index} >
+      //       <Post post={post} />
+      //       </GridItem>
+      //     )
+      //   })}
 
-      </Grid>
-        </Box>
-        </>
+      // </Grid>
+      //   </Box>
+      //   </>
     )
 }
 

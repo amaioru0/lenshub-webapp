@@ -105,7 +105,18 @@ const LensHub = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const router = useRouter()
-    const [currentRoute, setCurrentRoute] = useState(router.query.slug ? (router.query.slug.length > 1 ? router.query.slug[0][0].toLocaleLowerCase() : router.query.slug[0]) : "");
+    const getInitialQuery = () => {
+      if(router.query.slug) {
+        if(router.query.slug[0][0]) {
+          return router.query.slug[0].toLocaleLowerCase()
+        } else if (router.query.slug[0]) {
+          return router.query.slug[0].toLocaleLowerCase()
+        } else {
+          return "/"
+        }
+      }
+    }
+    const [currentRoute, setCurrentRoute] = useState(getInitialQuery());
     const [modalIsOpen, setIsOpen] = React.useState(false);
     let subtitle:any;
 
@@ -275,8 +286,7 @@ const LensHub = () => {
       {currentRoute === '' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
-      {/* {currentRoute === 'search' && <Search />}       */}
-      <Search />
+      {currentRoute === 'search' && <Search />}      
      </div>
 
     {currentRoute === 'wallet' && isSignedIn && accountData?.address &&

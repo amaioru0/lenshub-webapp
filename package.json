@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@apollo/client": "~3.4.16",
+    "@apollo/react-components": "^4.0.0",
     "@apollo/react-hooks": "^4.0.0",
     "@apollo/react-ssr": "^4.0.0",
     "@chakra-ui/icons": "^1.1.7",
@@ -27,6 +28,7 @@
     "@onichandame/react-ipfs-hook": "https://github.com/onichandame/react-ipfs",
     "@styled-system/theme-get": "^5.1.2",
     "@uiw/react-md-editor": "3.6.0",
+    "add": "^2.0.6",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-context": "^1.0.20",
@@ -54,6 +56,8 @@
     "ngeohash": "^0.6.3",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
+    "react-apollo": "^3.1.5",
+    "react-bottom-scroll-listener": "^5.0.0",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
     "react-modal": "^3.14.4",
@@ -64,6 +68,8 @@
     "react-stickynode": "^4.0.0",
     "react-swipeable-views": "^0.14.0",
     "react-swipeable-views-utils": "^0.14.0",
+    "react-virtualized-auto-sizer": "^1.0.6",
+    "react-window": "^1.8.6",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
@@ -74,7 +80,8 @@
     "use-nft": "^0.10.2",
     "uuid": "^8.3.2",
     "wagmi": "^0.2.21",
-    "web3": "^1.7.0"
+    "web3": "^1.7.0",
+    "yarn": "^1.22.18"
   },
   "devDependencies": {
     "@types/cookie": "^0.4.1",
@@ -85,6 +92,8 @@
     "@types/react-stickynode": "^4.0.0",
     "@types/react-swipeable-views": "^0.13.1",
     "@types/react-swipeable-views-utils": "^0.13.3",
+    "@types/react-virtualized-auto-sizer": "^1.0.1",
+    "@types/react-window": "^1.8.5",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.24",
     "@types/uuid": "^8.3.4",

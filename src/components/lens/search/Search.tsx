@@ -22,7 +22,16 @@ import { useRouter } from 'next/router'
 
 const Search = () => {
   const router = useRouter()
-  const [query, setQuery] = useState(router.query && (router.query.slug !== "" ? router.query.slug[0] : "" ));
+  // const getInitialQuery = () => {
+  //   if(router.query.slug) {
+  //     if(router.query.slug[0[0]]) {
+  //       return router.query.slug[0[0]]
+  //     } else {
+  //       return "lens"
+  //     }
+  //   }
+  // }
+  const [query, setQuery] = useState("lens");
   const [type, setType] = useState("PROFILE");
 
   const {loading, error, data, refetch} = useQuery(SEARCH, {

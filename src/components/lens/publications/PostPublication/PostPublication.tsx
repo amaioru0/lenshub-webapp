@@ -92,7 +92,6 @@ import { NFTStorage, File, Blob } from 'nft.storage'
 
     const createContentURI = async (metadata: Metadata) => {
         // create the metadata object we'll be storing
-          const jsonObj = JSON.stringify(metadata);
         //   const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
 
         const response = await axios.get("https://picsum.photos/seed/picsum/200/300",  { responseType: 'arraybuffer' })
@@ -100,25 +99,20 @@ import { NFTStorage, File, Blob } from 'nft.storage'
 
         const imageFile = new File([ buffer ], 'nft.png', { type: 'image/png' })
 
-
-        // version: MetadataVersions.one,
-        // metadata_id: uuidv4(),
-        // description: "",
-        // content: postContent,
-        // external_url: "",
-        // name: postContent,
-        // attributes: [],
-        // image: "",
-
-
-          console.log(jsonObj)
-
           if(ipfs) {
+           const image = await ipfs.add(imageFile)
+           console.log(image)
+    
+           const jsonObj = JSON.stringify({...metadata, image: `ipfs://${image.path}`});
+
            const res = await ipfs.add(jsonObj)
            console.log(res)
            setContentURICID(res.path)
            const pinset = await ipfs.pin.add(res.path)
+           const pinset2 = await ipfs.pin.add(image.path)
+
            console.log(pinset)
+           console.log(pinset2)
             return res.path;
           }
         }
@@ -227,9 +221,11 @@ import { NFTStorage, File, Blob } from 'nft.storage'
                     description: "",
                     content: postContent,
                     external_url: "",
-                    name: postContent,
+                    name: "post",
                     attributes: [],
                     image: "",
+                    media: [],
+                    appId: "TROVE"
                     // imageMimeType: "",
                     // media: [],
                     // animation_url: "",
