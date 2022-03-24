@@ -40,6 +40,7 @@
     "ethers": "^5.5.4",
     "framer-motion": "^6.2.8",
     "graphql": "^16.3.0",
+    "graphql-request": "^4.2.0",
     "graphql-tag": "^2.12.6",
     "isomorphic-unfetch": "^3.1.0",
     "jwt-decode": "^3.1.2",

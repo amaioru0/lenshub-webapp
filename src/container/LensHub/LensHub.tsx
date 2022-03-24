@@ -3,6 +3,9 @@ import { IconType } from 'react-icons';
 import {useSelector, useDispatch} from 'react-redux'
 import allActions from '../../store/actions';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+
+import useLensHub from '../../lib/wagmi/hooks/useLensHub';
+
 import { BigNumber } from '@ethersproject/bignumber'
 
 import {
@@ -47,7 +50,16 @@ import {
     FiMenu,
     FiBell,
     FiChevronDown,
+    FiTrello,
+    FiBox
   } from 'react-icons/fi';
+  import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbSeparator,
+  } from '@chakra-ui/react'
+ 
 import Loader from '../../components/Loader/Loader';
 
 import Profile from '../../components/lens/profile/Profile/Profile';
@@ -61,6 +73,7 @@ import SelectProfile from '../../components/lens/profile/SelectProfile/SelectPro
 import CreateProfile from '../../components/lens/profile/CreateProfile/CreateProfile';
 import PostPublication from '../../components/lens/publications/PostPublication/PostPublication';
 import Wallet from '../../components/lens/nfts/Wallet/Wallet';
+import RecommendedProfiles from '../../components/lens/profile/RecommendedProfiles/RecommendedProfiles';
 
 // import useAuth from '../../lib/useAuth';
 import { getAccessToken, setAccessToken } from '../../lib/accessToken';
@@ -83,17 +96,20 @@ const LensHub = () => {
     const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
       fetchEns: true,
     })
+
+    const { createProfile, post, mirror, collect, comment, follow } = useLensHub();
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const router = useRouter()
-    const [currentRoute, setCurrentRoute] = useState(router.query.page ? router.query.page   : 'Home');
+    const [currentRoute, setCurrentRoute] = useState(router.query.slug ? router.query.slug[0].toLocaleLowerCase() : "" );
 
       const dispatch = useDispatch()
       const state = useSelector(state => state)
 
       useEffect(() => {
-        console.log("state")
-        console.log(state)
-      }, [state])
+        console.log("router")
+        console.log(router)
+      }, [])
 
     // const { loading:loadingProfiles, error:errorProfiles, data:dataProfiles} = useQuery(GET_PROFILES, {
     // variables: {
@@ -121,6 +137,11 @@ const LensHub = () => {
     
 
     // const { isSignedIn } = useAuth();
+
+    const handleMenuClick = (linkName:any) => {
+        setCurrentRoute(linkName)
+        router.push(`/${linkName}`)
+    }
       
     return(
     <Box minH="100vh" >
@@ -128,13 +149,30 @@ const LensHub = () => {
     <Widget>
     <>
     {isSignedIn && <SelectProfile />}
-    {LinkItems.map((link) => (
+    {JSON.stringify(router.query)}
+    {LinkItems.map((link) => {
+      if(link.name === "wallet") {
+          if(isSignedIn) return(
+          <NavItem key={link.name} icon={link.icon}
+          onClick={() => {
+            handleMenuClick(link.name)
+          }}
+          >
+              {link.name} 
+          </NavItem>
+          )
+          if(!isSignedIn) return <></>
+      }
+    return(
     <NavItem key={link.name} icon={link.icon}
-    onClick={() => setCurrentRoute(link.name)}
+    onClick={() => {
+      handleMenuClick(link.name)
+    }}
     >
         {link.name}
     </NavItem>
-    ))}
+    )
+    })}
     </>
     </Widget>
 
@@ -145,8 +183,18 @@ const LensHub = () => {
     <ContainerWrapper>
     {isSignedIn && <h1>signed in</h1>}
 
+    <Breadcrumb>
+      <BreadcrumbItem>
+        <BreadcrumbLink href='#'>Home</BreadcrumbLink>
+      </BreadcrumbItem>
+
+      <BreadcrumbItem isCurrentPage>
+        <BreadcrumbLink href='#'>{router.pathname}</BreadcrumbLink>
+      </BreadcrumbItem>
+    </Breadcrumb>
+
     <HubWrapper>
-    {currentRoute === 'Home' && <div>
+    {currentRoute === '' && <div>
         
         <Top>
         {/* {isSignedIn && <SelectProfile />} */}
@@ -206,24 +254,16 @@ const LensHub = () => {
         </div>
         </Flex> */}
       
-    {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
-      <GetPublications />
-      </div>} */}
-        
-        
-       {/* { isSignedIn && <div style={{marginBottom: "20px", marginTop: "40px"}}>
-      <UserTimeline />
-      </div>} */}
-
 
       
-      <div style={{marginBottom: "10px", marginTop: "30px"}}>
-      {currentRoute === "Home" && isSignedIn && <GetPublications />}
-      {currentRoute === 'Home' && isSignedIn && <UserTimeline />}
-     {currentRoute === 'Explore' && <ExplorePublications />}
+    <div style={{marginBottom: "10px", marginTop: "30px"}}>
+      {currentRoute === "" && isSignedIn && <GetPublications />}
+      {currentRoute === '' && isSignedIn && <UserTimeline />}
+      {currentRoute === 'explore' && <ExplorePublications />}
+      {currentRoute === 'profiles' && <RecommendedProfiles />}      
      </div>
 
-    {currentRoute === 'Wallet' && isSignedIn && accountData?.address &&
+    {currentRoute === 'wallet' && isSignedIn && accountData?.address &&
       <div>
         <Wallet />
       </div>
@@ -246,10 +286,10 @@ interface LinkItemProps {
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Profiles', icon: FiStar },
-  { name: 'Wallet', icon: FiSettings },
+  { name: '', icon: FiHome },
+  { name: 'explore', icon: FiCompass },
+  { name: 'profiles', icon: FiTrello },
+  { name: 'wallet', icon: FiBox },
 ];
 
 

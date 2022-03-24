@@ -177,8 +177,8 @@ import { NFTStorage, File, Blob } from 'nft.storage'
                   referenceModule: typedData?.value?.referenceModule,
                   referenceModuleData: typedData?.value.referenceModuleData,
                  })
-                 setTxHash(tx.hash)
-                 getTx();
+                //  setTxHash(tx.hash)
+                //  getTx();
             }
             if(clicked) {
                 goClick()

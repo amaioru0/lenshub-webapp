@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps, apolloClient }: any) {
       <ApolloProvider client={apolloClient}>
         <ChakraProvider theme={theme}>
         <IpfsProvider
-          opts={{ host: `minthunt.io`, port: 5001, protocol: `http` }}
+          opts={{ host: `localhost`, port: 5001, protocol: `http` }}
           livelinessProbe={true}
           probeInterval={5000}
         >

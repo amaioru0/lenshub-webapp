@@ -7,10 +7,11 @@ import { setContext } from "apollo-link-context";
 import fetch from "isomorphic-unfetch";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwtDecode from "jwt-decode";
-import { getAccessToken, setAccessToken } from "./accessToken";
+import { getAccessToken, setAccessToken, getRefreshToken, setRefreshToken } from "./accessToken";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import cookie from "cookie";
+import { request, gql } from 'graphql-request'
 
 import introspectionQueryResultData from './fragmentTypes.json';
 
@@ -19,6 +20,16 @@ const isServer = () => typeof window === "undefined";
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
   });
+
+
+  const REFRESH_AUTHENTICATION = gql`
+  mutation($request: RefreshRequest!) { 
+    refresh(request: $request) {
+      accessToken
+      refreshToken
+    }
+ }
+`
 
 /**
  * Creates and provides the apolloContext
@@ -67,28 +78,28 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
 
       let serverAccessToken = "";
 
-      if (isServer()) {
-        console.log(req.headers.cookie)
-        let headerCookie = req.headers.cookie;
+      // if (isServer()) {
+      //   console.log(req.headers)
+      //   let headerCookie = req.headers.cookie;
 
-        if (typeof headerCookie !== 'string') {
-          headerCookie = '';
-        }
+      //   if (typeof headerCookie !== 'string') {
+      //     headerCookie = '';
+      //   }
 
-        const cookies = cookie.parse(headerCookie);
-        if (cookies.jid) {
-          console.log("we have cookie jid on server")
-          const response = await fetch("http://localhost:4000/refresh_token", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              cookie: "jid=" + cookies.jid
-            }
-          });
-          const data = await response.json();
-          serverAccessToken = data.accessToken;
-        }
-      }
+      //   const cookies = cookie.parse(headerCookie);
+      //   if (cookies.jid) {
+      //     console.log("we have cookie jid on server")
+      //     const response = await fetch("http://localhost:4000/refresh_token", {
+      //       method: "POST",
+      //       credentials: "include",
+      //       headers: {
+      //         cookie: "jid=" + cookies.jid
+      //       }
+      //     });
+      //     const data = await response.json();
+      //     serverAccessToken = data.accessToken;
+      //   }
+      // }
 
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
@@ -187,13 +198,14 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
     accessTokenField: "accessToken",
     isTokenValidOrUndefined: () => {
       const token = getAccessToken();
-
+      const refresthToken = getRefreshToken();
       if (!token) {
         return true;
       }
 
       try {
         const { exp } = jwtDecode(token);
+        console.log(exp)
         if (Date.now() >= exp * 1000) {
           return false;
         } else {
@@ -204,13 +216,14 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
     },
     fetchAccessToken: () => {
-      return fetch("http://localhost:4000/refresh_token", {
-        method: "POST",
-        credentials: "include"
-      });
+      const refreshToken = getRefreshToken()
+      return request('https://api-mumbai.lens.dev/', REFRESH_AUTHENTICATION, { request: { refreshToken: refreshToken } })
+
     },
     handleFetch: accessToken => {
-      setAccessToken(accessToken);
+      console.log("handle fetch")
+      console.log(accessToken)
+      // setAccessToken(accessToken);
     },
     handleError: err => {
       console.warn("Your refresh token is invalid. Try to relogin");
@@ -220,8 +233,6 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
 
   const authLink = setContext((_request, { headers }) => {
     const token = isServer() ? serverAccessToken : getAccessToken();
-    console.log("TOKEN FROM APOLLO")
-    console.log(token)
     return {
       headers: {
         ...headers,

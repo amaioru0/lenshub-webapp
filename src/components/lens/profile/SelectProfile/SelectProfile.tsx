@@ -46,7 +46,7 @@ const SelectProfile = () => {
     });
 
     useEffect(() => {
-    console.log("here")
+    console.log("SelectPRofile data")
     console.log(dataProfiles)
     console.log(state)
     }, [dataProfiles])
