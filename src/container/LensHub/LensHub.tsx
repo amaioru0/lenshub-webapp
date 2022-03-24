@@ -74,6 +74,7 @@ import CreateProfile from '../../components/lens/profile/CreateProfile/CreatePro
 import PostPublication from '../../components/lens/publications/PostPublication/PostPublication';
 import Wallet from '../../components/lens/nfts/Wallet/Wallet';
 import RecommendedProfiles from '../../components/lens/profile/RecommendedProfiles/RecommendedProfiles';
+import Search from '../../components/lens/search/Search';
 
 // import useAuth from '../../lib/useAuth';
 import { getAccessToken, setAccessToken } from '../../lib/accessToken';
@@ -90,6 +91,9 @@ import { NavButton } from '../../components/Header/NavButton/index';
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useRouter } from 'next/router';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#__next');
 
 const LensHub = () => {
     const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -101,8 +105,18 @@ const LensHub = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const router = useRouter()
-    const [currentRoute, setCurrentRoute] = useState(router.query.slug ? router.query.slug[0].toLocaleLowerCase() : "" );
+    const [currentRoute, setCurrentRoute] = useState(router.query.slug ? (router.query.slug.length > 1 ? router.query.slug[0][0].toLocaleLowerCase() : router.query.slug[0]) : "");
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    let subtitle:any;
 
+    function afterOpenModal() {
+      // references are now sync'd and can be accessed.
+      subtitle.style.color = '#f00';
+    }
+  
+    function closeModal() {
+      setIsOpen(false);
+    }
       const dispatch = useDispatch()
       const state = useSelector(state => state)
 
@@ -261,6 +275,8 @@ const LensHub = () => {
       {currentRoute === '' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
+      {/* {currentRoute === 'search' && <Search />}       */}
+      <Search />
      </div>
 
     {currentRoute === 'wallet' && isSignedIn && accountData?.address &&

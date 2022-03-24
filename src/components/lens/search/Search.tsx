@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import {
   chakra,
   Box,
@@ -12,8 +12,36 @@ import {
   Stack,
   Icon,
 } from "@chakra-ui/react";
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import SEARCH from '../../../lib/graphql/search/search-profiles-or-publications';
+const env = process.env.NODE_ENV;
+import Profile from '../../lens/profile/Profile/Profile';
+import Loader from '../../Loader/Loader';
+import { useRouter } from 'next/router'
 
-const Search = ({query, setQuery, type, setType} : {query:any, setQuery:any, type:any, setType:any}) => {
+
+const Search = () => {
+  const router = useRouter()
+  const [query, setQuery] = useState(router.query && (router.query.slug !== "" ? router.query.slug[0] : "" ));
+  const [type, setType] = useState("PROFILE");
+
+  const {loading, error, data, refetch} = useQuery(SEARCH, {
+    variables: { request: {
+      query: query,
+      type: type,
+      limit: 10
+    }
+  }
+  })
+
+  useEffect(() => {
+    refetch();
+  }, [query])
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
     return(
         <Flex alignItems="center">
         <Box px={4} py={32} mx="auto">
@@ -38,6 +66,16 @@ const Search = ({query, setQuery, type, setType} : {query:any, setQuery:any, typ
               }}
             />
           </GridItem>
+
+          {loading && <Loader />}
+
+{data?.search?.items?.map((profile:any, index:any) => {
+  return(
+    <GridItem as="label" colSpan={{ base: "auto", lg: 4 }}>
+    <Profile profile={profile} />
+    </GridItem>
+  )
+})}
 
         </SimpleGrid>
     </Box>
