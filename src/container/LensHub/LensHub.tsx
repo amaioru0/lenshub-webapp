@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, ReactNode, ReactText } from 'react';
 import { IconType } from 'react-icons';
 import {useSelector, useDispatch} from 'react-redux'
-import allActions from '../../store/actions';
-import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+// import allActions from '../../store/actions';
+// import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 
 import useLensHub from '../../lib/wagmi/hooks/useLensHub';
 
-import { BigNumber } from '@ethersproject/bignumber'
+// import { BigNumber } from '@ethersproject/bignumber'
 
 import {
     Button,
@@ -59,22 +59,24 @@ import {
     BreadcrumbLink,
     BreadcrumbSeparator,
   } from '@chakra-ui/react'
- 
+  import dynamic from 'next/dynamic'
+
 import Loader from '../../components/Loader/Loader';
 
-import Profile from '../../components/lens/profile/Profile/Profile';
+// import Profile from '../../components/lens/profile/Profile/Profile';
 
-import Post from '../../components/lens/publications/Post/Post';
-import ExplorePublications from '../../components/lens/publications/ExplorePublications/ExplorePublications';
-import UserTimeline from '../../components/lens/timeline/UserTimeline';
-import GetPublications from '../../components/lens/publications/GetPublications/GetPublications'
+// import Post from '../../components/lens/publications/Post/Post';
 
-import SelectProfile from '../../components/lens/profile/SelectProfile/SelectProfile';
-import CreateProfile from '../../components/lens/profile/CreateProfile/CreateProfile';
-import PostPublication from '../../components/lens/publications/PostPublication/PostPublication';
-import Wallet from '../../components/lens/nfts/Wallet/Wallet';
-import RecommendedProfiles from '../../components/lens/profile/RecommendedProfiles/RecommendedProfiles';
-import Search from '../../components/lens/search/Search';
+const ExplorePublications = dynamic(() => import('../../components/lens/publications/ExplorePublications/ExplorePublications'))
+const UserTimeline = dynamic(() => import('../../components/lens/timeline/UserTimeline'))
+const GetPublications = dynamic(() => import('../../components/lens/publications/GetPublications/GetPublications'))
+
+const SelectProfile = dynamic(() => import('../../components/lens/profile/SelectProfile/SelectProfile'))
+const CreateProfile = dynamic(() => import('../../components/lens/profile/CreateProfile/CreateProfile'))
+const PostPublication = dynamic(() => import('../../components/lens/publications/PostPublication/PostPublication'))
+const Wallet = dynamic(() => import('../../components/lens/nfts/Wallet/Wallet'))
+const RecommendedProfiles = dynamic(() => import('../../components/lens/profile/RecommendedProfiles/RecommendedProfiles'))
+const Search = dynamic(() => import('../../components/lens/search/Search'))
 
 // import useAuth from '../../lib/useAuth';
 import { getAccessToken, setAccessToken } from '../../lib/accessToken';

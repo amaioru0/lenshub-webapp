@@ -54,7 +54,7 @@ import { NFTStorage, File, Blob } from 'nft.storage'
   import axios from 'axios';
   import dynamic from "next/dynamic";
   import { FileUpload } from 'react-ipfs-uploader'
-  import Picker from 'emoji-picker-react';
+  // import Picker from 'emoji-picker-react';
 
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -221,9 +221,11 @@ import { NFTStorage, File, Blob } from 'nft.storage'
 
         </HStack>
 
+        <Stack margin={2} >
+        {/* <FileUpload setUrl={setFileUrl} /> */}
+
+        </Stack>
         <Stack margin={2}>
-        <FileUpload setUrl={setFileUrl} />
-        {/* <Picker onEmojiClick={onEmojiClick} /> */}
 
           <Button
           rounded="full"
