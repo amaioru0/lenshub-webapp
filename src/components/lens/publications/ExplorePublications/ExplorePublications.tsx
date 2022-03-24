@@ -13,7 +13,6 @@ import {
     Select,
     useColorModeValue
   } from '@chakra-ui/react';
-
   import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
   import EXPLORE_PUBLICATIONS from '../../../../lib/graphql/explore-publications';;
 import PostsList from './PostsList'

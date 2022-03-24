@@ -5,7 +5,6 @@ import {useSelector, useDispatch} from 'react-redux'
 // import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 
 import useLensHub from '../../lib/wagmi/hooks/useLensHub';
-
 // import { BigNumber } from '@ethersproject/bignumber'
 
 import {
@@ -77,6 +76,7 @@ const PostPublication = dynamic(() => import('../../components/lens/publications
 const Wallet = dynamic(() => import('../../components/lens/nfts/Wallet/Wallet'))
 const RecommendedProfiles = dynamic(() => import('../../components/lens/profile/RecommendedProfiles/RecommendedProfiles'))
 const Search = dynamic(() => import('../../components/lens/search/Search'))
+const PostPage = dynamic(() => import('../PostPage/PostPage'));
 
 // import useAuth from '../../lib/useAuth';
 import { getAccessToken, setAccessToken } from '../../lib/accessToken';
@@ -174,10 +174,14 @@ const LensHub = () => {
     return(
     <Box minH="100vh" >
     <Layout>
-      <ResponsiveWidget>
+    <ResponsiveWidget>
+    <Widget>
+    {isSignedIn && <SelectProfile />}
+    </Widget>
+    </ResponsiveWidget>
+    <ResponsiveWidget>
     <Widget>
     <>
-    {isSignedIn && <SelectProfile />}
     {JSON.stringify(router.query)}
     {LinkItems.map((link) => {
       if(link.name === "wallet") {
@@ -293,13 +297,14 @@ const LensHub = () => {
 
       
     <div style={{marginBottom: "10px", marginTop: "30px"}}>
-      {currentRoute === "" && isSignedIn && <GetPublications />}
-      {currentRoute === '' && isSignedIn && <UserTimeline />}
+      {currentRoute === "/" && isSignedIn && <GetPublications />}
+      {currentRoute === '/' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
       {currentRoute === 'profiles' && isSignedIn && accountData?.address && <CreateProfile />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
       {currentRoute === 'search' && <Search />}  
-    
+      {currentRoute === 'post' && <PostPage post={router.query.slug[1]}/>}  
+
      </div>
 
     {currentRoute === 'wallet' && isSignedIn && accountData?.address &&

@@ -19,7 +19,7 @@ import {
   } from '@chakra-ui/react';
 import Loader from '../../../Loader/Loader';
 
-import Profile from '../Profile/Profile';
+import Profile from '../Profile/ProfileWidget';
 
 import GET_PROFILES, { ProfilesRequest} from '../../../../lib/graphql/profile/get-profiles';
 

@@ -25,6 +25,7 @@ import Davatar from '@davatar/react'
 
 import GET_PUBLICATION from '../../../../lib/graphql/publications/get-publication';
 import { Query } from '@apollo/react-components';
+import { useRouter } from 'next/router';
 
 const Post = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
@@ -48,6 +49,7 @@ const Post = ({post}:{post:any}) => {
    }
   }
   })
+  const router = useRouter()
 
   // const {loading:publicationLoading, error:publicationError, data:publicationData} = useQuery(GET_PUBLICATION, {
   //   variables: {
@@ -87,6 +89,10 @@ const Post = ({post}:{post:any}) => {
         bg={useColorModeValue("white", "gray.800")}
         maxW="2xl"
       >
+        <Link href={`/post/${post.id}`}>
+        <a>
+
+
         <Flex justifyContent="space-between" alignItems="center">
 
 
@@ -100,19 +106,6 @@ const Post = ({post}:{post:any}) => {
           >
             {post.createdAt && <Moment>{post.createdAt}</Moment>}
           </chakra.span>
-
-          {/* <Link
-            px={3}
-            py={1}
-            bg="gray.600"
-            color="gray.100"
-            fontSize="sm"
-            fontWeight="700"
-            rounded="md"
-            _hover={{ bg: "gray.500" }}
-          >
-            Design  
-          </Link> */}
         </Flex>
 
         <Box mt={2}>
@@ -157,7 +150,7 @@ const Post = ({post}:{post:any}) => {
 
   <Query query={HAS_COLLECTED} variables={{request : { collectRequests: [
     {
-      walletAddress: accountData?.address ? accountData?.address : "",
+      walletAddress: accountData?.address ? `${accountData?.address}` : "",
       publicationIds: [post.id]
     }
     ]}}}>
@@ -197,6 +190,8 @@ const Post = ({post}:{post:any}) => {
 
           </Flex>
         </Flex>
+        </a>
+        </Link>
       </Box>
   );
 };

@@ -47,7 +47,7 @@ import {
   import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from './MetadataStandard';
   import { v4 as uuidv4 } from 'uuid';
   import { CID } from 'cids';
-import { NFTStorage, File, Blob } from 'nft.storage'
+// import { NFTStorage, File, Blob } from 'nft.storage'
   import mime from 'mime'
   import fs from 'fs'
   import path from 'path'
@@ -92,9 +92,9 @@ import { NFTStorage, File, Blob } from 'nft.storage'
         }
     })
 
-    useEffect(() => {
-        console.log(txData)
-    }, [txData])
+    // useEffect(() => {
+    //     console.log(txData)
+    // }, [txData])
 
 
     const createContentURI = async (metadata: Metadata) => {

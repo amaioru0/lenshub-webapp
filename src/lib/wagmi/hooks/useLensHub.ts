@@ -88,7 +88,7 @@ const useLensHub = () => {
 
   async function comment({ profileId, contentURI, profileIdPointed, pubIdPointed, collectModule, collectModuleData, referenceModuleData, referenceModule } : CommentDataStruct) {
     try {
-      const result = await contract.functions.comment(profileId, contentURI, profileIdPointed, pubIdPointed, collectModule, collectModuleData, referenceModuleData, referenceModule);
+      const result = await contract.functions.comment({profileId, contentURI, profileIdPointed, pubIdPointed, collectModule, collectModuleData, referenceModuleData, referenceModule});
       console.log(result);
       return result;
     } catch (error) {
