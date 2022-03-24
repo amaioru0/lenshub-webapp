@@ -30,11 +30,6 @@ const Index: NextPage = () => {
   const state = useSelector((state) => state)
   // const reduxLocation = useSelector(state => state.router.location)
 
-
-  useEffect(() => {
-    console.log("here comes the state")
-    console.log(state)
-  }, [])
   // const handleClick = () => {
   //   sendTransaction({ to: "0x0FfCfcC9EB64597c1522b5e4507020Ccc29054e5", value: utils.parseEther("0.01") })
   // }

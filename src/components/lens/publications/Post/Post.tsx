@@ -6,10 +6,13 @@ import {
   Flex,
   useColorModeValue,
   Link,
-  Button
+  Button,
+  Divider,
+  flexbox
 } from "@chakra-ui/react";
 import { ipfsToImg } from '../../../../utils/ipfsImg';
-
+import HAS_COLLECTED from '../../../../lib/graphql/publications/has-collected-publication'
+import HAS_MIRRORED from '../../../../lib/graphql/publications/has-mirrored-publication'
 import Moment from 'react-moment';
 import CREATE_MIRROR_TYPED_DATA from '../../../../lib/graphql/publications/mirror';
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
@@ -21,6 +24,7 @@ import useLensHub from "../../../../lib/wagmi/hooks/useLensHub";
 import Davatar from '@davatar/react'
 
 import GET_PUBLICATION from '../../../../lib/graphql/publications/get-publication';
+import { Query } from '@apollo/react-components';
 
 const Post = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
@@ -29,7 +33,7 @@ const Post = ({post}:{post:any}) => {
   const dispatch = useDispatch()
   const state = useSelector(state => state)
 
-  const { mirror } = useLensHub()
+  const { mirror, collect } = useLensHub()
   const [clickedMirror, setClickedMirror] = useState(false);
 
   const [createMirrorTypedData, { loading, error, data }] = useMutation(CREATE_MIRROR_TYPED_DATA, {
@@ -85,6 +89,7 @@ const Post = ({post}:{post:any}) => {
       >
         <Flex justifyContent="space-between" alignItems="center">
 
+
           <div style={{flexDirection: "row", display: "flex"}}>
             <Davatar size={28} address={post.profile.ownedBy} />
             <chakra.h1 style={{fontSize: "18px", fontWeight: "700",marginLeft: "10px", color: "#171923"}}>@{post.profile.handle}</chakra.h1>
@@ -137,17 +142,58 @@ const Post = ({post}:{post:any}) => {
               src={post.metadata.media[0] ? ipfsToImg(post.metadata.media[0].original.url) : ""}
               alt="avatar"
             />}
-
-
-
+  
+            
+            <div style={{display: "flex", minWidth: "400px", borderTop: "1px solid #DEEBE2"}}>
             <Box style={{marginLeft: "15px"}}>
               <Button 
+              style={{marginTop: "5px", backgroundColor: "#DEEBE2", height: "24px"}}
               onClick={() => {
                 setClickedMirror(true);
                 createMirrorTypedData();
               }}
               colorScheme={"green"}>Mirror</Button>
             </Box>
+
+  <Query query={HAS_COLLECTED} variables={{request : { collectRequests: [
+    {
+      walletAddress: accountData?.address ? accountData?.address : "",
+      publicationIds: [post.id]
+    }
+    ]}}}>
+    {({ data }: { data:any }) => {
+      if(!data) return null;
+      return(
+        data && data.hasCollected && (
+          <>
+          {data.hasCollected[0] && 
+            <Box style={{marginLeft: "15px"}}>
+            <Button 
+            style={{marginTop: "5px", backgroundColor: "#DEEBE2", height: "24px"}}
+            onClick={() => {
+              const [first, ...rest] = post.id.split('-');
+              const profileId = first;
+              const pubId = rest[0];
+              console.log(pubId)
+              collect({
+                profileId,
+                pubId,
+                data: "0x0000000000000000000000000000000000000000",
+                overrides: {}
+              })
+            }}
+            colorScheme={"green"}>Collect</Button>
+          </Box>
+          }
+          </>
+        )
+      )
+    }
+  
+    }
+  </Query>
+
+            </div>
 
           </Flex>
         </Flex>

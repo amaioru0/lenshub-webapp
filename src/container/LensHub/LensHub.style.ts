@@ -24,3 +24,9 @@ flex-direction: column;
 borde-radius: 12px;
 min-width: 65vh;
 `
+
+export const ResponsiveWidget = styled.div`
+@media (max-width: 767px) {
+    display: none;
+}
+`

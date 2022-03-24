@@ -10,7 +10,8 @@ import {
     Box,
     Text,
     Heading,
-    Select
+    Select,
+    useColorModeValue
   } from '@chakra-ui/react';
 
   import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
@@ -26,12 +27,22 @@ const ExplorePublications = () => {
     return(
       <>
     <Toolbar>
+    <Box
+        mx="auto"
+        px={18}
+        py={2}
+        rounded="lg"
+        shadow="lg"
+        bg={useColorModeValue("white", "gray.800")}
+        style={{maxWidth: "220px"}}
+      >
       <Select value={sortCriteria} onChange={(e:any) => {
         setSortCriteria(e.target.value)
       }}>
         <option value='TOP_COMMENTED'>Most commented</option>
         <option value='TOP_COLLECTED'>Most collected</option>
       </Select>
+    </Box>
     </Toolbar>
 <Query query={EXPLORE_PUBLICATIONS} variables={{request: {
         sortCriteria: sortCriteria,
@@ -44,6 +55,7 @@ const ExplorePublications = () => {
       return(
         data && (
           <PostsList
+              next={data.explorePublications.pageInfo.next}
               posts={data.explorePublications.items || []}
               onLoadMore={() =>
                 fetchMore({

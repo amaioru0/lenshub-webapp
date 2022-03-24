@@ -17,6 +17,8 @@ import {
     Box,
     Text,
     Heading,
+    useColorModeValue,
+    chakra
   } from '@chakra-ui/react';
 import Loader from '../../../Loader/Loader';
 
@@ -73,11 +75,20 @@ const CreateProfile = () => {
       }, [followNFTURICID])
 
     return(
-     <>
+      <Box
+      mx="auto"
+      px={8}
+      py={4}
+      rounded="lg"
+      shadow="lg"
+      bg={useColorModeValue("white", "gray.800")}
+      maxW="2xl"
+    >
+     <chakra.span style={{marginBottom: "10px"}} display="block"><h2>New profile?</h2></chakra.span>
       <Button onClick={async () => {
         await createFollowNFTURI();
       }}>Create Profile</Button>
-     </>
+     </Box>
     )
 }
 

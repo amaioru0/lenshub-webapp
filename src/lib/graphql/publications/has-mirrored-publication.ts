@@ -1,8 +1,7 @@
 import { gql } from '@apollo/client/core';
-import { apolloClient } from '../apollo-client';
-import { prettyJSON } from '../helpers';
 
-const HAS_MIRRORED = `
+
+const HAS_MIRRORED = gql`
   query($request: HasMirroredRequest!) {
     hasMirrored(request: $request) {
       profileId

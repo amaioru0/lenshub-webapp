@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import { useEffect, useState } from 'react';
 import Image from 'next/image'
 
-import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/layout'
+import { Box, Flex, HStack, Stack, Text, } from '@chakra-ui/layout'
 import {
   Drawer,
   DrawerBody,
@@ -11,7 +11,9 @@ import {
   DrawerOverlay,
   useDisclosure,
   Button,
-  Link
+  Link,
+  useColorModeValue,
+  ChakraProvider
 } from '@chakra-ui/react'
 import Davatar from '@davatar/react'
 import {
@@ -156,6 +158,10 @@ useEffect(() => {
 
   return (
     <header>
+      <Box
+        shadow="base"
+        bg={useColorModeValue("white", "gray.800")}
+      >
       <Stack direction={['column', 'column', 'row']} px={2} py={4}>
         <HStack
           justifyContent={['space-between']}
@@ -170,7 +176,8 @@ useEffect(() => {
                 src="/static/LensHub.png"
                 width="350px"
                 height="300px" 
-              /> */} LensHub
+              /> */} 
+              <h2 style={{fontWeight: 800, color: "#70DB2C", fontSize: "26px"}}>LensHub</h2>
                 </span>
               </Link>
             </NextLink>
@@ -248,6 +255,7 @@ useEffect(() => {
           </HStack>
         </HStack>
       </Stack>
+    </Box>
 
       {/* Mobile Navbar */}
       <Drawer

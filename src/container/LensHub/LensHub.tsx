@@ -85,7 +85,8 @@ import {
 import {
     HubWrapper,
     Top,
-    Btm
+    Btm,
+    ResponsiveWidget
 } from './LensHub.style';
 import { NavButton } from '../../components/Header/NavButton/index';
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
@@ -100,7 +101,7 @@ const LensHub = () => {
     const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
       fetchEns: true,
     })
-
+    
     const { createProfile, post, mirror, collect, comment, follow } = useLensHub();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -171,6 +172,7 @@ const LensHub = () => {
     return(
     <Box minH="100vh" >
     <Layout>
+      <ResponsiveWidget>
     <Widget>
     <>
     {isSignedIn && <SelectProfile />}
@@ -200,14 +202,22 @@ const LensHub = () => {
     })}
     </>
     </Widget>
-
+    </ResponsiveWidget> 
 
     </Layout>
 
     
     <ContainerWrapper>
-    {isSignedIn && <h1>signed in</h1>}
-
+    {/* {isSignedIn && <h1>signed in</h1>} */}
+    {/* <Box
+        mx="auto"
+        px={18}
+        py={2}
+        rounded="lg"
+        shadow="lg"
+        bg={useColorModeValue("white", "gray.800")}
+        style={{width: "100%"}}
+      >
     <Breadcrumb>
       <BreadcrumbItem>
         <BreadcrumbLink href='#'>Home</BreadcrumbLink>
@@ -217,6 +227,7 @@ const LensHub = () => {
         <BreadcrumbLink href='#'>{router.pathname}</BreadcrumbLink>
       </BreadcrumbItem>
     </Breadcrumb>
+    </Box> */}
 
     <HubWrapper>
     {currentRoute === '' && <div>
@@ -226,7 +237,7 @@ const LensHub = () => {
         <Box
         mx="auto"
         py={{ base: 12, lg: 16 }}
-        px={{ base: 4, lg: 8 }}
+        width="100%"
         display={{ lg: "flex" }}
         alignItems={{ lg: "center" }}
         flexDirection="row"
@@ -241,14 +252,12 @@ const LensHub = () => {
         >
         {!isSignedIn && <chakra.span display="block">Ready to dive in?</chakra.span>}
         {!isSignedIn && !accountData?.address && <div>connect</div>}
-        {isSignedIn && <chakra.span style={{marginBottom: "10px"}} display="block">New profile?</chakra.span>}
         </chakra.h2>
 
         <chakra.div
             display="block"
             color={useColorModeValue("brand.600", "gray.500")}
         >
-            {isSignedIn && accountData?.address && <CreateProfile />}
 
             {!accountData?.address && 
             <>
@@ -276,7 +285,7 @@ const LensHub = () => {
         </div>
 
         <div>
-        </div>
+        </div>  
         </Flex> */}
       
 
@@ -285,8 +294,10 @@ const LensHub = () => {
       {currentRoute === "" && isSignedIn && <GetPublications />}
       {currentRoute === '' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
+      {currentRoute === 'profiles' && isSignedIn && accountData?.address && <CreateProfile />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
-      {currentRoute === 'search' && <Search />}      
+      {currentRoute === 'search' && <Search />}  
+    
      </div>
 
     {currentRoute === 'wallet' && isSignedIn && accountData?.address &&

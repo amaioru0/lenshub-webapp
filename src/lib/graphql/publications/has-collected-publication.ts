@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client/core';
 
 
-const HAS_COLLECTED = `
+const HAS_COLLECTED = gql`
   query($request: HasCollectedRequest!) {
     hasCollected(request: $request) {
       walletAddress

@@ -33,7 +33,7 @@ export const Page: FC = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex direction="column" backgroundColor="#F3F3F6">
+      <Flex direction="column" backgroundColor="#EAEDF0">
         <Header />
         <main>{children}</main>
         <Footer />

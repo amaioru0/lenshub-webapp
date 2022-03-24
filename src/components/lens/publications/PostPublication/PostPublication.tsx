@@ -53,6 +53,8 @@ import { NFTStorage, File, Blob } from 'nft.storage'
   import path from 'path'
   import axios from 'axios';
   import dynamic from "next/dynamic";
+  import { FileUpload } from 'react-ipfs-uploader'
+  import Picker from 'emoji-picker-react';
 
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -75,6 +77,11 @@ import { NFTStorage, File, Blob } from 'nft.storage'
     const [ contentURICID, setContentURICID ] = useState("")
     const [typedData, setTypedData] = useState();
     const [clicked, setClicked] = useState(false);
+    // const [chosenEmoji, setChosenEmoji] = useState(null);
+
+    // const onEmojiClick = (event:any, emojiObject) => {
+    //   setChosenEmoji(emojiObject);
+    // };
 
     const [txHash, setTxHash] = useState("");
     const [getTx, {loading: txLoading, error: txError, data: txData}] = useLazyQuery(HAS_TX_BEEN_INDEXED, {
@@ -179,6 +186,12 @@ import { NFTStorage, File, Blob } from 'nft.storage'
             }
         }, [typedData])
 
+
+        const [fileUrl, setFileUrl] = useState('')
+        const [chosenEmoji, setChosenEmoji] = useState(null);
+        const onEmojiClick = (event:any, emojiObject:any) => {
+          setChosenEmoji(emojiObject);
+        };
     return (
       <Box
       rounded="lg"
@@ -186,13 +199,14 @@ import { NFTStorage, File, Blob } from 'nft.storage'
       bg={useColorModeValue("white", "gray.800")}
       maxW="2xl"
         transition="3s ease"
-        style={{color: "black", marginLeft: "60px", maxHeight: "500px", border: "0px", outline: "none", maxWidth: "480px"}}
+        style={{color: "black", maxHeight: "500px", border: "0px", outline: "none"}}
         >
       <Flex
         direction='column'
         border={1}
         boxSizing='content-box'
       >
+
         <HStack margin={2} p={2}>
           {/* <Avatar src={} /> */}
           <Textarea
@@ -208,9 +222,12 @@ import { NFTStorage, File, Blob } from 'nft.storage'
         </HStack>
 
         <Stack margin={2}>
+        <FileUpload setUrl={setFileUrl} />
+        {/* <Picker onEmojiClick={onEmojiClick} /> */}
 
           <Button
-            colorScheme='pink'
+          rounded="full"
+          style={{backgroundColor: "#70DB2C", color: "white"}}
             variant='solid'
             alignSelf='flex-end'
             onClick={async () => {

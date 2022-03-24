@@ -385,7 +385,7 @@ const useLensHub = () => {
   async function mirror({ profileId, profileIdPointed, pubIdPointed, referenceModule, referenceModuleData }: MirrorDataStruct) {
     try {
       // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      const result = await contract.functions.mirror(profileId, profileIdPointed, pubIdPointed, referenceModule, referenceModuleData);
+      const result = await contract.functions.mirror({profileId, profileIdPointed, pubIdPointed, referenceModule, referenceModuleData});
       console.log(result);
       return result;
     } catch (error) {

@@ -8,11 +8,12 @@ import {
   Box,
   Text,
   Heading,
-  Select
+  Select,
+  Button
 } from '@chakra-ui/react';
 import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
-const PostsList = ({ posts, onLoadMore }: { posts:any, onLoadMore:any }) => {
+const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, next:any }) => {
 
   const scrollRef = useBottomScrollListener(() => {
     console.log("handle scroll")
@@ -27,16 +28,16 @@ const PostsList = ({ posts, onLoadMore }: { posts:any, onLoadMore:any }) => {
         </GridItem>
       ))}
   </Grid>
-    <button 
+  <div style={{marginTop: "48px", display: "Flex", alignItems: "center", justifyContent: "center"}}>
+    {/* {JSON.stringify(next)} */}
+    {next && <Button 
+    colorScheme={"whatsapp"}
+    //@ts-ignore
+    ref={scrollRef}
     onClick={() => {
       onLoadMore()
-    }}>load more</button>
-
-    <div 
-    //@ts-ignore
-    ref={scrollRef}>
-    b
-    </div>
+    }}>load more</Button>}
+</div>
   </div>
 )
 }
