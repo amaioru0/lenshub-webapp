@@ -94,9 +94,6 @@ import { NavButton } from '../../components/Header/NavButton/index';
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useRouter } from 'next/router';
-import Modal from 'react-modal';
-
-Modal.setAppElement('#__next');
 
 const LensHub = () => {
     const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -120,12 +117,11 @@ const LensHub = () => {
       }
     }
     const [currentRoute, setCurrentRoute] = useState(getInitialQuery());
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpen, setIsOpen] = React.useState(true);
     let subtitle:any;
 
     function afterOpenModal() {
       // references are now sync'd and can be accessed.
-      subtitle.style.color = '#f00';
     }
   
     function closeModal() {
@@ -170,7 +166,8 @@ const LensHub = () => {
         setCurrentRoute(linkName)
         router.push(`/${linkName}`)
     }
-      
+
+
     return(
     <Box minH="100vh" >
     <Layout>
@@ -245,6 +242,8 @@ const LensHub = () => {
     </Box> */}
 
     <HubWrapper>
+
+
     {currentRoute === '' && <div>
         
         <Top>

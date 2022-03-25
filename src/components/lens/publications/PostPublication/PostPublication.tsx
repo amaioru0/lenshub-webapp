@@ -31,6 +31,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Select
 } from '@chakra-ui/react';
   import React, { useState, useEffect, useRef } from 'react';
 
@@ -52,9 +53,11 @@ import {
   import path from 'path'
   import axios from 'axios';
   import dynamic from "next/dynamic";
-  import { FileUpload } from 'react-ipfs-uploader'
   // import Picker from 'emoji-picker-react';
   import TxStatus from './TxStatus';
+  import {
+    FEE_COLLECT_MODULE, LIMITED_FEE_COLLECT_MODULE, TIMED_FEE_COLLECT_MODULE, LIMITED_TIMED_FEE_COLLECT_MODULE, REVERT_COLLECT_MODULE, EMPTY_COLLECT_MODULE, FEE_FOLLOW_MODULE, APPROVAL_FOLLOW_MODULE, FOLLOWER_ONLY_REFERENCE_MODULE
+  } from '../../../../lib/config';
 
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -62,6 +65,23 @@ import {
   );
 
   const NFT_STORAGE_KEY = ''
+
+  const getModule = (module:any) => {
+    switch(module) {
+      case 'emptyCollectModule':
+        return {
+          emptyCollectModule: true
+        }
+        case 'feeCollectModule':
+          return {
+            feeCollectModule: true
+          }
+      default:
+        return {
+          emptyCollectModule: true
+        }
+    }
+  }
 
   const PostPublication = () => {
 
@@ -86,6 +106,7 @@ import {
     const [txHash, setTxHash] = useState("");
     const [pollInterval, setPollInterval] = useState(500)
 
+    const [multipleFilesUrl, setMultipleFilesUrl] = useState('')
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -93,6 +114,7 @@ import {
     //     console.log(txData)
     // }, [txData])
 
+    const [module, setModule] = useState("emptyCollectModule")
 
     const createContentURI = async (metadata: Metadata) => {
         // create the metadata object we'll be storing
@@ -131,19 +153,7 @@ import {
             request: {
                 profileId: state.lens.id ? state.lens.id : "0x23",
                 contentURI: `ipfs://${contentURICID}`,
-                collectModule: {
-                // feeCollectModule: {
-                //   amount: {
-                //     currency: currencies.enabledModuleCurrencies.map(
-                //       (c: any) => c.address
-                //     )[0],
-                //     value: '0.000001',
-                //   },
-                //   recipient: address,
-                //   referralFee: 10.5,
-                // },
-                revertCollectModule: true,
-                },
+                collectModule: getModule(module)
                 referenceModule: {
                 followerOnlyReferenceModule: false,
                 },
@@ -189,11 +199,11 @@ import {
         }, [typedData])
 
 
-        const [fileUrl, setFileUrl] = useState('')
-        const [chosenEmoji, setChosenEmoji] = useState(null);
-        const onEmojiClick = (event:any, emojiObject:any) => {
-          setChosenEmoji(emojiObject);
-        };
+        // const [fileUrl, setFileUrl] = useState('')
+        // const [chosenEmoji, setChosenEmoji] = useState(null);
+        // const onEmojiClick = (event:any, emojiObject:any) => {
+        //   setChosenEmoji(emojiObject);
+        // };
     return (
       <Box
       rounded="lg"
@@ -227,9 +237,25 @@ import {
         </HStack>
 
         <Stack margin={2} >
-        {/* <FileUpload setUrl={setFileUrl} /> */}
+          {module === "emptyCollectModule" && <Text>{EMPTY_COLLECT_MODULE}</Text>}
+          {module === "limitedTimedFeeCollectModule" && <Text>{LIMITED_TIMED_FEE_COLLECT_MODULE}</Text>}
+          {module === "timedFeeCollectModule" && <Text>{TIMED_FEE_COLLECT_MODULE}</Text>}
+          {module === "feeCollectModule" && <Text>{FEE_COLLECT_MODULE}</Text>}
 
+          <Select 
+        style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
+        variant='outline'
+           value={module} onChange={(e)=> {
+            setModule(e.target.value)
+          }}>
+          <option value='emptyCollectModule'>emptyCollectModule</option>
+          <option value='limitedTimedFeeCollectModule'>limitedTimedFeeCollectModule</option>
+          <option value='timedFeeCollectModule'>timedFeeCollectModule</option>
+          <option value='feeCollectModule'>feeCollectModule</option>
+        </Select>  
         </Stack>
+
+
         <Stack margin={2}>
 
           <Button
