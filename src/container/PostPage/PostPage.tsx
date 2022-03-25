@@ -84,13 +84,15 @@ const PostPage = (postId:any) => {
 
     useEffect(() => {
         console.log(contentURICID)
-        createCommentTypedData();
+        if(replyClicked) {
+            createCommentTypedData();
+        }
     }, [contentURICID])
 
     const [createCommentTypedData, {loading: commentTypedDataLoading, error: commentTypedDataError, data:commentTypedData }] = useMutation(CREATE_COMMENT_TYPED_DATA, {
         variables: {
             request: {
-                profileId: state.lens.selectedProfile,
+                profileId: state.lens.id ? state.lens.id : "0x23",
                 publicationId: publicationId,
                 contentURI: contentURICID,
                 collectModule: {

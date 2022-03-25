@@ -16,8 +16,9 @@ import {
 
   import {useSelector, useDispatch} from 'react-redux'
   import allActions from '../../../../store/actions';
-  import Mirror from '../Mirror/Mirror';
-  
+    import Mirror from '../Mirror/Mirror';
+  import Comment from '../Comment/Comment';
+
 const GetPublications = () => {
     
   const dispatch = useDispatch()
@@ -57,7 +58,9 @@ const GetPublications = () => {
         data.publications.items.map((post, index) => {
           return(
             <GridItem key={index} >
-            <Mirror post={post} />
+            {post.__typename === "Mirror" && <Mirror post={post} />}
+            {post.__typename === "Post" && <Post post={post} />}
+            {post.__typename === "Comment" && <Comment comment={post} />}
             </GridItem>
           )
         })}

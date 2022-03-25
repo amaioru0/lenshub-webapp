@@ -45,11 +45,11 @@ const SelectProfile = () => {
     }
     });
 
-    useEffect(() => {
-    console.log("SelectPRofile data")
-    console.log(dataProfiles)
-    console.log(state)
-    }, [dataProfiles])
+    // useEffect(() => {
+    // console.log("SelectPRofile data")
+    // console.log(dataProfiles)
+    // console.log(state)
+    // }, [dataProfiles])
 
 
     const [cardIndex, setCardIndex] = useState(0)
