@@ -21,7 +21,8 @@ import {
     useColorModeValue,
     Stack,
     Link,
-    useDisclosure
+    useDisclosure,
+    Input
   } from '@chakra-ui/react';
   import {
     IconButton,
@@ -77,6 +78,9 @@ const Wallet = dynamic(() => import('../../components/lens/nfts/Wallet/Wallet'))
 const RecommendedProfiles = dynamic(() => import('../../components/lens/profile/RecommendedProfiles/RecommendedProfiles'))
 const Search = dynamic(() => import('../../components/lens/search/Search'))
 const PostPage = dynamic(() => import('../PostPage/PostPage'));
+const UserPage = dynamic(() => import('../UserPage/UserPage'));
+const HomePage = dynamic(() => import('../HomePage/HomePage'));
+
 
 // import useAuth from '../../lib/useAuth';
 import { getAccessToken, setAccessToken } from '../../lib/accessToken';
@@ -102,6 +106,7 @@ const LensHub = () => {
     })
     
     const { createProfile, post, mirror, collect, comment, follow } = useLensHub();
+    const [query, setQuery] = useState("lens");
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const router = useRouter()
@@ -112,11 +117,15 @@ const LensHub = () => {
         } else if (router.query.slug[0]) {
           return router.query.slug[0].toLocaleLowerCase()
         } else {
-          return "/"
+          return "";
         }
-      }
+      } else 
+      return ""
     }
+
     const [currentRoute, setCurrentRoute] = useState(getInitialQuery());
+
+
     const [modalIsOpen, setIsOpen] = React.useState(true);
     let subtitle:any;
 
@@ -130,10 +139,6 @@ const LensHub = () => {
       const dispatch = useDispatch()
       const state = useSelector(state => state)
 
-      useEffect(() => {
-        console.log("router")
-        console.log(router)
-      }, [])
 
     // const { loading:loadingProfiles, error:errorProfiles, data:dataProfiles} = useQuery(GET_PROFILES, {
     // variables: {
@@ -173,11 +178,37 @@ const LensHub = () => {
     <Layout>
     <ResponsiveWidget>
     <Widget>
+    <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+      <Input
+        style={{marginTop: "5px", height: "40px", fontSize: "12px", color: "#8BD94E", maxWidth: "160px"}}
+          mt={0}
+          size="lg"
+          type="text"
+          value={query}
+          onChange={(e) => {
+            if(currentRoute === "search") {
+              if(e.target.value === "") {
+                setQuery("search..")
+                return;
+              }
+              setQuery(e.target.value)
+            } else {
+              setCurrentRoute("search")
+              if(currentRoute === "search") {
+                if(e.target.value === "") {
+                  setQuery("search...")
+                  return;
+                }
+              setQuery(e.target.value)
+            }
+          }
+          }}
+        />
+      </div>
+      
     {isSignedIn && <SelectProfile />}
-    </Widget>
-    </ResponsiveWidget>
-    <ResponsiveWidget>
-    <Widget>
+
+
     <>
     {/* {JSON.stringify(router.query)} */}
     {LinkItems.map((link) => {
@@ -220,26 +251,6 @@ const LensHub = () => {
 
     
     <ContainerWrapper>
-    {/* {isSignedIn && <h1>signed in</h1>} */}
-    {/* <Box
-        mx="auto"
-        px={18}
-        py={2}
-        rounded="lg"
-        shadow="lg"
-        bg={useColorModeValue("white", "gray.800")}
-        style={{width: "100%"}}
-      >
-    <Breadcrumb>
-      <BreadcrumbItem>
-        <BreadcrumbLink href='#'>Home</BreadcrumbLink>
-      </BreadcrumbItem>
-
-      <BreadcrumbItem isCurrentPage>
-        <BreadcrumbLink href='#'>{router.pathname}</BreadcrumbLink>
-      </BreadcrumbItem>
-    </Breadcrumb>
-    </Box> */}
 
     <HubWrapper>
 
@@ -264,9 +275,11 @@ const LensHub = () => {
         lineHeight="shorter"
         color={useColorModeValue("gray.900", "gray.100")}
         >
-        {!isSignedIn && <chakra.span display="block">Ready to dive in?</chakra.span>}
-        {!isSignedIn && !accountData?.address && <div>connect</div>}
         </chakra.h2>
+
+        {!isSignedIn && currentRoute === "" && <HomePage>
+        {/* {!isSignedIn && !accountData?.address && <div>connect</div>} */}
+        </HomePage>}
 
         <chakra.div
             display="block"
@@ -310,9 +323,11 @@ const LensHub = () => {
       {currentRoute === 'explore' && <ExplorePublications />}
       {currentRoute === 'profiles' && isSignedIn && accountData?.address && <CreateProfile />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
-      {currentRoute === 'search' && <Search />}  
+      {currentRoute === 'search' && <Search query={query} setQuery={setQuery}/>}  
       {currentRoute === 'post' && <PostPage post={router.query.slug[1]}/>}  
+      {currentRoute === 'user' && <UserPage handle={router.query.slug[1]}/>}  
 
+      
      </div>
 
     {currentRoute === 'wallet' && isSignedIn && accountData?.address &&

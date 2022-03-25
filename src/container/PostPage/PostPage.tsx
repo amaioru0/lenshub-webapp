@@ -33,6 +33,8 @@ import { CID } from 'cids';
 import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from '../../components/lens/publications//PostPublication/MetadataStandard';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import TxStatus from '../../components/lens/publications/PostPublication/TxStatus';
+import SelectModule, { getCollectModule } from '../../components/lens/publications/PostPublication/SelectModule';
 
 const PostPage = (postId:any) => {
     const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -89,15 +91,29 @@ const PostPage = (postId:any) => {
         }
     }, [contentURICID])
 
+
+    const [collectModule, setCollectModule] = useState("emptyCollectModule")
+    const [referenceModule, setReferenceModule] = useState("emptyCollectModule")
+
+    const [settings, setSettings] = useState({
+      collectLimit: "100000",
+      amount: {
+          currency: "0xD40282e050723Ae26Aeb0F77022dB14470f4e011",
+          value: "0.1"
+      },
+      recipient: "",
+      referralFee: 10.5
+  })
+
+
+
     const [createCommentTypedData, {loading: commentTypedDataLoading, error: commentTypedDataError, data:commentTypedData }] = useMutation(CREATE_COMMENT_TYPED_DATA, {
         variables: {
             request: {
                 profileId: state.lens.id ? state.lens.id : "0x23",
                 publicationId: publicationId,
                 contentURI: contentURICID,
-                collectModule: {
-                    revertCollectModule: true
-                  },
+                collectModule: getCollectModule(collectModule, settings),
                   referenceModule: {
                     followerOnlyReferenceModule: false
                   }
@@ -109,7 +125,13 @@ const PostPage = (postId:any) => {
         const finallyComment = async () => {
             if(commentTypedData?.createCommentTypedData) {
                 if(replyClicked) {
-                    await comment(commentTypedData.createCommentTypedData.typedData.value)
+                    const tx = await comment(commentTypedData.createCommentTypedData.typedData.value)
+                    if(!tx) {
+                      setIsLoading(false)
+                      setPostContent("")
+                      return;
+                    }
+                    setTxHash(tx.hash)
                     setIsLoading(false)
                     setPostContent("")
                 }
@@ -125,6 +147,9 @@ const PostPage = (postId:any) => {
     const handleInputChange = (e:any) => {
         setPostContent(e.target.value);
     }
+
+    const [txHash, setTxHash] = useState("");
+    const [pollInterval, setPollInterval] = useState(500)
 
 
     const {loading, error, data } = useQuery(GET_PUBLICATION, { 
@@ -170,7 +195,7 @@ const PostPage = (postId:any) => {
           {/* <Avatar src={} /> */}
           <Textarea
           style={{color: "Black"}}
-            placeholder={`Reply to @${data.publication.profile.handle}`}
+            placeholder={`Reply to @${data?.publication?.profile?.handle}`}
             resize='none'
             onChange={handleInputChange}
             value={postContent}
@@ -184,6 +209,8 @@ const PostPage = (postId:any) => {
 
         </Stack>
         <Stack margin={2}>
+        {txHash && <TxStatus txHash={txHash} pollInterval={pollInterval} setPollInterval={setPollInterval} />}
+        <SelectModule collectModule={collectModule} setCollectModule={setCollectModule} referenceModule={referenceModule} setReferenceModule={setReferenceModule} settings={settings} setSettings={setSettings}/>
 
           <Button
           onClick={() => {
@@ -191,18 +218,13 @@ const PostPage = (postId:any) => {
             createContentURI({
                 version: MetadataVersions.one,
                 metadata_id: uuidv4(),
-                description: "",
+                description: postContent,
                 content: postContent,
-                external_url: "",
-                name: "post",
+                external_url: null,
+                name: "Post from LensHub WebApp",
                 attributes: [],
-                image: "",
                 media: [],
                 appId: "TROVE"
-                // imageMimeType: "",
-                // media: [],
-                // animation_url: "",
-                // appId: ""
             })
             setReplyClicked(true)
           }}

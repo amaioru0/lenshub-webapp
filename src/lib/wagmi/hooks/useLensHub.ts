@@ -64,9 +64,9 @@ const useLensHub = () => {
   //   }
   // }
 
-  async function collect({ profileId, pubId, data, overrides } : { profileId: BigNumberish, pubId: BigNumberish, data: BytesLike, overrides: Overrides & { from?: string | Promise<string> }}) {
+  async function collect({ profileId, pubId, data } : { profileId: BigNumberish, pubId: BigNumberish, data: BytesLike}) {
     try {
-      const result = await contract.functions.collect(profileId, pubId, data, overrides);
+      const result = await contract.functions.collect(profileId, pubId, data);
       console.log(result);
       return result;
     } catch (error) {
@@ -109,10 +109,10 @@ const useLensHub = () => {
   }
 
 
-  async function follow({ profileIds, datas, overrides } : { profileIds: BigNumberish[], datas: BytesLike[], overrides: CallOverrides }) {
+  async function follow({ profileIds, datas } : { profileIds: BigNumberish[], datas: BytesLike[] }) {
     try {
 
-      const result = await contract.functions.follow(profileIds, datas, overrides);
+      const result = await contract.functions.follow(profileIds, datas);
       console.log(result);
       // return result;
     } catch (error) {

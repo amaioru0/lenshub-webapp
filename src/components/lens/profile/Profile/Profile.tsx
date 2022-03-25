@@ -59,7 +59,7 @@ const Profile = (profile:any, version:any) => {
       request: {
         followInfos: [{
           followerAddress: accountData?.address,
-          profileId: '0x02',
+          profileId: profile.profile.id
         }]
       }
     }
@@ -106,9 +106,8 @@ const Profile = (profile:any, version:any) => {
               {profile.profile.bio}
           </Text>
         </Stack>
-
-     {!doesFollow?.doesFollow?.follows && <Stack mt={8} direction={'row'} spacing={4}>
-     <Button variant={"outline"}
+      <Stack mt={8} direction={'row'} spacing={4}>
+     { doesFollow && doesFollow.doesFollow && <Button variant={"outline"}
         rounded={'full'}
         _hover={{
           bg: '#6FDB2C',
@@ -120,12 +119,29 @@ const Profile = (profile:any, version:any) => {
         color="black"
         flex={"1"}
         onClick={() => {
-          follow({profileIds: [profile.profile.id], datas: [], overrides: {} })
+          follow({profileIds: [profile.profile.id], datas: ["0x0000000000000000000000000000000000000000"] })
         }}
        >
-         Follow
-       </Button>
-        </Stack>}
+       {doesFollow.doesFollow[0].follows ? <>Following</>:<>Follow</>}
+       </Button>}
+        </Stack>
+
+        <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
+          <li>
+            <ul>
+             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Followers<Text style={{fontWeight: 600}}>{profile.profile.stats.totalFollowers}</Text> </Text></div>
+            </ul>
+          </li>
+        {/* stats:
+totalCollects: 0
+totalComments: 0
+totalFollowers: 3
+totalFollowing: 0
+totalMirrors: 0
+totalPosts: 0
+totalPublications: 0 */}
+        </Stack>
+        {/* {JSON.stringify(profile.profile)} */}
       </Box>
     </Center>
   );

@@ -15,6 +15,7 @@ import {
   } from '@chakra-ui/react';
   import Moment from 'react-moment';
   import Davatar from '@davatar/react'
+  import ReactHtmlParser from 'react-html-parser';
 
   const Comment = (comment:any) => {
     useEffect(() => {
@@ -54,9 +55,9 @@ import {
     fontSize="1xl"
     >{comment.comment.metadata.name}</chakra.h1>}
 
-    <chakra.p mt={2} color={useColorModeValue("gray.600", "gray.300")}>
-      {comment.comment.metadata.content && comment.comment.metadata.content}
-    </chakra.p>
+      <div>
+      {comment.comment.metadata.content && <div>{ ReactHtmlParser(comment.comment.metadata.content) }</div>}
+      </div>
     </Box>
       </Box>
     )

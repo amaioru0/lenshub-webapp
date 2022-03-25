@@ -31,6 +31,8 @@ const CREATE_COLLECT_TYPED_DATA = gql`
  }
 `;
 
+export default CREATE_COLLECT_TYPED_DATA;
+
 // collector: address,
 // profileId: typedData.value.profileId,
 // pubId: typedData.value.pubId,

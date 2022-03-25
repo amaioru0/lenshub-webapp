@@ -177,10 +177,10 @@ export const getCollectModule = (module:any, settings:any) => {
 
   const BlockScanLink = (address:any) => {
     return(
-     <Link href={`https://mumbai.polygonscan.com/address/${address.address}`}>
+     <Link target="_blank" href={`https://mumbai.polygonscan.com/address/${address.address}`}>
            <div style={{display: "flex"} }>
            <img style={{width: "100px"}} src={"https://mumbai.polygonscan.com/images/logo.svg?v=0.0.3"} /> 
-           <Text style={{fontSize: "10px", marginLeft: "3px"}}>{address.address}</Text>
+           <Text style={{fontSize: "10px", marginLeft: "3px", color: "black"}}>{address.address}</Text>
            </div>
            </Link>
     )

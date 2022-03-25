@@ -15,6 +15,8 @@ import HAS_COLLECTED from '../../../../lib/graphql/publications/has-collected-pu
 import HAS_MIRRORED from '../../../../lib/graphql/publications/has-mirrored-publication'
 import Moment from 'react-moment';
 import CREATE_MIRROR_TYPED_DATA from '../../../../lib/graphql/publications/mirror';
+import CREATE_COLLECT_TYPED_DATA from '../../../../lib/graphql/module/collect';
+
 import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import {useSelector, useDispatch} from 'react-redux'
 import allActions from '../../../../store/actions';
@@ -26,6 +28,8 @@ import Davatar from '@davatar/react'
 import GET_PUBLICATION from '../../../../lib/graphql/publications/get-publication';
 import { Query } from '@apollo/react-components';
 import { useRouter } from 'next/router';
+import { profile } from "console";
+import ReactHtmlParser from 'react-html-parser';
 
 const Post = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
@@ -36,6 +40,7 @@ const Post = ({post}:{post:any}) => {
 
   const { mirror, collect } = useLensHub()
   const [clickedMirror, setClickedMirror] = useState(false);
+  const [clickedCollect, setClickedCollect] = useState(false);
 
   const [createMirrorTypedData, { loading, error, data }] = useMutation(CREATE_MIRROR_TYPED_DATA, {
     variables: {
@@ -49,6 +54,27 @@ const Post = ({post}:{post:any}) => {
    }
   }
   })
+
+//   / collector: address,
+// // profileId: typedData.value.profileId,
+// // pubId: typedData.value.pubId,
+// // data: typedData.value.data,
+  const [createCollectTypedData, { loading:loadingCollect, error:errorCollect, data:dataCollect }] = useMutation(CREATE_COLLECT_TYPED_DATA, {
+    variables: {
+      request: {
+        publicationId: post.id
+      }
+  }
+  })
+
+  useEffect(() => {
+    if(!loadingCollect && !errorCollect && clickedCollect) {
+      collect(dataCollect.createCollectTypedData.typedData.value)
+    } else if(error) {
+      console.log(error)
+    }
+  }, [dataCollect])
+  
   const router = useRouter()
 
   // const {loading:publicationLoading, error:publicationError, data:publicationData} = useQuery(GET_PUBLICATION, {
@@ -101,7 +127,7 @@ const Post = ({post}:{post:any}) => {
             fontSize="sm"
             color={useColorModeValue("gray.600", "gray.400")}
           >
-            {post.createdAt && <Moment>{post.createdAt}</Moment>}
+            {post.createdAt && <Moment fromNow>{post.createdAt}</Moment>}
           </chakra.span>
         </Flex>
 
@@ -113,79 +139,107 @@ const Post = ({post}:{post:any}) => {
         fontSize="1xl"
         >{post.metadata.name}</chakra.h1>}
 
-          <chakra.p mt={2} color={useColorModeValue("gray.600", "gray.300")}>
-            {post.metadata.content && post.metadata.content}
-          </chakra.p>
+          <div>
+          {post.metadata.content && <div>{ ReactHtmlParser(post.metadata.content) }</div>}
+          {/* {post.metadata.content && <p>{post.metadata.content}</p>} */}
+          </div>
+
+
+          {post.metadata.media.map((img:any, index:any) =>{
+            return(
+              <Link target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
+              <Image
+                maxWidth={"200px"}
+                fit="cover"
+                display={{ base: "none", sm: "block" }}
+                src={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}
+                alt="media"
+              />
+              </Link>
+            )
+          })}
         </Box>
 
         <Flex justifyContent="space-between" alignItems="center" mt={4}>
 
-          <Flex alignItems="center">
-  
-            {post.metadata.media[0] && <Image
-              mx={4}
-              w={10}
-              h={10}
-              rounded="full"
-              fit="cover"
-              display={{ base: "none", sm: "block" }}
-              src={post.metadata.media[0] ? ipfsToImg(post.metadata.media[0].original.url) : ""}
-              alt="avatar"
-            />}
+
+
+        <Flex alignItems="center">
   
             
-        <div style={{display: "flex", minWidth: "400px", borderTop: "1px solid #DEEBE2", alignContent: "flex-end", alignItems: "flex-end"}}>
-            <Box style={{marginLeft: "15px"}}>
-              <Button 
-              style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
-              variant='outline'
-              colorScheme='teal'
-              onClick={() => {
-                setClickedMirror(true);
-                createMirrorTypedData();
-              }}
-              >Mirror</Button>
-            </Box>
+    <div style={{display: "flex", minWidth: "100%", borderTop: "1px solid #DEEBE2", alignContent: "flex-end", alignItems: "flex-end"}}>
 
-  <Query query={HAS_COLLECTED} variables={{request : { collectRequests: [
-    {
-      walletAddress: accountData?.address ? `${accountData?.address}` : "",
-      publicationIds: [post.id]
-    }
-    ]}}}>
-    {({ data }: { data:any }) => {
-      if(!data) return null;
-      return(
-        data && data.hasCollected && (
-          <>
-          {data.hasCollected[0] && 
-            <Box style={{marginLeft: "15px"}}>
-            <Button 
-            style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
-            variant='outline'
-            colorScheme='teal'
-            onClick={() => {
-              const [first, ...rest] = post.id.split('-');
-              const profileId = first;
-              const pubId = rest[0];
-              console.log(pubId)
-              collect({
-                profileId,
-                pubId,
-                data: "0x0000000000000000000000000000000000000000",
-                overrides: {}
-              })
-            }}
-            >Collect</Button>
-          </Box>
+
+        <Query query={HAS_MIRRORED} variables={{request : { profilesRequest: [
+          {
+            profileId: state.lens.selectedProfile,
+            publicationIds: [post.id]
           }
-          </>
-        )
-      )
-    }
-  
-    }
-  </Query>
+          ]}}}>
+          {({ data }: { data:any }) => {
+            if(!data) return null;
+            return(
+              data && data.hasMirrored && (
+                <>
+                    <Box style={{}}>
+                    <Button 
+                    disabled={data.hasMirrored[0].results[0].mirrored}
+                    style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+                    variant='outline'
+                    colorScheme='teal'
+                    onClick={() => {
+                      setClickedMirror(true);
+                      createMirrorTypedData();
+                    }}
+                    >({post.stats.totalAmountOfMirrors}) {data.hasMirrored[0].results[0].mirrored ? <>Mirrored</>:<>Mirror</> }</Button>
+                  </Box>
+                </>
+              )
+            )
+          }
+        
+          }
+        </Query>
+
+
+        <Query query={HAS_COLLECTED} variables={{request : { collectRequests: [
+          {
+            walletAddress: accountData?.address ? `${accountData?.address}` : "",
+            publicationIds: [post.id]
+          }
+          ]}}}>
+          {({ data }: { data:any }) => {
+            if(!data) return null;
+            return(
+                <>
+                  <Box style={{marginLeft: "15px"}}>
+                  <Button
+                  disabled={data.hasCollected[0].results[0].collected}
+                  style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+                  variant='outline'
+                  colorScheme='teal'
+                  onClick={() => {
+                    // const [first, ...rest] = post.id.split('-');
+                    // const profileId = first;
+                    // const pubId = rest[0];
+                    // console.log(profileId)
+                    // console.log(pubId)
+                    // collect({
+                    //   profileId: parseInt(profileId),
+                    //   pubId: parseInt(pubId),
+                    //   data: "0x0000000000000000000000000000000000000000"
+                    // })
+                    setClickedCollect(true);
+                    createCollectTypedData()
+                  }}
+                  >({post.stats.totalAmountOfCollects}) {data.hasCollected[0].results[0].collecte ? <>Collected</> : <>Collect</>}</Button>
+                </Box>
+                </>
+            )
+          }
+        
+          }
+        </Query>
 
     <Box>
     <Link href={`/post/${post.id}`}>
@@ -194,7 +248,7 @@ const Post = ({post}:{post:any}) => {
           variant='outline'
           colorScheme='teal'
           style={{marginLeft: "15px", height: "24px", marginTop: "5px", fontSize: "12px" }}
-          >22 comments</Button>
+          >{post.stats.totalAmountOfComments} comments</Button>
         </a>
       </Link>
     </Box>

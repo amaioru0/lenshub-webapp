@@ -22,11 +22,17 @@ const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, nex
   return (
   <div>
     <Grid templateColumns='repeat(1, 1fr)' gap={6} >
-      {posts.map((post:any, index:any) => (
-        <GridItem key={index} >
+      {posts.map((post:any, index:any) => {
+        return(
+          <>
+          {post.__typename === "Post" &&
+          <GridItem key={index} >
           <Post post={post} key={index} />
-        </GridItem>
-      ))}
+          </GridItem>
+          }
+          </>
+        )
+      })}
   </Grid>
   <div style={{marginTop: "48px", display: "Flex", alignItems: "center", justifyContent: "center"}}>
     {/* {JSON.stringify(next)} */}

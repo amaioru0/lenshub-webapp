@@ -18,9 +18,11 @@ const env = process.env.NODE_ENV;
 import Profile from '../../lens/profile/Profile/Profile';
 import Loader from '../../Loader/Loader';
 import { useRouter } from 'next/router'
+import Post from '../publications/Post/Post'
+import Comment from '../publications/Comment/Comment';
+import Mirror from '../publications/Mirror/Mirror';
 
-
-const Search = () => {
+const Search = ({query, setQuery}: {query:any, setQuery:any}) => {
   const router = useRouter()
   // const getInitialQuery = () => {
   //   if(router.query.slug) {
@@ -31,7 +33,6 @@ const Search = () => {
   //     }
   //   }
   // }
-  const [query, setQuery] = useState("lens");
   const [type, setType] = useState("PROFILE");
 
   const {loading, error, data, refetch} = useQuery(SEARCH, {
@@ -53,38 +54,23 @@ const Search = () => {
 
     return(
         <Flex alignItems="center">
-        <Box px={4} py={32} mx="auto">
+        <Box px={4} py={5} mx="auto">
         <SimpleGrid
-          as="form"
-          w={{ base: "full", md: 7 / 12 }}
-          columns={{ base: 1, lg: 6 }}
-          spacing={3}
-          pt={1}
           mx="auto"
-          mb={8}
         >
-          <GridItem as="label" colSpan={{ base: "auto", lg: 4 }}>
-            <VisuallyHidden>{query}</VisuallyHidden>
-            <Input
-              mt={0}
-              size="lg"
-              type="text"
-              value={query}
-              onChange={(e) => {
-                  setQuery(e.target.value)
-              }}
-            />
-          </GridItem>
 
           {loading && <Loader />}
 
-{data?.search?.items?.map((profile:any, index:any) => {
-  return(
-    <GridItem as="label" colSpan={{ base: "auto", lg: 4 }}>
-    <Profile profile={profile} />
-    </GridItem>
-  )
-})}
+      {data?.search?.items?.map((post:any, index:any) => {
+        return(
+          <GridItem as="label" colSpan={{ base: "auto", lg: 4 }}>
+                  {post.__typename === "Profile" && <Profile profile={post} />}
+                  {post.__typename === "Mirror" && <Mirror post={post} />}
+                  {post.__typename === "Post" && <Post post={post} />}
+                  {post.__typename === "Comment" && <Comment comment={post} />}
+          </GridItem>
+        )
+      })}
 
         </SimpleGrid>
     </Box>

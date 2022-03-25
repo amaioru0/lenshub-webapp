@@ -6,7 +6,6 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 borde-radius: 12px;
-min-width: 100vh;
 `;
 
 export const Top = styled.div`
@@ -26,7 +25,7 @@ min-width: 65vh;
 `
 
 export const ResponsiveWidget = styled.div`
-@media (max-width: 767px) {
+@media (max-width: 900px) {
     display: none;
 }
 `

@@ -40,11 +40,11 @@ const RecommendedProfiles = () => {
     return(
         <>
         <Box marginBottom={"30px"} >
-        <Heading as={'h2'}>Recommended Profiles</Heading>
+        <Heading as={'h2'} color="black" >Recommended Profiles</Heading>
         </Box>
 
         <Box>
-        <Grid templateColumns='repeat(1, 1fr)' gap={6}>
+        <Grid templateColumns='repeat(2, 1fr)' gap={6}>
         {
           //@ts-ignore
         data.recommendedProfiles.map((profile, index) => {
