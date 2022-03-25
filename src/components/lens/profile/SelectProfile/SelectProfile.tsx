@@ -16,6 +16,7 @@ import {
     Box,
     Text,
     Heading,
+    Stack
   } from '@chakra-ui/react';
 import Loader from '../../../Loader/Loader';
 
@@ -74,7 +75,7 @@ const SelectProfile = () => {
     })}
 
     </SwipeableViews>
-    <div style={{position: "absolute", float: "left", top: "274px", left: "80px"}}>
+    <div style={{position: "absolute", float: "left", top: "108px", left: "80px"}}>
     <Link href={`/edit-profile/${state.lens.selectedProfile}`}>
     <Button
         style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
@@ -84,17 +85,33 @@ const SelectProfile = () => {
         >Edit</Button>
     </Link>
     </div>
+
+    <div style={{position: "absolute", float: "left", top: "75px", left: "80px"}}>
+    <Link href={`/create-profile`}>
+    <Button
+    onClick={() => {
+        router.push(`/create-profile`)
+    }}
+        style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+        variant='outline'
+        colorScheme='teal'
+        size="sm"
+        >Create</Button>
+    </Link>
+    </div>
     <div style={{marginTop: "16px"}}>
     <span style={{display: "table", margin: "0 auto"}}>Selected profile: {state.lens.selectedProfile}</span>
     </div>
 
     <div style={{marginTop: "16px"}}>
     <span style={{display: "table", margin: "0 auto"}}>
-    <ButtonGroup variant='outline' spacing='6'>
-
+    
+    <Grid templateColumns='repeat(4, 1fr)' gap={2}>
     {dataProfiles.profiles.items.map((profile:any, index:any) => {
         return(
+        <GridItem>
         <Button
+        variant={"outline"}
         key={index}
         borderColor={"#6FDB2C"}
         backgroundColor={"#6FDB2C"}
@@ -109,9 +126,10 @@ const SelectProfile = () => {
         >
         {profile.id.replace("0x", "")}
         </Button>
+        </GridItem>
         )
     })}
-    </ButtonGroup>
+    </Grid>
     </span>
     </div>
 

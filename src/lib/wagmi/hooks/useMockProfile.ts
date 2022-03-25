@@ -17,6 +17,7 @@ import { MockProfileCreationProxyABI } from '../ABIs';
 
 
 import { CreateProfileDataStruct } from '../../../typechain-types/MockProfileCreationProxy';
+import { image } from '@uiw/react-md-editor';
 
 
 const useMockProfile = () => {
@@ -50,7 +51,12 @@ const useMockProfile = () => {
 
   async function createProfile({ to, handle, imageURI, followModule, followModuleData, followNFTURI }: CreateProfileDataStruct) {
     try {
-      console.log(contract)
+      console.log(to)
+      console.log(handle)
+      console.log(imageURI)
+      console.log(followModule)
+      console.log(followModuleData)
+      console.log(followNFTURI)
       const result = await contract.functions.proxyCreateProfile({to, handle, imageURI, followModule, followModuleData, followNFTURI});
       console.log(result);
 

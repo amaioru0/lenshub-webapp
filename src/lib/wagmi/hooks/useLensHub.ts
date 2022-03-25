@@ -365,7 +365,6 @@ const useLensHub = () => {
   
   async function createProfile({ to, handle, imageURI, followModule, followModuleData, followNFTURI }: CreateProfileDataStruct) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
       const result = await contract.functions.createProfile({to, handle, imageURI, followModule, followModuleData, followNFTURI});
       console.log(result);
       return result;

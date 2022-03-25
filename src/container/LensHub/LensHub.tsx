@@ -322,12 +322,12 @@ const LensHub = () => {
       {currentRoute === "" && isSignedIn && <GetPublications />}
       {currentRoute === '' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
-      {currentRoute === 'profiles' && isSignedIn && accountData?.address && <CreateProfile />}
+      {currentRoute === 'create-profile' && isSignedIn && accountData?.address && <CreateProfile />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
       {currentRoute === 'search' && <Search query={query} setQuery={setQuery}/>}  
       {currentRoute === 'post' && <PostPage post={router.query.slug[1]}/>}  
       {currentRoute === 'user' && <UserPage handle={router.query.slug[1]}/>}  
-      {currentRoute === 'edit-profile' && <EditProfile />}  
+      {currentRoute === 'edit-profile' && isSignedIn && <EditProfile />}  
 
       
      </div>
@@ -381,7 +381,7 @@ const Widget = ({children}:{children:any}) => {
           borderRightColor={useColorModeValue('gray.200', 'gray.700')}
           left={1}
           h="full"
-          style={{color: "black", marginLeft: "60px", maxHeight: "500px", minWidth: "220px", marginTop: "10px", marginBottom: "10px"}}
+          style={{color: "black", marginLeft: "60px", maxHeight: "1000px", minWidth: "220px", marginTop: "10px", marginBottom: "10px"}}
           >
         {children}
         </Box>

@@ -132,12 +132,7 @@ import {
           if(ipfs) {
             console.log("images")
             console.log(images)
-            // images.map(async(img:any, index:any) => {
-            //   //@ts-ignore
-            //   const image = await ipfs.add(img.file)
-            //   media.push({ item: `ipfs://${image.path}`, type: img.file.type })
-            //   paths.push(image.path)
-            // })
+
 
             await Promise.all(images.map(async (img:any, index:any) => {
               const image = await ipfs.add(img.file)

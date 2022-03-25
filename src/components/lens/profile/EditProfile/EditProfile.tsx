@@ -30,13 +30,7 @@ import {
     InputLeftElement,
     Textarea,
   } from '@chakra-ui/react';
-  import {
-    MdPhone,
-    MdEmail,
-    MdLocationOn,
-    MdFacebook,
-    MdOutlineEmail,
-  } from 'react-icons/md';
+
   import { BsGithub, BsDiscord, BsPerson } from 'react-icons/bs';
 import Loader from '../../../Loader/Loader';
 
@@ -64,7 +58,6 @@ const EditProfile = () => {
           }
       })
 
-      const [ followNFTURICID, setFollowNFTURICID ] = useState("")
       const [formData, setFormData] = useState({})
 
       const [updateProfile, { loading:loadingUpdate, error:errorUpdate, data:dataUpdate }] = useMutation(UPDATE_PROFILE, {
