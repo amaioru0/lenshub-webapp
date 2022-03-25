@@ -175,18 +175,29 @@ export const getCollectModule = (module:any, settings:any) => {
       )
   }
 
+  const BlockScanLink = (address:any) => {
+    return(
+     <Link href={`https://mumbai.polygonscan.com/address/${address.address}`}>
+           <div style={{display: "flex"} }>
+           <img style={{width: "100px"}} src={"https://mumbai.polygonscan.com/images/logo.svg?v=0.0.3"} /> 
+           <Text style={{fontSize: "10px", marginLeft: "3px"}}>{address.address}</Text>
+           </div>
+           </Link>
+    )
+  }
+
   const SelectModule = ({collectModule, setCollectModule, referenceModule, setReferenceModule, settings, setSettings}: {collectModule:any, setCollectModule:Function, referenceModule:any, setReferenceModule:Function, settings:any, setSettings:Function}) => {
       
 
     return(
         <>
         {/* {JSON.stringify(settings)} */}
-          {collectModule === "emptyCollectModule" && <Text>{EMPTY_COLLECT_MODULE}</Text>}
-          {collectModule === "limitedTimedFeeCollectModule" && <Text>{LIMITED_TIMED_FEE_COLLECT_MODULE}</Text>}
-          {collectModule === "limitedFeeCollectModule" && <Text>{LIMITED_FEE_COLLECT_MODULE}</Text>}
-          {collectModule === "timedFeeCollectModule" && <Text>{TIMED_FEE_COLLECT_MODULE}</Text>}
-          {collectModule === "feeCollectModule" && <Text>{FEE_COLLECT_MODULE}</Text>}
-          {collectModule === "revertCollectModule" && <Text>{REVERT_COLLECT_MODULE}</Text>}
+          {collectModule === "emptyCollectModule" && <BlockScanLink address={EMPTY_COLLECT_MODULE} />}
+          {collectModule === "limitedTimedFeeCollectModule" && <BlockScanLink address={LIMITED_TIMED_FEE_COLLECT_MODULE} />}
+          {collectModule === "limitedFeeCollectModule" && <BlockScanLink address={LIMITED_FEE_COLLECT_MODULE} />}
+          {collectModule === "timedFeeCollectModule" && <BlockScanLink address={TIMED_FEE_COLLECT_MODULE} />}
+          {collectModule === "feeCollectModule" && <BlockScanLink address={FEE_COLLECT_MODULE} />}
+          {collectModule === "revertCollectModule" && <BlockScanLink address={REVERT_COLLECT_MODULE} />}
         
           <Select 
         style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
