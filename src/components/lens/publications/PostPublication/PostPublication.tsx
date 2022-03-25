@@ -55,9 +55,7 @@ import {
   import dynamic from "next/dynamic";
   // import Picker from 'emoji-picker-react';
   import TxStatus from './TxStatus';
-  import {
-    FEE_COLLECT_MODULE, LIMITED_FEE_COLLECT_MODULE, TIMED_FEE_COLLECT_MODULE, LIMITED_TIMED_FEE_COLLECT_MODULE, REVERT_COLLECT_MODULE, EMPTY_COLLECT_MODULE, FEE_FOLLOW_MODULE, APPROVAL_FOLLOW_MODULE, FOLLOWER_ONLY_REFERENCE_MODULE
-  } from '../../../../lib/config';
+  import SelectModule , { getCollectModule } from './SelectModule';
 
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -66,22 +64,6 @@ import {
 
   const NFT_STORAGE_KEY = ''
 
-  const getModule = (module:any) => {
-    switch(module) {
-      case 'emptyCollectModule':
-        return {
-          emptyCollectModule: true
-        }
-        case 'feeCollectModule':
-          return {
-            feeCollectModule: true
-          }
-      default:
-        return {
-          emptyCollectModule: true
-        }
-    }
-  }
 
   const PostPublication = () => {
 
@@ -114,7 +96,18 @@ import {
     //     console.log(txData)
     // }, [txData])
 
-    const [module, setModule] = useState("emptyCollectModule")
+    const [collectModule, setCollectModule] = useState("emptyCollectModule")
+    const [referenceModule, setReferenceModule] = useState("emptyCollectModule")
+
+    const [settings, setSettings] = useState({
+      collectLimit: "100000",
+      amount: {
+          currency: "0xD40282e050723Ae26Aeb0F77022dB14470f4e011",
+          value: "0.1"
+      },
+      recipient: "",
+      referralFee: 10.5
+  })
 
     const createContentURI = async (metadata: Metadata) => {
         // create the metadata object we'll be storing
@@ -153,9 +146,9 @@ import {
             request: {
                 profileId: state.lens.id ? state.lens.id : "0x23",
                 contentURI: `ipfs://${contentURICID}`,
-                collectModule: getModule(module)
+                collectModule: getCollectModule(collectModule, settings),
                 referenceModule: {
-                followerOnlyReferenceModule: false,
+                  followerOnlyReferenceModule: false,
                 },
               }
             }
@@ -237,22 +230,7 @@ import {
         </HStack>
 
         <Stack margin={2} >
-          {module === "emptyCollectModule" && <Text>{EMPTY_COLLECT_MODULE}</Text>}
-          {module === "limitedTimedFeeCollectModule" && <Text>{LIMITED_TIMED_FEE_COLLECT_MODULE}</Text>}
-          {module === "timedFeeCollectModule" && <Text>{TIMED_FEE_COLLECT_MODULE}</Text>}
-          {module === "feeCollectModule" && <Text>{FEE_COLLECT_MODULE}</Text>}
-
-          <Select 
-        style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
-        variant='outline'
-           value={module} onChange={(e)=> {
-            setModule(e.target.value)
-          }}>
-          <option value='emptyCollectModule'>emptyCollectModule</option>
-          <option value='limitedTimedFeeCollectModule'>limitedTimedFeeCollectModule</option>
-          <option value='timedFeeCollectModule'>timedFeeCollectModule</option>
-          <option value='feeCollectModule'>feeCollectModule</option>
-        </Select>  
+          <SelectModule collectModule={collectModule} setCollectModule={setCollectModule} referenceModule={referenceModule} setReferenceModule={setReferenceModule} settings={settings} setSettings={setSettings}/>
         </Stack>
 
 

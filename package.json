@@ -23,6 +23,7 @@
     "@davatar/react": "^1.9.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@ensdomains/react-ens-address": "^0.0.31",
     "@ethersproject/units": "^5.5.0",
     "@heroicons/react": "^1.0.5",
     "@onichandame/react-ipfs-hook": "https://github.com/onichandame/react-ipfs",
