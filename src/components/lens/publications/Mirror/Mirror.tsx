@@ -18,6 +18,7 @@ import allActions from '../../../../store/actions';
 import { useAccount } from 'wagmi'
 
 import useLensHub from "../../../../lib/wagmi/hooks/useLensHub";
+import ReactHtmlParser from 'react-html-parser';
 
 const Mirror = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
@@ -65,6 +66,7 @@ const Mirror = ({post}:{post:any}) => {
         py={4}
         rounded="lg"
         shadow="lg"
+        style={{color: "black"}}
         bg={useColorModeValue("white", "gray.800")}
         maxW="2xl"
       >
@@ -98,31 +100,31 @@ const Mirror = ({post}:{post:any}) => {
             fontSize="2xl"
             >{post.metadata.name}</chakra.h1>}
 
-          <chakra.p mt={2} color={useColorModeValue("gray.600", "gray.300")}>
-            {post.metadata.content && post.metadata.content}
-          </chakra.p>
+
+          <div>
+          {post.metadata.content && <div>{ ReactHtmlParser(post.metadata.content) }</div>}
+          </div>
+
+          {post.metadata.media.map((img:any, index:any) =>{
+            return(
+              <Link target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
+              <Image
+                maxWidth={"200px"}
+                fit="cover"
+                display={{ base: "none", sm: "block" }}
+                src={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}
+                alt="media"
+              />
+              </Link>
+            )
+          })}
+
         </Box>
 
         <Flex justifyContent="space-between" alignItems="center" mt={4}>
-          {/* <Link
-            color={useColorModeValue("brand.600", "brand.400")}
-            _hover={{ textDecor: "underline" }}
-          >
-            Read more
-          </Link> */}
+
 
           <Flex alignItems="center">
-  
-            {post.metadata.media[0] && <Image
-              mx={4}
-              w={10}
-              h={10}
-              rounded="full"
-              fit="cover"
-              display={{ base: "none", sm: "block" }}
-              src={post.metadata.media[0] ? ipfsToImg(post.metadata.media[0].original.url) : ""}
-              alt="avatar"
-            />}
             <Link
               color={useColorModeValue("gray.700", "gray.200")}
               fontWeight="700"

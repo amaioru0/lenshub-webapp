@@ -109,6 +109,7 @@ const Post = ({post}:{post:any}) => {
       <Box
         mx="auto"
         px={8}
+        style={{color: "black"}}
         py={4}
         rounded="lg"
         shadow="lg"

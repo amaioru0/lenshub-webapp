@@ -56,6 +56,8 @@ import {
   // import Picker from 'emoji-picker-react';
   import TxStatus from './TxStatus';
   import SelectModule , { getCollectModule } from './SelectModule';
+  import ImageUploading from 'react-images-uploading';
+  import { FiImage, FiX } from 'react-icons/fi';
 
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -66,6 +68,14 @@ import {
 
 
   const PostPublication = () => {
+    const [images, setImages] = React.useState([]);
+    const maxNumber = 6;
+
+    const onChange = (imageList:any, addUpdateIndex:any) => {
+      // data for submit
+      console.log(imageList, addUpdateIndex);
+      setImages(imageList);
+    };
 
     const [postContent, setPostContent] = useState("");
     const { post } = useLensHub();
@@ -117,21 +127,40 @@ import {
         const buffer = Buffer.from(response.data, "utf-8")
 
         const imageFile = new File([ buffer ], 'nft.png', { type: 'image/png' })
-
+        const media: { item: string; type: any; }[] = []
+        const paths: any[] = []
           if(ipfs) {
-           const image = await ipfs.add(imageFile)
-           console.log(image)
-    
-           const jsonObj = JSON.stringify({...metadata, image: `ipfs://${image.path}`});
+            console.log("images")
+            console.log(images)
+            // images.map(async(img:any, index:any) => {
+            //   //@ts-ignore
+            //   const image = await ipfs.add(img.file)
+            //   media.push({ item: `ipfs://${image.path}`, type: img.file.type })
+            //   paths.push(image.path)
+            // })
 
+            await Promise.all(images.map(async (img:any, index:any) => {
+              const image = await ipfs.add(img.file)
+              media.push({ item: `ipfs://${image.path}`, type: img.file.type })
+              paths.push(image.path)
+              return true;
+          }));
+
+
+            let mainImage = paths[0] ? `ipfs://${paths[0]}` : ""
+    
+           const jsonObj = JSON.stringify({...metadata, image: mainImage, media: media});
+            // console.log(jsonObj)
            const res = await ipfs.add(jsonObj)
-           console.log(res)
+          //  console.log(res)
            setContentURICID(res.path)
            const pinset = await ipfs.pin.add(res.path)
-           const pinset2 = await ipfs.pin.add(image.path)
 
+           paths.map((path) => {
+             ipfs.pin.add(path)
+           })
+           setImages([])
            console.log(pinset)
-           console.log(pinset2)
             return res.path;
           }
         }
@@ -233,6 +262,48 @@ import {
           <SelectModule collectModule={collectModule} setCollectModule={setCollectModule} referenceModule={referenceModule} setReferenceModule={setReferenceModule} settings={settings} setSettings={setSettings}/>
         </Stack>
 
+        <Stack margin={2}>
+
+        <ImageUploading
+          multiple
+          value={images}
+          onChange={onChange}
+          maxNumber={maxNumber}
+          dataURLKey="data_url"
+          >
+          {({
+            imageList,
+            onImageUpload,
+            onImageRemoveAll,
+            onImageUpdate,
+            onImageRemove,
+            isDragging,
+            dragProps,
+          }) => (
+            <div>
+              <Button
+                style={{backgroundColor: "#70DB2C", color: "white", height: "24px", width: "16px"}}
+                onClick={onImageUpload}
+                {...dragProps}
+                leftIcon={<FiImage />}
+              />
+              &nbsp;
+              {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
+              <div style={{display: "flex"}}>
+              {imageList.map((image, index) => (
+                <div style={{marginTop: "10px", marginLeft: "10px"}} key={index}>
+   
+                  <img src={image['data_url']} alt="" width="100" />
+                  <Button
+                    style={{backgroundColor: "white", color: "#8BD94E", height: "24px", width: "16px", fontWeight: 1000, fontSize: "24px"}}
+                    leftIcon={<FiX />} onClick={() => onImageRemove(index)}></Button>
+                </div>
+              ))}
+              </div>
+            </div>
+          )}
+          </ImageUploading>
+        </Stack>
 
         <Stack margin={2}>
 
