@@ -217,14 +217,21 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
     },
     fetchAccessToken: () => {
-      const refreshToken = getRefreshToken()
-      return request('https://api-mumbai.lens.dev/', REFRESH_AUTHENTICATION, { request: { refreshToken: refreshToken } })
-
+      const getTokenX = async () => {
+        // console.log("fetch access token")
+        const refreshToken = getRefreshToken()
+        // console.log(refreshToken)
+        const res = await request('https://api-mumbai.lens.dev/', REFRESH_AUTHENTICATION, { request: { refreshToken: refreshToken } })
+        setAccessToken(res.refresh.accessToken)
+        // setRefreshToken(res.refresh.refreshToken)
+        console.log(res)
+        return res;
+      }
+      return getTokenX()
     },
     handleFetch: accessToken => {
       console.log("handle fetch")
-      console.log(accessToken)
-      // setAccessToken(accessToken);
+      // console.log(accessToken)
     },
     handleError: err => {
       console.warn("Your refresh token is invalid. Try to relogin");

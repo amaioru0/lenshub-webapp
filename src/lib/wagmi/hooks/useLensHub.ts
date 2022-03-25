@@ -45,9 +45,9 @@ const useLensHub = () => {
       signerOrProvider: signer
     });
 
-    useEffect(() => {
-      console.log(contract.signer);
-    }, [contract]);
+    // useEffect(() => {
+    //   console.log(contract.signer);
+    // }, [contract]);
   
 
 
