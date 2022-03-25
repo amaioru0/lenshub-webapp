@@ -35,7 +35,11 @@ const ExplorePublications = () => {
         bg={useColorModeValue("white", "gray.800")}
         style={{maxWidth: "220px"}}
       >
-      <Select value={sortCriteria} onChange={(e:any) => {
+      <Select 
+        style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A"}}
+        variant='outline'
+        colorScheme='teal'
+      value={sortCriteria} onChange={(e:any) => {
         setSortCriteria(e.target.value)
       }}>
         <option value='TOP_COMMENTED'>Most commented</option>

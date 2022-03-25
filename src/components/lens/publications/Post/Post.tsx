@@ -89,9 +89,6 @@ const Post = ({post}:{post:any}) => {
         bg={useColorModeValue("white", "gray.800")}
         maxW="2xl"
       >
-        <Link href={`/post/${post.id}`}>
-        <a>
-
 
         <Flex justifyContent="space-between" alignItems="center">
 
@@ -137,15 +134,17 @@ const Post = ({post}:{post:any}) => {
             />}
   
             
-            <div style={{display: "flex", minWidth: "400px", borderTop: "1px solid #DEEBE2"}}>
+        <div style={{display: "flex", minWidth: "400px", borderTop: "1px solid #DEEBE2", alignContent: "flex-end", alignItems: "flex-end"}}>
             <Box style={{marginLeft: "15px"}}>
               <Button 
-              style={{marginTop: "5px", backgroundColor: "#DEEBE2", height: "24px"}}
+              style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+              variant='outline'
+              colorScheme='teal'
               onClick={() => {
                 setClickedMirror(true);
                 createMirrorTypedData();
               }}
-              colorScheme={"green"}>Mirror</Button>
+              >Mirror</Button>
             </Box>
 
   <Query query={HAS_COLLECTED} variables={{request : { collectRequests: [
@@ -162,7 +161,9 @@ const Post = ({post}:{post:any}) => {
           {data.hasCollected[0] && 
             <Box style={{marginLeft: "15px"}}>
             <Button 
-            style={{marginTop: "5px", backgroundColor: "#DEEBE2", height: "24px"}}
+            style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+            variant='outline'
+            colorScheme='teal'
             onClick={() => {
               const [first, ...rest] = post.id.split('-');
               const profileId = first;
@@ -175,7 +176,7 @@ const Post = ({post}:{post:any}) => {
                 overrides: {}
               })
             }}
-            colorScheme={"green"}>Collect</Button>
+            >Collect</Button>
           </Box>
           }
           </>
@@ -186,12 +187,23 @@ const Post = ({post}:{post:any}) => {
     }
   </Query>
 
+    <Box>
+    <Link href={`/post/${post.id}`}>
+        <a>
+          <Button
+          variant='outline'
+          colorScheme='teal'
+          style={{marginLeft: "15px", height: "24px", marginTop: "5px", fontSize: "12px" }}
+          >22 comments</Button>
+        </a>
+      </Link>
+    </Box>
+
             </div>
 
           </Flex>
         </Flex>
-        </a>
-        </Link>
+
       </Box>
   );
 };

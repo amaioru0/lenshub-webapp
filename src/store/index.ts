@@ -9,6 +9,14 @@ import reducers from './reducer'
 
 import { createLogger } from 'redux-logger';
 
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
 const logger = createLogger();
 
 const bindMiddleware = (middleware:any) => {
@@ -32,6 +40,9 @@ const reducer = (state:any, action:any) => {
   }
 }
 
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+
 export const initStore = (context:any) => {
   const routerMiddleware = createRouterMiddleware()
   const { asPath, pathname, query } = context.ctx || Router.router || {};
@@ -42,8 +53,16 @@ export const initStore = (context:any) => {
       router: initialRouterState(url, asPath)
     }
   }
-  // return createStore(reducer, initialState, bindMiddleware([routerMiddleware, thunkMiddleware, logger]))
-  return createStore(reducer, initialState, bindMiddleware([routerMiddleware, thunkMiddleware]))
+  if(typeof window === undefined) {
+    return createStore(reducer, initialState, bindMiddleware([routerMiddleware, thunkMiddleware]))
+  } else {
+    const store = createStore(persistedReducer, initialState, bindMiddleware([routerMiddleware, thunkMiddleware]))
+    //@ts-ignore
+    store.__persistor = persistStore(store)
+    return store;
+  }
+
+
 }
 
 export const wrapper = createWrapper(initStore)

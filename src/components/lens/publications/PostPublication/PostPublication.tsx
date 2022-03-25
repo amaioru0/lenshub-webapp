@@ -43,7 +43,6 @@ import {
   import { useIpfs } from '@onichandame/react-ipfs-hook'
 
   import CREATE_POST_TYPED_DATA from '../../../../lib/graphql/publications/post';
-  import HAS_TX_BEEN_INDEXED from '../../../../lib/graphql/indexer/has-transaction-been-indexed';
   import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from './MetadataStandard';
   import { v4 as uuidv4 } from 'uuid';
   import { CID } from 'cids';
@@ -55,6 +54,7 @@ import {
   import dynamic from "next/dynamic";
   import { FileUpload } from 'react-ipfs-uploader'
   // import Picker from 'emoji-picker-react';
+  import TxStatus from './TxStatus';
 
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
@@ -84,13 +84,10 @@ import {
     // };
 
     const [txHash, setTxHash] = useState("");
-    const [getTx, {loading: txLoading, error: txError, data: txData}] = useLazyQuery(HAS_TX_BEEN_INDEXED, {
-        variables: {
-            request: {
-                txHash: txHash
-            }
-        }
-    })
+    const [pollInterval, setPollInterval] = useState(500)
+
+
+    const [isLoading, setIsLoading] = useState(false);
 
     // useEffect(() => {
     //     console.log(txData)
@@ -178,8 +175,13 @@ import {
                   referenceModule: typedData?.value?.referenceModule,
                   referenceModuleData: typedData?.value.referenceModuleData,
                  })
-                //  setTxHash(tx.hash)
-                //  getTx();
+                 console.log(tx)
+                 if(tx?.hash) {
+                 setTxHash(tx.hash)
+                 setPollInterval(500)
+                 }
+                setIsLoading(false)
+                setPostContent("")
             }
             if(clicked) {
                 goClick()
@@ -201,6 +203,9 @@ import {
         transition="3s ease"
         style={{color: "black", maxHeight: "500px", border: "0px", outline: "none"}}
         >
+
+        {txHash && <TxStatus txHash={txHash} pollInterval={pollInterval} setPollInterval={setPollInterval} />}
+
       <Flex
         direction='column'
         border={1}
@@ -232,17 +237,18 @@ import {
           style={{backgroundColor: "#70DB2C", color: "white"}}
             variant='solid'
             alignSelf='flex-end'
+            isLoading={isLoading}
             onClick={async () => {
+              setIsLoading(true)
                 setClicked(true);
                 createContentURI({
                     version: MetadataVersions.one,
                     metadata_id: uuidv4(),
-                    description: "",
+                    description: postContent,
                     content: postContent,
-                    external_url: "",
-                    name: "post",
+                    external_url: null,
+                    name: "Post from LensHub WebApp",
                     attributes: [],
-                    image: "",
                     media: [],
                     appId: "TROVE"
                     // imageMimeType: "",

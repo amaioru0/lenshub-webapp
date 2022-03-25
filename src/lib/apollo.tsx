@@ -204,6 +204,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
 
       try {
+        //@ts-ignore
         const { exp } = jwtDecode(token);
         console.log(exp)
         if (Date.now() >= exp * 1000) {

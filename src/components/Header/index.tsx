@@ -34,9 +34,21 @@ import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import GET_CHALLENGE from '../../lib/graphql/challenge';
 import AUTHENTICATE from '../../lib/graphql/authenticate';
 import { getAccessToken, setAccessToken, logOut } from '../../lib/accessToken';
-
+import { useRouter } from 'next/router';
 // @ts-ignore
 import { SocialIcon } from 'react-social-icons'
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react'
+import EthSignIn from './eth-sign-in.svg'
+import { ReactSVG } from 'react-svg'
 
 
 export const Header = () => {
@@ -66,6 +78,7 @@ export const Header = () => {
   });
 
 // check if user signed in
+  const router = useRouter();
 
 const [isSignedIn, setIsSignedIn] = useState(false);
 
@@ -105,9 +118,8 @@ useEffect(() => {
   useEffect(() => {
     const loginFinally = async () => {
       // const address = accountData && accountData.address ? accountData.address : ""
-      console.log("login here")
-      console.log(signature)
       await authenticate();
+      router.reload()
     }
     if(!SigLoading && !sigError && clicked) {
       loginFinally();
@@ -198,38 +210,37 @@ useEffect(() => {
             </HStack> */}
 
             {/* Connect Wallet Button */}
-            <NavButton ml="30px" onClick={() => connect(connector)}>
-              {accountData && accountData.address ? (
-                <>
-                    {isSignedIn ? 
-                    <>
-                      <Box>
-                        <Davatar size={25} address={accountData.address} />
-                      </Box>
-                      <Text>{shorten(accountData.address)}</Text>   
-                    </>
-                    :
-                    <>
-                      <NavButton ml="10px" onClick={() => {
-                        loginBro(accountData.address);
-                      }}>
-                        Login
-                      </NavButton>
+            {!isSignedIn && accountData?.address && 
+                <NavButton ml="10px" onClick={() => {
+                  loginBro(accountData.address);
+                }}>
+                  <ReactSVG src={EthSignIn} /> &nbsp;Sign-in with Ethereum
+                </NavButton>
+            }
 
-                    </>
-                    }
-                </>
-              ) : (
-                <>
-                  <Text className="capitalize">{'connect'}</Text>
-                  <LoginIcon className="w-5 h-5" />
-                </>
-              )}
-            </NavButton>
+            {!isSignedIn && !accountData?.address && 
+                <NavButton ml="10px" onClick={() => connect(connector)}>
+                  Connect
+                </NavButton>
+            }
+
+            {accountData && accountData.address && isSignedIn && <Menu>
+              <MenuButton as={NavButton} ml="30px" >
+                <Davatar size={25} address={accountData.address} />
+                <Text style={{fontSize: "12px"}}>{shorten(accountData.address)}</Text>   
+              </MenuButton>
+
+              <MenuList>
+                <MenuItem>Download</MenuItem>
+                <MenuItem>Download</MenuItem>
+              </MenuList>
+            </Menu>}
+   
 
             {isSignedIn &&
             <NavButton ml="10px" onClick={() => {
               logOut();
+              router.reload()
             }}>
               Logout
             </NavButton>

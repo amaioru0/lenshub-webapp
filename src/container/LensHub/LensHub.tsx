@@ -182,7 +182,7 @@ const LensHub = () => {
     <ResponsiveWidget>
     <Widget>
     <>
-    {JSON.stringify(router.query)}
+    {/* {JSON.stringify(router.query)} */}
     {LinkItems.map((link) => {
       if(link.name === "wallet") {
           if(isSignedIn) return(
@@ -196,6 +196,15 @@ const LensHub = () => {
           )
           if(!isSignedIn) return <></>
       }
+      if(link.name === "") return (
+        <NavItem key={link.name} icon={link.icon}
+        onClick={() => {
+          handleMenuClick(link.name)
+        }}
+        >
+            Home
+        </NavItem>
+      )
     return(
     <NavItem key={link.name} icon={link.icon}
     onClick={() => {
@@ -297,8 +306,8 @@ const LensHub = () => {
 
       
     <div style={{marginBottom: "10px", marginTop: "30px"}}>
-      {currentRoute === "/" && isSignedIn && <GetPublications />}
-      {currentRoute === '/' && isSignedIn && <UserTimeline />}
+      {currentRoute === "" && isSignedIn && <GetPublications />}
+      {currentRoute === '' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
       {currentRoute === 'profiles' && isSignedIn && accountData?.address && <CreateProfile />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
