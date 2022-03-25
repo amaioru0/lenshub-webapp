@@ -16,7 +16,7 @@ import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, next:any }) => {
 
   const scrollRef = useBottomScrollListener(() => {
-    console.log("handle scroll")
+    // console.log("handle scroll")
     onLoadMore()
   });
   return (

@@ -74,6 +74,16 @@ const useLensHub = () => {
     }
   }
 
+  async function updateProfile({ profileId, pubId, data } : { profileId: BigNumberish, pubId: BigNumberish, data: BytesLike}) {
+    try {
+      const result = await contract.functions.collect(profileId, pubId, data);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   async function collectWithSig({  } : { }) {
     try {
@@ -132,9 +142,7 @@ const useLensHub = () => {
 
   async function getCollectModule({  } : { }) {
     try {
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -142,10 +150,7 @@ const useLensHub = () => {
 
   async function getCollectNFT({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -153,10 +158,7 @@ const useLensHub = () => {
 
   async function getContentURI({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -164,10 +166,7 @@ const useLensHub = () => {
 
   async function getDispatcher({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -175,10 +174,7 @@ const useLensHub = () => {
 
   async function getFollowModule({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -186,10 +182,7 @@ const useLensHub = () => {
 
   async function getFollowNFT({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -208,10 +201,7 @@ const useLensHub = () => {
 
   async function getHandle({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -219,10 +209,7 @@ const useLensHub = () => {
 
   async function getProfile({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -230,10 +217,7 @@ const useLensHub = () => {
 
   async function getProfileIdByHandle({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -241,10 +225,7 @@ const useLensHub = () => {
 
   async function getPub({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -252,10 +233,7 @@ const useLensHub = () => {
 
   async function getPubCount({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -263,10 +241,7 @@ const useLensHub = () => {
 
   async function getPubPointer({  } : { }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+
     } catch (error) {
       console.log(error);
     }
@@ -330,34 +305,28 @@ const useLensHub = () => {
     }
   }
 
-  async function setFollowModule({  } : { }) {
+  async function setFollowModule({ profileId, followModule, followModuleData } : { profileId:BigNumberish, followModule:string, followModuleData:BytesLike}) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+      const results = await contract.function.setFollowModule(profileId, followModule, followModuleData)
+      return results;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function setFollowNFTURI({  } : { }) {
+  async function setFollowNFTURI({ profileId, followNFTURI } : { profileId: BigNumberish, followNFTURI: string }) {
     try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+      const results = await contract.function.setFollowNFTURI(profileId, followNFTURI)
+      return results;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async function setProfileImageURI({  } : { }) {
-    try {
-      // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
-      // const result = await contract.functions.collect({profileId, pubId, data, overrides});
-      // console.log(result);
-      // return result;
+  async function setProfileImageURI({ profileId, imageURI } : { profileId: BigNumberish, imageURI: string }) {
+    try {  
+      const results = await contract.function.setProfileImageURI(profileId, imageURI)
+      return results;
     } catch (error) {
       console.log(error);
     }
@@ -368,7 +337,6 @@ const useLensHub = () => {
     try {
       // setCreateProfileData({to, handle, imageURI, followModule, followModuleData, followNFTURI})
       const result = await contract.functions.post({ profileId, contentURI, collectModule, collectModuleData, referenceModule, referenceModuleData });
-      console.log(result);
       return result;
     } catch (error) {
       console.log(error);
@@ -406,7 +374,7 @@ const useLensHub = () => {
     }
   }
 
-  return { createProfile, post, mirror, collect, comment, follow };
+  return { createProfile, post, mirror, collect, comment, follow, setFollowModule, setFollowNFTURI, setProfileImageURI };
 };
 
 export default useLensHub;

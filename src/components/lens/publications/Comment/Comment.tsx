@@ -55,7 +55,7 @@ import {
     fontSize="1xl"
     >{comment.comment.metadata.name}</chakra.h1>}
 
-      <div>
+      <div style={{color: "black"}}>
       {comment.comment.metadata.content && <div>{ ReactHtmlParser(comment.comment.metadata.content) }</div>}
       </div>
     </Box>

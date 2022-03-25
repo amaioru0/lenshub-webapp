@@ -35,11 +35,6 @@ const GetPublications = () => {
   });
 
 
-  useEffect(() => {
-    console.log("here")
-    console.log(data)
-  }, [data])
-
 
     if(loading) return <Loader />
 

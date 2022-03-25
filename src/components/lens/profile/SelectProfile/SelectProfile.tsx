@@ -25,9 +25,10 @@ import GET_PROFILES, { ProfilesRequest} from '../../../../lib/graphql/profile/ge
 
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 
 const SelectProfile = () => {
@@ -45,11 +46,8 @@ const SelectProfile = () => {
     }
     });
 
-    // useEffect(() => {
-    // console.log("SelectPRofile data")
-    // console.log(dataProfiles)
-    // console.log(state)
-    // }, [dataProfiles])
+    const router = useRouter();
+
 
 
     const [cardIndex, setCardIndex] = useState(0)
@@ -60,6 +58,7 @@ const SelectProfile = () => {
       
     return(
      <Box>
+    
     <SwipeableViews
     style={{maxWidth: "320px"}}
     index={cardIndex}
@@ -75,7 +74,16 @@ const SelectProfile = () => {
     })}
 
     </SwipeableViews>
-
+    <div style={{position: "absolute", float: "left", top: "274px", left: "80px"}}>
+    <Link href={`/edit-profile/${state.lens.selectedProfile}`}>
+    <Button
+        style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+        variant='outline'
+        colorScheme='teal'
+        size="sm"
+        >Edit</Button>
+    </Link>
+    </div>
     <div style={{marginTop: "16px"}}>
     <span style={{display: "table", margin: "0 auto"}}>Selected profile: {state.lens.selectedProfile}</span>
     </div>

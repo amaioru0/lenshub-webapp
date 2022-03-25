@@ -26,9 +26,10 @@ import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
 import {useSelector, useDispatch} from 'react-redux'
+import GlobalStats from '../../components/lens/GlobalStats/GlobalStats';
 
-const HomePage = () => {
-  const bg = useColorModeValue("white", "gray.800");
+const HomePage = ({children} : {children: any}) => {
+  // const bg = useColorModeValue("white", "gray.800");
     return(
         <>
         <Box
@@ -41,7 +42,7 @@ const HomePage = () => {
           alignItems="center"
           transition="3s ease"
           borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-          style={{color: "black", padding: "100px"}}
+          style={{ padding: "100px"}}
           >
 
           <chakra.h1
@@ -55,6 +56,7 @@ const HomePage = () => {
 
           </chakra.h1>
 
+        {children}
         <chakra.p
           mt={{ base: 3, sm: 5, md: 5 }}
           fontSize={{ sm: "lg", md: "xl" }}
@@ -62,9 +64,7 @@ const HomePage = () => {
           mx={{ sm: "auto", lg: 0 }}
           color="gray.500"
         >
-          Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-          lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-          fugiat aliqua.
+          <GlobalStats />
         </chakra.p>
 
             </Box>

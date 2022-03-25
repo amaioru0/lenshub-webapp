@@ -189,7 +189,7 @@ useEffect(() => {
                 width="350px"
                 height="300px" 
               /> */} 
-              <h2 style={{fontWeight: 800, color: "#70DB2C", fontSize: "26px"}}>LensHub</h2>
+              <h2 style={{fontWeight: 800, color: "#70DB2C", fontSize: "26px"}}>Lenstify</h2>
                 </span>
               </Link>
             </NextLink>

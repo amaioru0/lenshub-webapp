@@ -27,10 +27,10 @@ const RecommendedProfiles = () => {
   const { loading, error, data} = useQuery(RECOMMENDED_PROFILES)
 
 
-  useEffect(() => {
-    console.log("data recommended profiles")
-    console.log(data)
-  }, [data])
+  // useEffect(() => {
+  //   console.log("data recommended profiles")
+  //   console.log(data)
+  // }, [data])
 
 
     if(loading) return <Loader />

@@ -80,6 +80,7 @@ const Search = dynamic(() => import('../../components/lens/search/Search'))
 const PostPage = dynamic(() => import('../PostPage/PostPage'));
 const UserPage = dynamic(() => import('../UserPage/UserPage'));
 const HomePage = dynamic(() => import('../HomePage/HomePage'));
+const EditProfile = dynamic(() => import('../../components/lens/profile/EditProfile/EditProfile'));
 
 
 // import useAuth from '../../lib/useAuth';
@@ -278,9 +279,6 @@ const LensHub = () => {
         </chakra.h2>
 
         {!isSignedIn && currentRoute === "" && <HomePage>
-        {/* {!isSignedIn && !accountData?.address && <div>connect</div>} */}
-        </HomePage>}
-
         <chakra.div
             display="block"
             color={useColorModeValue("brand.600", "gray.500")}
@@ -294,6 +292,9 @@ const LensHub = () => {
             </>
             }
         </chakra.div>
+        </HomePage>}
+
+
         </Box>
         </Top>
 
@@ -326,6 +327,7 @@ const LensHub = () => {
       {currentRoute === 'search' && <Search query={query} setQuery={setQuery}/>}  
       {currentRoute === 'post' && <PostPage post={router.query.slug[1]}/>}  
       {currentRoute === 'user' && <UserPage handle={router.query.slug[1]}/>}  
+      {currentRoute === 'edit-profile' && <EditProfile />}  
 
       
      </div>
