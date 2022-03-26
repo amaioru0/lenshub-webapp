@@ -11,12 +11,14 @@ import {
     Heading,
   } from '@chakra-ui/react';
 
-  import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
-  import GET_TIMELINE from '../../../lib/graphql/timeline/user-timeline';;
-  import {useSelector, useDispatch} from 'react-redux'
-  import allActions from '../../../store/actions';
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
+import GET_TIMELINE from '../../../lib/graphql/timeline/user-timeline';;
+import {useSelector, useDispatch} from 'react-redux'
+import allActions from '../../../store/actions';
+import { Query } from '@apollo/react-components';
+import PostsList from './PostList'
 
-const ExplorePublications = () => {
+const UserTimeline = () => {
     const dispatch = useDispatch()
     const state = useSelector(state => state)
 
@@ -30,38 +32,54 @@ const ExplorePublications = () => {
     }
   });
 
-  useEffect(() => {
-    console.log("here")
-    console.log(data)
-  }, [data])
-
-
     if(loading) return <Loader />
 
     if(error) return <h1>error</h1>
     
     return(
         <>
-        <Box marginBottom={"30px"} >
-        <Heading as={'h2'}>Timeline</Heading>
-        </Box>
 
-        <Box>
-        <Grid templateColumns='repeat(1, 1fr)' gap={6}>
-        {/* {
-          //@ts-ignore
-        data.explorePublications.items.map((post, index) => {
-          return(
-            <GridItem key={index} >
-            <Post post={post} />
-            </GridItem>
-          )
-        })} */}
-
-      </Grid>
-        </Box>
+    <Query query={GET_TIMELINE} variables={{request: {
+    profileId: `${state.lens.selectedProfile}`,
+    limit: 10,
+  }}}>
+    {({ data, fetchMore }: { data:any, fetchMore:any }) => {
+      if(!data) return null;
+      console.log("explore data")
+      console.log(data)
+      return(
+        data && (
+          <PostsList
+              next={data.timeline.pageInfo.next}
+              posts={data.timeline.items || []}
+              onLoadMore={() =>
+                fetchMore({
+                  variables: {
+                    request: {
+                      cursor: data.timeline.pageInfo.next,
+                      profileId: `${state.lens.selectedProfile}`,
+                      limit: 10,
+                    }
+                  },
+                  updateQuery: (prev:any, { fetchMoreResult }:{ fetchMoreResult:any }) => {
+                    // console.log("update query")
+                    // console.log(fetchMoreResult)
+                    if (!fetchMoreResult) return prev;
+                    return Object.assign({}, prev, {
+                      timeline: { pageInfo: fetchMoreResult.timeline.pageInfo, items: [...prev.timeline.items, ...fetchMoreResult.timeline.items], __typename: "PaginatedTimelineResult"}
+                    });
+                  }
+                })
+              }
+            />
+        )
+      )
+    }
+  
+    }
+  </Query>
         </>
     )
 }
 
-export default ExplorePublications;
+export default UserTimeline;

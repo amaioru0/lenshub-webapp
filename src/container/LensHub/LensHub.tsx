@@ -258,25 +258,16 @@ const LensHub = () => {
 
     {currentRoute === '' && <div>
         
-        <Top>
         {/* {isSignedIn && <SelectProfile />} */}
         <Box
         mx="auto"
-        py={{ base: 12, lg: 16 }}
+        py={{ base: 6, lg: 8 }}
         width="100%"
         display={{ lg: "flex" }}
         alignItems={{ lg: "center" }}
         flexDirection="row"
         justifyContent={{ lg: "space-between" }}
         >
-        <chakra.h2
-        fontSize={{ base: "3xl", sm: "4xl" }}
-        fontWeight="extrabold"
-        letterSpacing="tight"
-        lineHeight="shorter"
-        color={useColorModeValue("gray.900", "gray.100")}
-        >
-        </chakra.h2>
 
         {!isSignedIn && currentRoute === "" && <HomePage>
         <chakra.div
@@ -294,33 +285,19 @@ const LensHub = () => {
         </chakra.div>
         </HomePage>}
 
-}
 
         </Box>
-        </Top>
 
 
-        <Btm>
         {isSignedIn && <PostPublication />}
-        </Btm>
           </div>}
 
-    {/* <Flex alignItems={"center"} flexDirection={"column"} >
-        <div>
-        <Flex alignItems={"center"} flexDirection={"row"} justifyContent={"space-around"}>
 
-
-        </Flex>
-        </div>
-
-        <div>
-        </div>  
-        </Flex> */}
       
 
       
     <div style={{marginBottom: "10px", marginTop: "30px"}}>
-      {currentRoute === "" && isSignedIn && <GetPublications />}
+      {currentRoute === "my-publications" && isSignedIn && <GetPublications />}
       {currentRoute === '' && isSignedIn && <UserTimeline />}
       {currentRoute === 'explore' && <ExplorePublications />}
       {currentRoute === 'create-profile' && isSignedIn && accountData?.address && <CreateProfile />}
@@ -360,6 +337,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'explore', icon: FiCompass },
   { name: 'profiles', icon: FiTrello },
   { name: 'wallet', icon: FiBox },
+  { name: 'my-publications', icon: FiTrello }
 ];
 
 

@@ -9,6 +9,9 @@ import {
     Box,
     Text,
     Heading,
+    useColorModeValue,
+    Wrap,
+    WrapItem
   } from '@chakra-ui/react';
 
   import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
@@ -42,11 +45,20 @@ const GetPublications = () => {
     
     return(
         <>
-        <Box marginBottom={"30px"} >
-        <Heading as={'h2'}>Your publications</Heading>
-        </Box>
+      <Container 
+      // shadow="lg"
+      rounded="lg"
+      // bg={useColorModeValue("white", "gray.800")}
+      maxW="full" mt={0} centerContent overflow="hidden">
+        <Flex>
+          <Box
+          style={{minWidth: "400px"}}
+            color="white"
+            borderRadius="lg"
+            m={{ sm: 4, md: 16, lg: 10 }}
+            p={{ sm: 5, md: 5, lg: 16 }}>
 
-        <Box>
+
         <Grid templateColumns='repeat(1, 1fr)' gap={6}>
         {
           //@ts-ignore
@@ -61,7 +73,10 @@ const GetPublications = () => {
         })}
 
       </Grid>
+
         </Box>
+        </Flex>
+        </Container>
         </>
     )
 }

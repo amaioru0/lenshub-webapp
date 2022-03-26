@@ -5,7 +5,6 @@ display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
-borde-radius: 12px;
 `;
 
 export const Top = styled.div`
