@@ -36,8 +36,8 @@ const Index: NextPage = () => {
   return (
     <Container>
       <Head>
-        <title>Trove Web</title>
-        <meta name="description" content="Trove Web home" />
+        <title>Lenstify</title>
+        <meta name="description" content="Lenstify" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

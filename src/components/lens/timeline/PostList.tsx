@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Post from '../../../components/lens/publications/Post/Post';
 import Mirror from '../../../components/lens/publications/Mirror/Mirror';
 // import Profile from '../../../components/lens/publications/Profile/Profile';
+import Loader from '../../Loader/Loader';
 
 import {
   Container,
@@ -16,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import useInView from "react-cool-inview";
 
-const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, next:any }) => {
+const PostsList = ({ posts, onLoadMore, next, loading }: { posts:any, onLoadMore:any, next:any, loading:any }) => {
 
   const { observe } = useInView({
     threshold: 0.5,
@@ -46,13 +47,16 @@ const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, nex
       })}
   </Grid>
   <div style={{marginTop: "48px", display: "Flex", alignItems: "center", justifyContent: "center"}}>
-    {next && <Button 
+    {next && !loading && <Button 
     colorScheme={"whatsapp"}
     //@ts-ignore
     ref={observe}
     onClick={() => {
       onLoadMore()
     }}>load more</Button>}
+
+    {loading && <Loader />}
+
 </div>
   </div>
 )

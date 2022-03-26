@@ -317,10 +317,10 @@ import {
                     description: postContent,
                     content: postContent,
                     external_url: null,
-                    name: "Post from LensHub WebApp",
+                    name: "Post from Lenstify",
                     attributes: [],
                     media: [],
-                    appId: "TROVE"
+                    appId: "LENSTIFY"
                     // imageMimeType: "",
                     // media: [],
                     // animation_url: "",

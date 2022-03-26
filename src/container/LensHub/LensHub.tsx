@@ -124,6 +124,10 @@ const LensHub = () => {
       return ""
     }
 
+    useEffect(() => {
+      setCurrentRoute(getInitialQuery());
+    }, [router.query.slug])
+
     const [currentRoute, setCurrentRoute] = useState(getInitialQuery());
 
 
@@ -208,7 +212,33 @@ const LensHub = () => {
       </div>
       
     {isSignedIn && <SelectProfile />}
+    {isSignedIn && <div style={{position: "absolute", float: "left", top: "108px", left: "80px"}}>
+    <Link href={`/edit-profile/${state.lens.selectedProfile}`}>
+    <Button
+        style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+        variant='outline'
+        borderColor={"#8BD84E"}
+        color={"black"}
+        colorScheme='teal'
+        size="sm"
+        >Edit</Button>
+    </Link>
+    </div>}
 
+   {isSignedIn && <div style={{position: "absolute", float: "left", top: "75px", left: "80px"}}>
+    <Link href={`/create-profile`}>
+    <Button
+    onClick={() => {
+        router.push(`/create-profile`)
+    }}
+        style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
+        variant='outline'
+        borderColor={"#8BD84E"}
+        color={"black"}
+              size="sm"
+        >Create</Button>
+    </Link>
+    </div>}
 
     <div style={{marginTop: "10px"}}>
     {/* {JSON.stringify(router.query)} */}
@@ -225,6 +255,19 @@ const LensHub = () => {
           )
           if(!isSignedIn) return <></>
       }
+
+      if(link.name === "my-publications") {
+        if(isSignedIn) return(
+        <NavItem key={link.name} icon={link.icon}
+        onClick={() => {
+          handleMenuClick(link.name)
+        }}
+        >
+            {link.name[0].toUpperCase() + link.name.substring(1) } 
+        </NavItem>
+        )
+        if(!isSignedIn) return <></>
+    }
       if(link.name === "") return (
         <NavItem key={link.name} icon={link.icon}
         onClick={() => {

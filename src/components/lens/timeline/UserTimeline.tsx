@@ -52,6 +52,7 @@ const UserTimeline = () => {
           <PostsList
               next={data.timeline.pageInfo.next}
               posts={data.timeline.items || []}
+              loading={loading}
               onLoadMore={() =>
                 fetchMore({
                   variables: {

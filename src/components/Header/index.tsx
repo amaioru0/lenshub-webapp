@@ -50,7 +50,7 @@ import {
 import EthSignIn from './eth-sign-in.svg'
 import { ReactSVG } from 'react-svg'
 import LogoSVG from './logo.svg'
-
+import Notifications from '../lens/notifications/Notification/Notification';
 
 export const Header = () => {
   const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -193,7 +193,7 @@ useEffect(() => {
               {/* <h2 style={{fontWeight: 800, color: "#70DB2C", fontSize: "26px"}}>Lenstify</h2> */}
               <ReactSVG 
               beforeInjection={(svg) => {
-                svg.setAttribute('style', 'width: 200px')
+                svg.setAttribute('style', 'width: 160px')
               }}
               src={LogoSVG} /> 
                 </span>
@@ -202,18 +202,33 @@ useEffect(() => {
           </Box>
 
           <HStack>
-            {/* <HStack
+            <HStack
               px={[4, 4, 0]}
               display={['none', 'none', 'none', 'flex']}
               gap={{ lg: '0.4rem', xl: '1.5rem' }}
               mr={4}
             >
-              {navItems.map((navItem, index) => (
-                <NavItem key={index} href={navItem.href}>
-                  <Text className="capitalize">{navItem.text}</Text>
-                </NavItem>
-              ))}
-            </HStack> */}
+            {accountData && accountData.address && isSignedIn && <Menu>
+              <MenuButton as={NavButton} ml="30px" >
+              <div style={{display: "flex"}}>
+              <Davatar size={25} address={accountData.address} />
+                <Text style={{fontSize: "16px", color: "white"}}>{shorten(accountData.address)}</Text> 
+              </div>
+              </MenuButton>
+
+              {/* <MenuList>
+                <MenuItem>Download</MenuItem>
+                <MenuItem>Download</MenuItem>
+              </MenuList> */}
+            </Menu>}
+            </HStack>
+
+              {isSignedIn && 
+              
+            <HStack>
+            <Notifications />
+            </HStack>
+              }
 
             {/* Connect Wallet Button */}
             {!isSignedIn && accountData?.address && 
@@ -230,21 +245,14 @@ useEffect(() => {
                 </NavButton>
             }
 
-            {accountData && accountData.address && isSignedIn && <Menu>
-              <MenuButton as={NavButton} ml="30px" >
-                <Davatar size={25} address={accountData.address} />
-                <Text style={{fontSize: "12px"}}>{shorten(accountData.address)}</Text>   
-              </MenuButton>
 
-              <MenuList>
-                <MenuItem>Download</MenuItem>
-                <MenuItem>Download</MenuItem>
-              </MenuList>
-            </Menu>}
    
 
             {isSignedIn &&
-            <NavButton ml="10px" onClick={() => {
+            <NavButton ml="10px" 
+            style={{color: "white"}}
+            _hover={{bg: "#8BD84E"}}
+            onClick={() => {
               logOut();
               router.reload()
             }}>
