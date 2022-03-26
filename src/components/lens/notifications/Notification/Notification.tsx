@@ -57,14 +57,14 @@ const Notifications = () => {
                         <Text fontWeight="bold" fontSize="14px" as="span">
                         New collect
 
-                        <Text fontWeight="light">{notification.collectedPublication.id} collected by {shorten(notification.collectedPublication.collectedBy.address)}</Text>
+                        <Text fontWeight="light">{notification.collectedPublication.id} collected by {notification.collectedPublication.collectedBy && shorten(notification.collectedPublication.collectedBy.address)}</Text>
                         </Text></Link>}
 
 
                         
                         <Flex alignItems="center">
                         <Text fontSize="9px" lineHeight="100%" color={"grey"} fontStyle="italic">
-                        <Moment fromNow ago>{notification.createdAt}</Moment>
+                        <Moment fromNow>{notification.createdAt}</Moment>
                         </Text>
                         </Flex>
                     </Flex>

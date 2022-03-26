@@ -5,8 +5,12 @@ export const selectProfile = (id:Number) => (dispatch:any) => {
     dispatch({type: "SELECT_PROFILE", payload: { selectedProfile: id }})
 };
 
+export const setIsSignedIn = (isSignedIn:bolean) => (dispatch:any) => {
+    dispatch({type: "SET_IS_SIGNED_IN", payload: { isSignedIn: isSignedIn}})
+}
 
 
 export default {
-    selectProfile
+    selectProfile,
+    setIsSignedIn
 }

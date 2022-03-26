@@ -8,7 +8,8 @@ import {
   Link,
   Button,
   Divider,
-  flexbox
+  flexbox,
+  Center
 } from "@chakra-ui/react";
 import { ipfsToImg } from '../../../../utils/ipfsImg';
 import HAS_COLLECTED from '../../../../lib/graphql/publications/has-collected-publication'
@@ -106,6 +107,7 @@ const Post = ({post}:{post:any}) => {
   if(post.__typename !== "Post") return <></>
 
   return (
+    <Center>
       <Box
         mx="auto"
         px={8}
@@ -183,13 +185,11 @@ const Post = ({post}:{post:any}) => {
           }
           ]}}}>
           {({ data }: { data:any }) => {
-            if(!data) return null;
             return(
-              data && data.hasMirrored && (
                 <>
                     <Box style={{}}>
                     <Button 
-                    disabled={data.hasMirrored[0].results[0].mirrored}
+                    disabled={data ? data.hasMirrored[0].results[0].mirrored && !state.lens.isSignedIn : !state.lens.isSignedIn}
                     style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
                     variant='outline'
                     colorScheme='teal'
@@ -197,16 +197,20 @@ const Post = ({post}:{post:any}) => {
                       setClickedMirror(true);
                       createMirrorTypedData();
                     }}
-                    >({post.stats.totalAmountOfMirrors}) {data.hasMirrored[0].results[0].mirrored ? <>Mirrored</>:<>Mirror</> }</Button>
+                    >
+                      {data ?
+                      <>({post.stats.totalAmountOfMirrors}) {data.hasMirrored[0].results[0].mirrored ? <>Mirrored</>:<>Mirror</> }</>
+                        :
+                        <>({post.stats.totalAmountOfMirrors}) Mirrors</>
+                      }
+                    </Button>
                   </Box>
                 </>
-              )
             )
           }
         
           }
         </Query>
-
 
         <Query query={HAS_COLLECTED} variables={{request : { collectRequests: [
           {
@@ -215,12 +219,13 @@ const Post = ({post}:{post:any}) => {
           }
           ]}}}>
           {({ data }: { data:any }) => {
-            if(!data) return null;
+            // if(!data) return null;
             return(
                 <>
-                  <Box style={{marginLeft: "15px"}}>
-                  <Button
-                  disabled={data.hasCollected[0].results[0].collected}
+              <Box style={{marginLeft: "15px"}}>
+
+                <Button
+                  disabled={data ? data.hasCollected[0].results[0].collected && state.lens.isSignedIn : !state.lens.isSignedIn}
                   style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
                   variant='outline'
                   colorScheme='teal'
@@ -238,7 +243,14 @@ const Post = ({post}:{post:any}) => {
                     setClickedCollect(true);
                     createCollectTypedData()
                   }}
-                  >({post.stats.totalAmountOfCollects}) {data.hasCollected[0].results[0].collecte ? <>Collected</> : <>Collect</>}</Button>
+                  >
+                    {data ?
+                    <>({post.stats.totalAmountOfCollects}) {data.hasCollected[0].results[0].collected ? <>Collected</> : <>Collect</>}</>
+                    :
+                    <>({post.stats.totalAmountOfCollects}) Collect</>
+                    }
+                    </Button>
+  
                 </Box>
                 </>
             )
@@ -265,6 +277,7 @@ const Post = ({post}:{post:any}) => {
         </Flex>
 
       </Box>
+      </Center>
   );
 };
 

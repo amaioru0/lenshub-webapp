@@ -18,6 +18,7 @@ import {
 import PostsList from './PostsList'
 import { Query } from '@apollo/react-components';
 import Toolbar from './Toolbar';
+import { relative } from 'path';
 
 const ExplorePublications = () => {
 
@@ -33,7 +34,7 @@ const ExplorePublications = () => {
         rounded="lg"
         shadow="lg"
         bg={useColorModeValue("white", "gray.800")}
-        style={{maxWidth: "220px"}}
+        style={{maxWidth: "220px", marginBottom: "20px", position: "relative", left: "-180px"}}
       >
       <Select 
         style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A"}}

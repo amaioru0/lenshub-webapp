@@ -45,11 +45,11 @@ const GetPublications = () => {
     
     return(
         <>
-      <Container 
+      {/* <Container 
       // shadow="lg"
       rounded="lg"
       // bg={useColorModeValue("white", "gray.800")}
-      maxW="full" mt={0} centerContent overflow="hidden">
+      maxW="full" mt={0} centerContent overflow="hidden"> */}
         <Flex>
           <Box
           style={{minWidth: "400px"}}
@@ -59,7 +59,7 @@ const GetPublications = () => {
             p={{ sm: 5, md: 5, lg: 16 }}>
 
 
-        <Grid templateColumns='repeat(1, 1fr)' gap={6}>
+      <Grid templateColumns='repeat(1, 1fr)' gap={6}>
         {
           //@ts-ignore
         data.publications.items.map((post, index) => {
@@ -76,7 +76,6 @@ const GetPublications = () => {
 
         </Box>
         </Flex>
-        </Container>
         </>
     )
 }

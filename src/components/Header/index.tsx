@@ -51,6 +51,8 @@ import EthSignIn from './eth-sign-in.svg'
 import { ReactSVG } from 'react-svg'
 import LogoSVG from './logo.svg'
 import Notifications from '../lens/notifications/Notification/Notification';
+import {useSelector, useDispatch} from 'react-redux'
+import allActions from '../../store/actions';
 
 export const Header = () => {
   const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -65,6 +67,9 @@ export const Header = () => {
      },
     }
   });
+
+  const dispatch = useDispatch()
+  const state = useSelector(state => state)
 
   const [{ data: signature, error: sigError, loading: SigLoading }, signMessage] = useSignMessage()
   const [clicked, setClicked] = useState(false);
@@ -81,13 +86,17 @@ export const Header = () => {
 // check if user signed in
   const router = useRouter();
 
-const [isSignedIn, setIsSignedIn] = useState(false);
+const [isSignedInX, setisSignedInX] = useState(false);
 
 useEffect(() => {
   const checkSignedIn = async () => {
     const token = getAccessToken();
     if(token !== "") {
-      setIsSignedIn(true);
+      setisSignedInX(true);
+        dispatch(allActions.lensActions.setIsSignedIn(true))
+    } else {
+      dispatch(allActions.lensActions.setIsSignedIn(false))
+
     }
     console.log(token);
   }
@@ -208,7 +217,7 @@ useEffect(() => {
               gap={{ lg: '0.4rem', xl: '1.5rem' }}
               mr={4}
             >
-            {accountData && accountData.address && isSignedIn && <Menu>
+            {accountData && accountData.address && isSignedInX && <Menu>
               <MenuButton as={NavButton} ml="30px" >
               <div style={{display: "flex"}}>
               <Davatar size={25} address={accountData.address} />
@@ -223,15 +232,16 @@ useEffect(() => {
             </Menu>}
             </HStack>
 
-              {isSignedIn && 
+              {isSignedInX && 
               
             <HStack>
+              {state.lens.isSignedIn && <p>signedIn</p>}
             <Notifications />
             </HStack>
               }
 
             {/* Connect Wallet Button */}
-            {!isSignedIn && accountData?.address && 
+            {!isSignedInX && accountData?.address && 
                 <NavButton ml="10px" onClick={() => {
                   loginBro(accountData.address);
                 }}>
@@ -239,7 +249,7 @@ useEffect(() => {
                 </NavButton>
             }
 
-            {!isSignedIn && !accountData?.address && 
+            {!isSignedInX && !accountData?.address && 
                 <NavButton ml="10px" onClick={() => connect(connector)}>
                   Connect
                 </NavButton>
@@ -248,7 +258,7 @@ useEffect(() => {
 
    
 
-            {isSignedIn &&
+            {isSignedInX &&
             <NavButton ml="10px" 
             style={{color: "white"}}
             _hover={{bg: "#8BD84E"}}
@@ -317,7 +327,7 @@ useEffect(() => {
                 <NavButton ml="30px" onClick={() => connect(connector)}>
                   {accountData && accountData.address ? (
                     <>
-                    {/* {isSignedIn() ? 
+                    {/* {isSignedInX() ? 
                     <>
                       <Box>
                         <Davatar size={25} address={accountData.address} />

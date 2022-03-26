@@ -222,14 +222,19 @@ import {
         //   setChosenEmoji(emojiObject);
         // };
     return (
+
       <Box
-      rounded="lg"
-      shadow="lg"
-      bg={useColorModeValue("white", "gray.800")}
-      maxW="2xl"
-        transition="3s ease"
-        style={{color: "black", maxHeight: "500px", border: "0px", outline: "none", minWidth: "40vw"}}
-        >
+        mx="auto"
+        px={8}
+        py={4}
+        rounded="lg"
+        shadow="lg"
+        bg={useColorModeValue("white", "gray.800")}
+        maxW="2xl"
+        style={{minWidth: "40vw"}}
+        _hover={{ shadow: "xl"  }}
+        _focus={{ boxShadow: "outline" }}
+      >
 
         {txHash && <TxStatus txHash={txHash} pollInterval={pollInterval} setPollInterval={setPollInterval} />}
 

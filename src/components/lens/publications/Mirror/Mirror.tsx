@@ -60,17 +60,20 @@ const Mirror = ({post}:{post:any}) => {
   if(post.__typename !== "Mirror") return <></>
 
   return (
-      <Box
-        mx="auto"
-        px={8}
-        py={4}
-        rounded="lg"
-        shadow="lg"
-        style={{color: "black"}}
-        bg={useColorModeValue("white", "gray.800")}
-        maxW="2xl"
-      >
-        <Flex justifyContent="space-between" alignItems="center">
+    <Box
+    mx="auto"
+    px={8}
+    py={4}
+    rounded="lg"
+    shadow="lg"
+    bg={useColorModeValue("white", "gray.800")}
+    maxW="2xl"
+    style={{minWidth: "40vw"}}
+    _hover={{ shadow: "xl"  }}
+    _focus={{ boxShadow: "outline" }}
+  >
+
+    <Flex justifyContent="space-between" alignItems="center">
           <chakra.span
             fontSize="sm"
             color={useColorModeValue("gray.600", "gray.400")}
