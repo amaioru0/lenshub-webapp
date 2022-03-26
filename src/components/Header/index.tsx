@@ -49,6 +49,7 @@ import {
 } from '@chakra-ui/react'
 import EthSignIn from './eth-sign-in.svg'
 import { ReactSVG } from 'react-svg'
+import LogoSVG from './logo.svg'
 
 
 export const Header = () => {
@@ -189,7 +190,12 @@ useEffect(() => {
                 width="350px"
                 height="300px" 
               /> */} 
-              <h2 style={{fontWeight: 800, color: "#70DB2C", fontSize: "26px"}}>Lenstify</h2>
+              {/* <h2 style={{fontWeight: 800, color: "#70DB2C", fontSize: "26px"}}>Lenstify</h2> */}
+              <ReactSVG 
+              beforeInjection={(svg) => {
+                svg.setAttribute('style', 'width: 200px')
+              }}
+              src={LogoSVG} /> 
                 </span>
               </Link>
             </NextLink>

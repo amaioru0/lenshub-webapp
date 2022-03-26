@@ -13,6 +13,10 @@ import {
   Tag,
   useColorModeValue,
 } from '@chakra-ui/react';
+import LogoSVG from '../Header/logo.svg';
+import { ReactSVG } from 'react-svg'
+
+
 export const Page: FC = ({ children }) => {
   // const { activateBrowserWallet, account } = useWallet()
 
@@ -44,17 +48,6 @@ export const Page: FC = ({ children }) => {
 
 
 
-const Logo = (props: any) => {
-  return (
-    <svg
-      height={32}
-      viewBox="0 0 120 28"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}>
-    
-    </svg>
-  );
-};
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
   return (
@@ -89,7 +82,12 @@ function Footer() {
             flexGrow: 1,
             ml: 8,
           }}>
-          <Logo />
+
+        <ReactSVG 
+        beforeInjection={(svg) => {
+          svg.setAttribute('style', 'width: 200px')
+        }}
+        src={LogoSVG} /> 
         </Flex>
         <Text pt={6} fontSize={'sm'} textAlign={'center'}>
        
