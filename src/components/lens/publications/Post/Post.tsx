@@ -119,11 +119,14 @@ const Post = ({post}:{post:any}) => {
 
         <Flex justifyContent="space-between" alignItems="center">
 
-
+        <Link href={`/user/${post.profile.handle}`}>
+          <a style={{textDecoration: "none"}}>
           <div style={{flexDirection: "row", display: "flex"}}>
             <Davatar size={28} address={post.profile.ownedBy} />
-            <chakra.h1 style={{fontSize: "18px", fontWeight: "700",marginLeft: "10px", color: "#171923"}}>@{post.profile.handle}</chakra.h1>
-          </div>
+           <chakra.h1 style={{fontSize: "18px", fontWeight: "700",marginLeft: "10px", color: "#171923"}}>@{post.profile.handle}</chakra.h1>
+           </div>
+           </a>
+          </Link>
           <chakra.span
             fontSize="sm"
             color={useColorModeValue("gray.600", "gray.400")}

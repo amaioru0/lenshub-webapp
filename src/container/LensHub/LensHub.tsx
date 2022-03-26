@@ -210,7 +210,7 @@ const LensHub = () => {
     {isSignedIn && <SelectProfile />}
 
 
-    <>
+    <div style={{marginTop: "10px"}}>
     {/* {JSON.stringify(router.query)} */}
     {LinkItems.map((link) => {
       if(link.name === "wallet") {
@@ -220,7 +220,7 @@ const LensHub = () => {
             handleMenuClick(link.name)
           }}
           >
-              {link.name} 
+              {link.name[0].toUpperCase() + link.name.substring(1) } 
           </NavItem>
           )
           if(!isSignedIn) return <></>
@@ -240,11 +240,11 @@ const LensHub = () => {
       handleMenuClick(link.name)
     }}
     >
-        {link.name}
+    {link.name[0].toUpperCase() + link.name.substring(1) } 
     </NavItem>
     )
     })}
-    </>
+    </div>
     </Widget>
     </ResponsiveWidget> 
 
@@ -294,6 +294,7 @@ const LensHub = () => {
         </chakra.div>
         </HomePage>}
 
+}
 
         </Box>
         </Top>

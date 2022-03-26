@@ -28,8 +28,8 @@ export const Page: FC = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Trove Web </title>
-        <meta name="description" content="Trove Web - " />
+        <title>Lenstify</title>
+        <meta name="description" content="Lenstify - a Lens social media platform" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
