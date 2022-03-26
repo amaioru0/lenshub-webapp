@@ -228,7 +228,7 @@ import {
       bg={useColorModeValue("white", "gray.800")}
       maxW="2xl"
         transition="3s ease"
-        style={{color: "black", maxHeight: "500px", border: "0px", outline: "none"}}
+        style={{color: "black", maxHeight: "500px", border: "0px", outline: "none", minWidth: "40vw"}}
         >
 
         {txHash && <TxStatus txHash={txHash} pollInterval={pollInterval} setPollInterval={setPollInterval} />}

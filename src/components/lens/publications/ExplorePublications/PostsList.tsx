@@ -11,14 +11,20 @@ import {
   Select,
   Button
 } from '@chakra-ui/react';
-import { useBottomScrollListener } from 'react-bottom-scroll-listener';
+import useInView from "react-cool-inview";
 
 const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, next:any }) => {
 
-  const scrollRef = useBottomScrollListener(() => {
-    // console.log("handle scroll")
-    onLoadMore()
-  });
+  // const scrollRef = useBottomScrollListener(() => {
+  //   // console.log("handle scroll")
+  //   onLoadMore()
+  // });
+  const { observe } = useInView({
+    threshold: 0.5,
+    onEnter: () => {
+      onLoadMore()
+    }
+  })
   return (
   <div>
     <Grid templateColumns='repeat(1, 1fr)' gap={6} >
@@ -39,7 +45,7 @@ const PostsList = ({ posts, onLoadMore, next }: { posts:any, onLoadMore:any, nex
     {next && <Button 
     colorScheme={"whatsapp"}
     //@ts-ignore
-    ref={scrollRef}
+    ref={observe}
     onClick={() => {
       onLoadMore()
     }}>load more</Button>}

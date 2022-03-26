@@ -109,12 +109,14 @@ const Post = ({post}:{post:any}) => {
       <Box
         mx="auto"
         px={8}
-        style={{color: "black"}}
         py={4}
         rounded="lg"
         shadow="lg"
         bg={useColorModeValue("white", "gray.800")}
         maxW="2xl"
+        style={{minWidth: "40vw"}}
+        _hover={{ shadow: "xl"  }}
+        _focus={{ boxShadow: "outline" }}
       >
 
         <Flex justifyContent="space-between" alignItems="center">
