@@ -15,7 +15,8 @@ import {
     Link,
     useDisclosure,
     HStack,
-    Textarea
+    Textarea,
+    Center
   } from '@chakra-ui/react';
 import Post from '../../components/lens/publications/Post/Post';
 import Loader from '../../components/Loader/Loader';
@@ -167,7 +168,7 @@ const PostPage = (postId:any) => {
 
     return(
         <>
-        <Post post={data.publication} />
+        <Center><Post post={data.publication} /></Center>
 
         {commentsData && commentsData.publications && commentsData.publications.items.map((comment:any, index:any) => {
             return(

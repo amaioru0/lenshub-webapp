@@ -31,6 +31,20 @@ import { Query } from '@apollo/react-components';
 import { useRouter } from 'next/router';
 import { profile } from "console";
 import ReactHtmlParser from 'react-html-parser';
+import geohash from 'ngeohash';
+import DisplayGeolocation from "./DisplayGeolocation/DisplayGeolocation";
+import { Media, Player, controls } from 'react-media-player'
+import { json } from "stream/consumers";
+const {
+  PlayPause,
+  CurrentTime,
+  Progress,
+  SeekBar,
+  Duration,
+  MuteUnmute,
+  Volume,
+  Fullscreen,
+} = controls
 
 const Post = ({post}:{post:any}) => {
   const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
@@ -105,9 +119,11 @@ const Post = ({post}:{post:any}) => {
   }, [])
 
   if(post.__typename !== "Post") return <></>
+   
+  
 
+  
   return (
-    <Center>
       <Box
         mx="auto"
         px={8}
@@ -147,13 +163,46 @@ const Post = ({post}:{post:any}) => {
         fontSize="1xl"
         >{post.metadata.name}</chakra.h1>}
 
-          <div>
+          <div style={{marginTop: "10px", marginBottom: "10px"}}>
           {post.metadata.content && <div>{ ReactHtmlParser(post.metadata.content) }</div>}
           {/* {post.metadata.content && <p>{post.metadata.content}</p>} */}
           </div>
 
+          <div>
+            {post.metadata.attributes.map((attribute:any, index:any) => {
+              if(attribute.traitType === "geolocation") {
+                const latlon = geohash.decode(attribute.value);
+                return(
+                  <DisplayGeolocation latitude={latlon.latitude} longitude={latlon.longitude} />
+                )
+              }
+            })}
+          </div>
 
           {post.metadata.media.map((img:any, index:any) =>{
+            if(post.metadata.media[index].original.mimeType.startsWith("video")) {
+              return(
+                <Media>
+                <div className="media">
+                  <div className="media-player">
+                    <Player src={ipfsToImg(post.metadata.media[index].original.url)} />
+                  </div>
+                  <div className="media-controls">
+                  <div className="media-controls">
+              <PlayPause />
+              <CurrentTime />
+              <Progress />
+              <SeekBar />
+              <Duration />
+              <MuteUnmute />
+              <Volume />
+              <Fullscreen />
+            </div>
+                  </div>
+                </div>
+              </Media>
+              )
+            }
             return(
               <Link target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
               <Image
@@ -277,7 +326,6 @@ const Post = ({post}:{post:any}) => {
         </Flex>
 
       </Box>
-      </Center>
   );
 };
 

@@ -99,6 +99,7 @@ import { NavButton } from '../../components/Header/NavButton/index';
 import { useConnect, useAccount, defaultChains, defaultL2Chains, useSignMessage } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { useRouter } from 'next/router';
+import { useMediaQuery } from '@chakra-ui/react'
 
 const LensHub = () => {
     const [{ data: connectData, error: connectError, loading: connectLoading }, connect] = useConnect()
@@ -177,11 +178,12 @@ const LensHub = () => {
         router.push(`/${linkName}`)
     }
 
+    const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
 
     return(
     <Box minH="100vh" >
     <Layout>
-    <ResponsiveWidget>
+    {isLargerThan1280 && <ResponsiveWidget>
     <Widget>
     <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
       <Input
@@ -289,7 +291,7 @@ const LensHub = () => {
     })}
     </div>
     </Widget>
-    </ResponsiveWidget> 
+    </ResponsiveWidget>}
 
     </Layout>
 

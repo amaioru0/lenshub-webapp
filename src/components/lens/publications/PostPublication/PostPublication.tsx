@@ -57,12 +57,15 @@ import {
   import TxStatus from './TxStatus';
   import SelectModule , { getCollectModule } from './SelectModule';
   import ImageUploading from 'react-images-uploading';
-  import { FiImage, FiX } from 'react-icons/fi';
+  import { FiImage, FiX, FiNavigation } from 'react-icons/fi';
+  import ShareLocation from './ShareLocation';
 
+  import { shorten } from '../../../../utils/shorten';
   const MDEditor = dynamic(
     () => import("@uiw/react-md-editor"),
     { ssr: false }
   );
+  import  { commands, ICommand, TextState, TextAreaTextApi } from '@uiw/react-md-editor';
 
   const NFT_STORAGE_KEY = ''
 
@@ -101,6 +104,8 @@ import {
     const [multipleFilesUrl, setMultipleFilesUrl] = useState('')
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [geoLocationX, setGeoLocationX] = useState();
 
     // useEffect(() => {
     //     console.log(txData)
@@ -221,6 +226,21 @@ import {
         // const onEmojiClick = (event:any, emojiObject:any) => {
         //   setChosenEmoji(emojiObject);
         // };
+
+
+    const handleLocation = () => {
+      navigator.permissions.query({name:'geolocation'}).then(function(result) {
+        if (result.state == 'granted') {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            const hash = geohash.encode(position.coords.latitude, position.coords.longitude)
+              setGeoLocationX(hash)
+              console.log(hash)
+          });
+        } else if (result.state == 'prompt') {
+        } else if (result.state == 'denied') {
+        }
+      });
+    }
     return (
 
       <Box
@@ -252,9 +272,7 @@ import {
             onChange={handleInputChange}
             value={postContent}
           ></Textarea>
-      {/* <MDEditor 
-          style={{background: "white", color: "black"}}
-      value={postContent} onChange={handleInputChange} /> */}
+     
 
         </HStack>
 
@@ -262,6 +280,7 @@ import {
           <SelectModule collectModule={collectModule} setCollectModule={setCollectModule} referenceModule={referenceModule} setReferenceModule={setReferenceModule} settings={settings} setSettings={setSettings}/>
         </Stack>
 
+      <div style={{display: "flex", flexDirection: "row"}}>
         <Stack margin={2}>
 
         <ImageUploading
@@ -288,7 +307,6 @@ import {
                 leftIcon={<FiImage />}
               />
               &nbsp;
-              {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
               <div style={{display: "flex"}}>
               {imageList.map((image, index) => (
                 <div style={{marginTop: "10px", marginLeft: "10px"}} key={index}>
@@ -305,6 +323,22 @@ import {
           </ImageUploading>
         </Stack>
 
+
+        <Stack margin={4}>
+        <Button
+          onClick={async () => {
+            // setAllowlocation(true);
+            handleLocation();
+          }}
+          style={{backgroundColor: "#70DB2C", color: "white", height: "24px", width: "16px"}}
+          leftIcon={<FiNavigation />}
+              >
+           
+         </Button>     
+        </Stack>
+        {geoLocationX && <Text style={{color: "green", fontWeight: 700}}>Location </Text>}
+        {geoLocationX && <Text onClick={() => {setGeoLocationX()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
+        </div>
         <Stack margin={2}>
 
           <Button
@@ -323,8 +357,7 @@ import {
                     content: postContent,
                     external_url: null,
                     name: "Post from Lenstify",
-                    attributes: [],
-                    media: [],
+                    attributes: geoLocationX ? [{traitType: "geolocation", value: geoLocationX }] : [],
                     appId: "LENSTIFY"
                     // imageMimeType: "",
                     // media: [],
