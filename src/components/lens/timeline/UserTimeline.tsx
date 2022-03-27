@@ -40,6 +40,7 @@ const UserTimeline = () => {
         <>
 
     <Query query={GET_TIMELINE} variables={{request: {
+      //@ts-ignore
     profileId: `${state.lens.selectedProfile}`,
     limit: 10,
   }}}>
@@ -58,6 +59,7 @@ const UserTimeline = () => {
                   variables: {
                     request: {
                       cursor: data.timeline.pageInfo.next,
+      //@ts-ignore
                       profileId: `${state.lens.selectedProfile}`,
                       limit: 10,
                     }

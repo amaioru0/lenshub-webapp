@@ -46,6 +46,7 @@ import {
   import CREATE_POST_TYPED_DATA from '../../../../lib/graphql/publications/post';
   import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from './MetadataStandard';
   import { v4 as uuidv4 } from 'uuid';
+  //@ts-ignore
   import { CID } from 'cids';
 // import { NFTStorage, File, Blob } from 'nft.storage'
   import mime from 'mime'
@@ -58,6 +59,7 @@ import {
   import SelectModule , { getCollectModule } from './SelectModule';
   import ImageUploading from 'react-images-uploading';
   import { FiImage, FiX, FiNavigation, FiSmile } from 'react-icons/fi';
+  //@ts-ignore
   import ShareLocation from './ShareLocation';
   import geohash from 'ngeohash';
   import { ReactionBarSelector } from '@charkour/react-reactions';
@@ -175,6 +177,7 @@ import {
     const [createPostDataType, { loading, error, data }] = useMutation(CREATE_POST_TYPED_DATA, {
         variables: {
             request: {
+              //@ts-ignore
                 profileId: state.lens.id ? state.lens.id : "0x23",
                 contentURI: `ipfs://${contentURICID}`,
                 collectModule: getCollectModule(collectModule, settings),
@@ -203,10 +206,15 @@ import {
                   // referenceModule: "0x8cc1F4C7D3aFf9053eA2d840EAd31f5B68541A38",
                   // referenceModuleData: "0x0000000000000000000000000000000000000000"
                   profileId: typedData.value.profileId,
+                  //@ts-ignore
                   contentURI: typedData?.value?.contentURI,
+                  //@ts-ignore
                   collectModule: typedData?.value?.collectModule,
+                  //@ts-ignore
                   collectModuleData: typedData?.value?.collectModuleData,
+                  //@ts-ignore
                   referenceModule: typedData?.value?.referenceModule,
+                  //@ts-ignore
                   referenceModuleData: typedData?.value.referenceModuleData,
                  })
                  console.log(tx)
@@ -237,6 +245,7 @@ import {
         if (result.state == 'granted') {
           navigator.geolocation.getCurrentPosition(function(position) {
             const hash = geohash.encode(position.coords.latitude, position.coords.longitude)
+            //@ts-ignore
               setGeoLocationX(hash)
               console.log(hash)
           });
@@ -344,6 +353,7 @@ import {
           <ReactionBarSelector 
           onSelect={(label) => {
             setShowreactionbar(false)
+            //@ts-ignore
             setFeeling(label)
           }}
         reactions={[
@@ -357,6 +367,7 @@ import {
           <ReactionBarSelector 
           onSelect={(label) => {
             setShowreactionbar(false)
+            //@ts-ignore
             setFeeling(label)
           }}
         reactions={[
@@ -370,6 +381,7 @@ import {
           <ReactionBarSelector 
           onSelect={(label) => {
             setShowreactionbar(false)
+            //@ts-ignore
             setFeeling(label)
           }}
         reactions={[
@@ -383,6 +395,7 @@ import {
           <ReactionBarSelector 
           onSelect={(label) => {
             setShowreactionbar(false)
+            //@ts-ignore
             setFeeling(label)
           }}
         reactions={[
@@ -395,7 +408,9 @@ import {
           </div>}
 
         {feeling && <Text>{feeling}</Text>}
-        {feeling && <Text onClick={() => {setFeeling()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
+        {feeling && <Text onClick={() => {
+          //@ts-ignore
+          setFeeling()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
 
         <Stack margin={4}>
         <Button
@@ -412,7 +427,9 @@ import {
 
 
         {geoLocationX && <Text style={{color: "green", fontWeight: 700}}>Location </Text>}
-        {geoLocationX && <Text onClick={() => {setGeoLocationX()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
+        {geoLocationX && <Text onClick={() => {
+          //@ts-ignore
+          setGeoLocationX()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
 
         
 

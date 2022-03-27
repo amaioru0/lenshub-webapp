@@ -1,4 +1,4 @@
-export const stringToColor = function(str) {
+export const stringToColor = function(str:string) {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -11,7 +11,7 @@ export const stringToColor = function(str) {
     return colour;
   }
 
-  export const hexToRgb = (hex) => {
+  export const hexToRgb = (hex:any) => {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
       r: parseInt(result[1], 16),

@@ -67,7 +67,7 @@ const Wallet = () => {
                 const hex = stringToColor(`${nft.name}pl`);
                 const rgba = hexToRgb(hex);
             return (
-                <GridItem w='200px' h='200px' style={{borderRadius: "16px"}}>
+                <GridItem key={index} w='200px' h='200px' style={{borderRadius: "16px"}}>
                 <NFT hex={hex} rgba={rgba} address={nft.contractAddress} id={nft.tokenId} hit={nft} />
                 </GridItem>
             )

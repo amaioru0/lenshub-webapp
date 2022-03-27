@@ -32,7 +32,7 @@ import Link from 'next/link';
 // const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 
-const SelectProfile = () => {
+const SelectProfile =   () => {
     const [{ data: accountData, error: accountError, loading: accountLoading }] = useAccount({
         fetchEns: true,
       })
@@ -77,7 +77,9 @@ const SelectProfile = () => {
     </SwipeableViews>
 
     <div style={{marginTop: "16px"}}>
-    <span style={{display: "table", margin: "0 auto"}}>Selected profile: {state.lens.selectedProfile}</span>
+    <span style={{display: "table", margin: "0 auto"}}>Selected profile: {
+          //@ts-ignore
+    state.lens.selectedProfile}</span>
     </div>
 
     <div style={{marginTop: "16px"}}>
@@ -86,7 +88,7 @@ const SelectProfile = () => {
     <Grid templateColumns='repeat(4, 1fr)' gap={2}>
     {dataProfiles.profiles.items.map((profile:any, index:any) => {
         return(
-        <GridItem>
+        <GridItem key={index}>
         <Button
         variant={"outline"}
         key={index}

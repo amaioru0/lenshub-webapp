@@ -26,7 +26,11 @@ const ExplorePublications = () => {
     
     return(
       <>
-    <Toolbar>
+    <Toolbar
+    left={<></>}
+    right={<></>}
+    className={""}
+    >
     <Box
         mx="auto"
         px={18}

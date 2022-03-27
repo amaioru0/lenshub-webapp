@@ -94,9 +94,12 @@ const CreateProfile = () => {
         let mainImage = paths[0] ? `ipfs://${paths[0]}` : ""
       // create the metadata object we'll be storing
         const uriData = {
+          //@ts-ignore
           "description": formData.description,
+          //@ts-ignore
           "external_url": formData.external_url,
           "image": mainImage, 
+          //@ts-ignore
           "name": formData.name,
           "attributes": [], 
         }
@@ -113,6 +116,7 @@ const CreateProfile = () => {
         console.log(followNFTURICID)
         if(clicked) {
           // console.log(formData)
+          //@ts-ignore
           createProfile({ to: accountData?.address, handle: formData.handle, imageURI: formData.image, followModule: "0x0000000000000000000000000000000000000000", followModuleData: "0x0000000000000000000000000000000000000000", followNFTURI: `ipfs://${followNFTURICID}` })
           setDone(true)
         }

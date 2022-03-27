@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+//@ts-ignore
 import Modal from 'react-modal';
 import {
     Button,
@@ -101,7 +102,7 @@ export const getCollectModule = (module:any, settings:any) => {
        {collectModule ==="limitedTimedFeeCollectModule" || "timedFeeCollectModule" && <InputGroup>
             <InputLeftAddon
             style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
-            children='CollectLimit' />
+            />
             <Input
             onChange={(e) => {
                 setSettings({...settings, collectLimit: e.target.value})
@@ -114,7 +115,7 @@ export const getCollectModule = (module:any, settings:any) => {
         <InputGroup>
             <InputLeftAddon
             style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
-            children='Currency' />
+            />
             <Select
             onChange={(e) => {
                 setSettings({...settings, amount: { ...settings.amount, currency: e.target.value }})
@@ -132,7 +133,7 @@ export const getCollectModule = (module:any, settings:any) => {
         <InputGroup>
             <InputLeftAddon
             style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
-            children='Value' />
+             />
             <Input
             value={settings.amount.value}
             onChange={(e) => {
@@ -145,7 +146,7 @@ export const getCollectModule = (module:any, settings:any) => {
         <InputGroup>
             <InputLeftAddon
             style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
-            children='Recipient' />
+            />
             <Input
             value={settings.recipient}
             onChange={(e) => {
@@ -158,7 +159,7 @@ export const getCollectModule = (module:any, settings:any) => {
         <InputGroup>
             <InputLeftAddon
             style={{marginTop: "5px", height: "24px", fontSize: "12px", color: "#43787A", maxWidth: "130px"}}
-            children='referralFee' />
+            />
             <Input
             value={settings.referralFee}
           onChange={(e) => {

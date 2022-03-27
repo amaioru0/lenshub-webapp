@@ -1,5 +1,6 @@
 
 export interface MetadataMedia {
+    //@ts-ignore
     item: Url;
     /**
      * This is the mime type of media
@@ -38,17 +39,23 @@ export interface MetadataMedia {
     /**
      * A human-readable description of the item.
      */
+        //@ts-ignore
+
     description?: Markdown;
   
     /**
      * The content of a publication. If this is blank `media` must be defined or its out of spec.
      */
+        //@ts-ignore
+
     content?: Markdown;
   
     /**
      * This is the URL that will appear below the asset's image on OpenSea and others etc
      * and will allow users to leave OpenSea and view the item on the site.
      */
+        //@ts-ignore
+
     external_url?: Url;
   
     /**
@@ -65,6 +72,8 @@ export interface MetadataMedia {
     /**
      * legacy to support OpenSea will store any NFT image here.
      */
+        //@ts-ignore
+
     image?: Url;
   
     /**
@@ -86,10 +95,14 @@ export interface MetadataMedia {
      * WebGL, and more. Scripts and relative paths within the HTML page are now supported. However, access to browser extensions is not supported.
   
      */
+        //@ts-ignore
+
     animation_url?: Url;
   
     /**
      * This is the appId the content belongs to
      */
+        //@ts-ignore
+
     appId?: AppId;
   }

@@ -16,7 +16,6 @@ import {
     Box,
     Text,
     Heading,
-    useColorModeValue,
     chakra,
     IconButton,
     VStack,
@@ -52,6 +51,7 @@ const EditProfile = () => {
       const {loading, error, data} = useQuery(GET_PROFILES, {
           variables: {
               request: {
+          //@ts-ignore
                 profileIds: [state.lens.selectedProfile],
                 limit: 10
               }
@@ -63,10 +63,15 @@ const EditProfile = () => {
       const [updateProfile, { loading:loadingUpdate, error:errorUpdate, data:dataUpdate }] = useMutation(UPDATE_PROFILE, {
           variables: {
               request: {
+          //@ts-ignore
                 profileId: state.lens.selectedProfile,
+          //@ts-ignore
                 name: formData.name ? formData.name : "",
+          //@ts-ignore
                 bio: formData.bio ? formData.bio : "",
+          //@ts-ignore
                 location: formData.location ? formData.location : "",
+          //@ts-ignore
                 website: formData.website ? formData.website : "",
               }
           }
@@ -89,7 +94,7 @@ const EditProfile = () => {
       <Container 
       shadow="lg"
       rounded="lg"
-      bg={useColorModeValue("white", "gray.800")}
+      bg={"white"}
       maxW="full" mt={0} centerContent overflow="hidden">
         <Flex>
           <Box

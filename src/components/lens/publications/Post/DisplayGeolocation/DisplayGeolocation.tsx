@@ -105,7 +105,9 @@ const createMapOptions = () => {
         hoverDistance={20 / 2}
         options={createMapOptions}
       > 
-          <ListingMapMarker lat={latitude} lng={longitude} />
+          <ListingMapMarker 
+          //@ts-ignore
+          lat={latitude} lng={longitude} />
       </GoogleMapReact>
         </MapContainer>
       )

@@ -30,6 +30,7 @@ import Comment from '../../components/lens/publications/Comment/Comment';
 import CREATE_COMMENT_TYPED_DATA from '../../lib/graphql/publications/comment';
 import {useSelector, useDispatch} from 'react-redux'
 import { useIpfs } from '@onichandame/react-ipfs-hook'
+      //@ts-ignore
 import { CID } from 'cids';
 import { Metadata, MetadataMedia, MetadataVersions, MetadataDisplayType, MetadataAttribute } from '../../components/lens/publications//PostPublication/MetadataStandard';
 import axios from 'axios';
@@ -111,6 +112,7 @@ const PostPage = (postId:any) => {
     const [createCommentTypedData, {loading: commentTypedDataLoading, error: commentTypedDataError, data:commentTypedData }] = useMutation(CREATE_COMMENT_TYPED_DATA, {
         variables: {
             request: {
+      //@ts-ignore
                 profileId: state.lens.id ? state.lens.id : "0x23",
                 publicationId: publicationId,
                 contentURI: contentURICID,

@@ -215,7 +215,9 @@ const LensHub = () => {
       
     {isSignedIn && <SelectProfile />}
     {isSignedIn && <div style={{position: "absolute", float: "left", top: "108px", left: "80px"}}>
-    <Link href={`/edit-profile/${state.lens.selectedProfile}`}>
+    <Link href={
+      //@ts-ignore
+      `/edit-profile/${state.lens.selectedProfile}`}>
     <Button
         style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
         variant='outline'
@@ -348,8 +350,12 @@ const LensHub = () => {
       {currentRoute === 'create-profile' && isSignedIn && accountData?.address && <CreateProfile />}
       {currentRoute === 'profiles' && <RecommendedProfiles />}      
       {currentRoute === 'search' && <Search query={query} setQuery={setQuery}/>}  
-      {currentRoute === 'post' && <PostPage post={router.query.slug[1]}/>}  
-      {currentRoute === 'user' && <UserPage handle={router.query.slug[1]}/>}  
+      {currentRoute === 'post' && <PostPage post={
+      //@ts-ignore
+        router.query.slug[1]}/>}  
+      {currentRoute === 'user' && <UserPage handle={
+      //@ts-ignore
+        router.query.slug[1]}/>}  
       {currentRoute === 'edit-profile' && isSignedIn && <EditProfile />}  
 
       

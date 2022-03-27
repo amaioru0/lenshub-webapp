@@ -63,7 +63,7 @@ const Search = ({query, setQuery}: {query:any, setQuery:any}) => {
 
       {data?.search?.items?.map((post:any, index:any) => {
         return(
-          <GridItem as="label" colSpan={{ base: "auto", lg: 4 }}>
+          <GridItem key={index} as="label" colSpan={{ base: "auto", lg: 4 }}>
                   {post.__typename === "Profile" && <Profile profile={post} />}
                   {post.__typename === "Mirror" && <Mirror post={post} />}
                   {post.__typename === "Post" && <Post post={post} />}

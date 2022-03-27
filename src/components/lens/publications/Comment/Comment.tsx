@@ -50,7 +50,7 @@ import {
     <Box mt={2}>
 
     {comment.comment.metadata.name && <chakra.h1
-    color={useColorModeValue("gray.700", "white")}
+    color={"white"}
     fontWeight="300"
     fontSize="1xl"
     >{comment.comment.metadata.name}</chakra.h1>}

@@ -48,6 +48,7 @@ const UserPage = ({handle}:{handle:any}) => {
     const {loading, error, data} = useQuery(GET_PROFILES, {
         variables: {
             request: {
+      //@ts-ignore
                 handles: [`${router.query.slug[1]}`]
             }
         }
@@ -64,6 +65,7 @@ const UserPage = ({handle}:{handle:any}) => {
         request: {
           followInfos: [{
             followerAddress: accountData?.address,
+      //@ts-ignore
             profileId: profile.id
           }]
         }
@@ -105,10 +107,13 @@ const UserPage = ({handle}:{handle:any}) => {
         textAlign={'center'}>
         <Avatar
           size={'xl'}
-          src={profile.picture?.original.url}
+          src={
+      //@ts-ignore
+            profile.picture?.original.url}
           mb={4}
           pos={'relative'}
           _after={{
+      //@ts-ignore
             content: `"${profile.id}"`,
             w: 8,
             h: 4,
@@ -120,7 +125,9 @@ const UserPage = ({handle}:{handle:any}) => {
           }}
         />
         <Heading fontSize={'2xl'} fontFamily={'body'} color="black">
-          @{profile.handle}
+          @{
+                //@ts-ignore
+          profile.handle}
         </Heading>
 
         <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
@@ -129,7 +136,9 @@ const UserPage = ({handle}:{handle:any}) => {
           color="grey"
           fontSize="12px"
           >
-              {profile.bio}
+              {
+            //@ts-ignore
+              profile.bio}
           </Text>
         </Stack>
       <Stack mt={8} direction={'row'} spacing={4}>
@@ -145,7 +154,9 @@ const UserPage = ({handle}:{handle:any}) => {
         color="black"
         flex={"1"}
         onClick={() => {
-          follow({profileIds: [profile.id], datas: ["0x0000000000000000000000000000000000000000"] })
+          follow({profileIds: [
+      //@ts-ignore
+            profile.id], datas: ["0x0000000000000000000000000000000000000000"] })
         }}
        >
        {doesFollow.doesFollow[0].follows ? <>Following</>:<>Follow</>}
@@ -154,15 +165,25 @@ const UserPage = ({handle}:{handle:any}) => {
 
         <Stack align={'center'} justify={'center'} direction={'column'} mt={6}>
           <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Followers<Text style={{fontWeight: 600}}>{profile.stats.totalFollowers}</Text> </Text></div>
+             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Followers<Text style={{fontWeight: 600}}>{
+          //@ts-ignore
+             profile.stats.totalFollowers}</Text> </Text></div>
 
-             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Posts<Text style={{fontWeight: 600}}>{profile.stats.totalPosts}</Text> </Text></div>
-             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Posts<Text style={{fontWeight: 600}}>{profile.stats.totalPosts}</Text> </Text></div>
+             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Posts<Text style={{fontWeight: 600}}>{
+      //@ts-ignore
+             profile.stats.totalPosts}</Text> </Text></div>
+             <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Posts<Text style={{fontWeight: 600}}>{
+      //@ts-ignore
+             profile.stats.totalPosts}</Text> </Text></div>
           </div>
 
           <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-            <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Mirrors<Text style={{fontWeight: 600}}>{profile.stats.totalMirrors}</Text> </Text></div>
-            <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Collects<Text style={{fontWeight: 600}}>{profile.stats.totalCollects}</Text> </Text></div>
+            <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Mirrors<Text style={{fontWeight: 600}}>{
+      //@ts-ignore
+            profile.stats.totalMirrors}</Text> </Text></div>
+            <div style={{display: "flex,", alignContent: "center", justifyContent: "center", flexDirection: "column"}}> <Text style={{color: "#8BD94E"}}>Collects<Text style={{fontWeight: 600}}>{
+      //@ts-ignore
+            profile.stats.totalCollects}</Text> </Text></div>
           </div>
         {/* stats:
 totalCollects: 0

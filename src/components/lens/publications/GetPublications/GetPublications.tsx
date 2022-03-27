@@ -30,6 +30,7 @@ const GetPublications = () => {
   const { loading, error, data} = useQuery(GET_PUBLICATIONS, {
     variables: {
         request: {
+          //@ts-ignore
           profileId: state.lens.selectedProfile,
           publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
           limit: 10

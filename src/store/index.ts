@@ -50,6 +50,7 @@ export const initStore = (context:any) => {
   if (asPath) {
     const url = format({ pathname, query })
     initialState = {
+      //@ts-ignore  
       router: initialRouterState(url, asPath)
     }
   }

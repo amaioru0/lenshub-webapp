@@ -66,7 +66,7 @@ const Mirror = ({post}:{post:any}) => {
     py={4}
     rounded="lg"
     shadow="lg"
-    bg={useColorModeValue("white", "gray.800")}
+    bg={"white"}
     maxW="2xl"
     style={{minWidth: "40vw", color: "black"}}
     _hover={{ shadow: "xl"  }}
@@ -76,7 +76,7 @@ const Mirror = ({post}:{post:any}) => {
     <Flex justifyContent="space-between" alignItems="center">
           <chakra.span
             fontSize="sm"
-            color={useColorModeValue("gray.600", "gray.400")}
+            color={"white"}
           >
             {post.createdAt && <Moment>{post.createdAt}</Moment>}
           </chakra.span>
@@ -98,7 +98,7 @@ const Mirror = ({post}:{post:any}) => {
         <Box mt={2}>
 
             {post.metadata.name && <chakra.h1
-            color={useColorModeValue("gray.700", "white")}
+            color={"white"}
             fontWeight="700"
             fontSize="2xl"
             >{post.metadata.name}</chakra.h1>}
@@ -110,7 +110,7 @@ const Mirror = ({post}:{post:any}) => {
 
           {post.metadata.media.map((img:any, index:any) =>{
             return(
-              <Link target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
+              <Link key={index} target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
               <Image
                 maxWidth={"200px"}
                 fit="cover"
@@ -129,7 +129,7 @@ const Mirror = ({post}:{post:any}) => {
 
           <Flex alignItems="center">
             <Link
-              color={useColorModeValue("gray.700", "gray.200")}
+              color={"white"}
               fontWeight="700"
               cursor="pointer"
             >

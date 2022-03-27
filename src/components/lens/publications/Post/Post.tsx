@@ -33,6 +33,7 @@ import { profile } from "console";
 import ReactHtmlParser from 'react-html-parser';
 import geohash from 'ngeohash';
 import DisplayGeolocation from "./DisplayGeolocation/DisplayGeolocation";
+//@ts-ignore
 import { Media, Player, controls } from 'react-media-player'
 import { json } from "stream/consumers";
 const {
@@ -60,6 +61,7 @@ const Post = ({post}:{post:any}) => {
   const [createMirrorTypedData, { loading, error, data }] = useMutation(CREATE_MIRROR_TYPED_DATA, {
     variables: {
   request: {
+    //@ts-ignore
     profileId: `${state.lens.selectedProfile}`,
     // remember it has to be indexed and follow metadata standards to be traceable!
     publicationId: post.id,
@@ -130,7 +132,7 @@ const Post = ({post}:{post:any}) => {
         py={4}
         rounded="lg"
         shadow="lg"
-        bg={useColorModeValue("white", "gray.800")}
+        bg={"white"}
         maxW="2xl"
         style={{minWidth: "40vw"}}
         _hover={{ shadow: "xl"  }}
@@ -149,7 +151,7 @@ const Post = ({post}:{post:any}) => {
           </Link>
           <chakra.span
             fontSize="sm"
-            color={useColorModeValue("gray.600", "gray.400")}
+            color={"white"}
           >
             {post.createdAt && <Moment fromNow>{post.createdAt}</Moment>}
           </chakra.span>
@@ -158,7 +160,7 @@ const Post = ({post}:{post:any}) => {
         <Box mt={2}>
 
         {post.metadata.name && <chakra.h1
-        color={useColorModeValue("gray.700", "white")}
+        color={"white"}
         fontWeight="300"
         fontSize="1xl"
         >{post.metadata.name}</chakra.h1>}
@@ -221,7 +223,7 @@ const Post = ({post}:{post:any}) => {
               )
             }
             return(
-              <Link target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
+              <Link key={index} target="_blank" href={post.metadata.media[index] ? post.metadata.media[index].original.url.startsWith("ipfs") ? ipfsToImg(post.metadata.media[0].original.url) : post.metadata.media[0].original.url : ""}>
               <Image
                 maxWidth={"200px"}
                 fit="cover"
@@ -246,6 +248,7 @@ const Post = ({post}:{post:any}) => {
 
         <Query query={HAS_MIRRORED} variables={{request : { profilesRequest: [
           {
+    //@ts-ignore
             profileId: state.lens.selectedProfile,
             publicationIds: [post.id]
           }
@@ -255,6 +258,7 @@ const Post = ({post}:{post:any}) => {
                 <>
                     <Box style={{}}>
                     <Button 
+    //@ts-ignore
                     disabled={data ? data.hasMirrored[0].results[0].mirrored && !state.lens.isSignedIn : !state.lens.isSignedIn}
                     style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
                     variant='outline'
@@ -291,6 +295,7 @@ const Post = ({post}:{post:any}) => {
               <Box style={{marginLeft: "15px"}}>
 
                 <Button
+    //@ts-ignore
                   disabled={data ? data.hasCollected[0].results[0].collected && !state.lens.isSignedIn : !state.lens.isSignedIn}
                   style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
                   variant='outline'

@@ -23,6 +23,7 @@ const Notifications = () => {
     const {loading, error, data} = useQuery(GET_NOTIFICATIONS, {
         variables: {
             request: {
+                            //@ts-ignore
                 profileId: state.lens.selectedProfile,
                 limit: 30
             }
@@ -42,9 +43,9 @@ const Notifications = () => {
         <MenuList p='16px 8px' bg={menuBg}>
 
           <Flex flexDirection='column'>
-              {data && data.notifications.items.map((notification:any, indeX:any) => {
+              {data && data.notifications.items.map((notification:any, index:any) => {
                   return(
-                    <MenuItem borderRadius='8px' mb='10px'>
+                    <MenuItem key={index} borderRadius='8px' mb='10px'>
                     <Flex flexDirection="column">
      
                         {notification.__typename === "NewFollowerNotification" && 

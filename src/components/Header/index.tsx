@@ -235,7 +235,9 @@ useEffect(() => {
               {isSignedInX && 
               
             <HStack>
-              {state.lens.isSignedIn && <p>signedIn</p>}
+              {
+              //@ts-ignore
+              state.lens.isSignedIn && <p>signedIn</p>}
             <Notifications />
             </HStack>
               }

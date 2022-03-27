@@ -256,7 +256,9 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
 
   return new ApolloClient({
     ssrMode: typeof window === "undefined", // Disables forceFetch on the server (so queries are only run once)
-    link: ApolloLink.from([refreshLink, authLink, errorLink, httpLink]),
+    link: ApolloLink.from([
+      //@ts-ignore
+      refreshLink, authLink, errorLink, httpLink]),
     // cache: new InMemoryCache().restore(initialState)
     cache: new InMemoryCache({fragmentMatcher})
   });
