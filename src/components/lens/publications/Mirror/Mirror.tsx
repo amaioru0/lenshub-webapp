@@ -68,7 +68,7 @@ const Mirror = ({post}:{post:any}) => {
     shadow="lg"
     bg={useColorModeValue("white", "gray.800")}
     maxW="2xl"
-    style={{minWidth: "40vw"}}
+    style={{minWidth: "40vw", color: "black"}}
     _hover={{ shadow: "xl"  }}
     _focus={{ boxShadow: "outline" }}
   >

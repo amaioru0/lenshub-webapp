@@ -20,6 +20,7 @@
     "@apollo/react-ssr": "^4.0.0",
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.6",
+    "@charkour/react-reactions": "^0.6.4",
     "@davatar/react": "^1.9.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",

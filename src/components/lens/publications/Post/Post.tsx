@@ -168,6 +168,7 @@ const Post = ({post}:{post:any}) => {
           {/* {post.metadata.content && <p>{post.metadata.content}</p>} */}
           </div>
 
+
           <div>
             {post.metadata.attributes.map((attribute:any, index:any) => {
               if(attribute.traitType === "geolocation") {
@@ -175,7 +176,23 @@ const Post = ({post}:{post:any}) => {
                 return(
                   <DisplayGeolocation latitude={latlon.latitude} longitude={latlon.longitude} />
                 )
-              }
+              } else if(attribute.traitType === "feeling") {
+                return(
+                  <div style={{color: "#627901", fontWeight: 500, fontStyle: "oblique", background: "#DDE6B7", padding: 10, maxWidth: "100px", borderRadius: "full"}}>
+                  <>{attribute.value === "happy" && <h2>Feeling happy 😄</h2>}</>
+                  <>{attribute.value === "cool" && <h2>Feeling cool 😎</h2>}</>
+                  <>{attribute.value === "party" && <h2>Partying 🥳</h2>}</>
+                  <>{attribute.value === "love" && <h2>is in love 😍</h2>}</>
+                  <>{attribute.value === "sad" && <h2>Feeling sad 🥲</h2>}</>
+                  <>{attribute.value === "rich" && <h2>Feeling rich 🤑</h2>}</>
+                  <>{attribute.value === "alien" && <h2>👽</h2>}</>
+                  <>{attribute.value === "evil" && <h2>Feeling evil 😈</h2>}</>
+                  <>{attribute.value === "crazy" && <h2>Feeling crazy 🤪</h2>}</>
+                  </div>
+
+
+                )
+            }
             })}
           </div>
 
@@ -274,7 +291,7 @@ const Post = ({post}:{post:any}) => {
               <Box style={{marginLeft: "15px"}}>
 
                 <Button
-                  disabled={data ? data.hasCollected[0].results[0].collected && state.lens.isSignedIn : !state.lens.isSignedIn}
+                  disabled={data ? data.hasCollected[0].results[0].collected && !state.lens.isSignedIn : !state.lens.isSignedIn}
                   style={{marginTop: "5px", height: "24px", fontSize: "12px"}}
                   variant='outline'
                   colorScheme='teal'

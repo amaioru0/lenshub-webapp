@@ -57,8 +57,10 @@ import {
   import TxStatus from './TxStatus';
   import SelectModule , { getCollectModule } from './SelectModule';
   import ImageUploading from 'react-images-uploading';
-  import { FiImage, FiX, FiNavigation } from 'react-icons/fi';
+  import { FiImage, FiX, FiNavigation, FiSmile } from 'react-icons/fi';
   import ShareLocation from './ShareLocation';
+  import geohash from 'ngeohash';
+  import { ReactionBarSelector } from '@charkour/react-reactions';
 
   import { shorten } from '../../../../utils/shorten';
   const MDEditor = dynamic(
@@ -227,6 +229,8 @@ import {
         //   setChosenEmoji(emojiObject);
         // };
 
+        const [feeling, setFeeling] = useState()
+        const [showReactionbar, setShowreactionbar] = useState(false)
 
     const handleLocation = () => {
       navigator.permissions.query({name:'geolocation'}).then(function(result) {
@@ -328,6 +332,75 @@ import {
         <Button
           onClick={async () => {
             // setAllowlocation(true);
+            setShowreactionbar(!showReactionbar);
+          }}
+          style={{backgroundColor: "#70DB2C", color: "white", height: "24px", width: "16px"}}
+          leftIcon={<FiSmile />}
+              ></Button>
+        </Stack>
+
+          {showReactionbar && 
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+          <ReactionBarSelector 
+          onSelect={(label) => {
+            setShowreactionbar(false)
+            setFeeling(label)
+          }}
+        reactions={[
+          {label: "happy", node: <div>😄</div>},
+          {label: "cool", node: <div>😎</div>},
+          {label: "party", node: <div>🥳</div>},
+          {label: "love", node: <div>😍</div>},
+        ]}
+        /> 
+
+          <ReactionBarSelector 
+          onSelect={(label) => {
+            setShowreactionbar(false)
+            setFeeling(label)
+          }}
+        reactions={[
+          {label: "sad", node: <div>🥲</div>},
+          {label: "crazy", node: <div>🤪</div>},
+          {label: "rich", node: <div>🤑</div>},
+          {label: "alien", node: <div>👽</div>},
+        ]}
+        /> 
+
+          <ReactionBarSelector 
+          onSelect={(label) => {
+            setShowreactionbar(false)
+            setFeeling(label)
+          }}
+        reactions={[
+          {label: "evil", node: <div>😈</div>},
+          {label: "bored", node: <div>🥱</div>},
+          {label: "disappointed", node: <div>😓</div>},
+          {label: "sh*t", node: <div>💩</div>},
+        ]}
+        /> 
+
+          <ReactionBarSelector 
+          onSelect={(label) => {
+            setShowreactionbar(false)
+            setFeeling(label)
+          }}
+        reactions={[
+          {label: "happy", node: <div>🤡</div>},
+          {label: "happy", node: <div>🐓</div>},
+          {label: "happy", node: <div>😡</div>},
+          {label: "happy", node: <div>👋</div>}
+        ]}
+        /> 
+          </div>}
+
+        {feeling && <Text>{feeling}</Text>}
+        {feeling && <Text onClick={() => {setFeeling()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
+
+        <Stack margin={4}>
+        <Button
+          onClick={async () => {
+            // setAllowlocation(true);
             handleLocation();
           }}
           style={{backgroundColor: "#70DB2C", color: "white", height: "24px", width: "16px"}}
@@ -336,8 +409,14 @@ import {
            
          </Button>     
         </Stack>
+
+
         {geoLocationX && <Text style={{color: "green", fontWeight: 700}}>Location </Text>}
         {geoLocationX && <Text onClick={() => {setGeoLocationX()}}style={{color: "red", fontWeight: 1000, cursor: "pointer"}}>&nbsp;X </Text>}
+
+        
+
+
         </div>
         <Stack margin={2}>
 
@@ -357,7 +436,10 @@ import {
                     content: postContent,
                     external_url: null,
                     name: "Post from Lenstify",
-                    attributes: geoLocationX ? [{traitType: "geolocation", value: geoLocationX }] : [],
+                    attributes: [
+                      ...(geoLocationX ? [{traitType: "geolocation", value: geoLocationX } ] : []),
+                      ...(feeling ? [{traitType: "feeling", value: feeling } ] : []),
+                     ],
                     appId: "LENSTIFY"
                     // imageMimeType: "",
                     // media: [],

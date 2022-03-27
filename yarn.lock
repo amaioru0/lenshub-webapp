@@ -1038,6 +1038,11 @@
   dependencies:
     "@chakra-ui/utils" "1.10.4"
 
+"@charkour/react-reactions@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@charkour/react-reactions/-/react-reactions-0.6.4.tgz#9f82505abedd3750ebfa02e30267a6638c376438"
+  integrity sha512-FggP4ofD+OLJl8P/tVDJy6+6BcKWr1eLTNjY6UE32s5dwy2fjnhAwmZOIy44jlrXx05n9p2I9KYf5Gyfq1alqA==
+
 "@ctrl/tinycolor@^3.4.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.0.tgz#c3c5ae543c897caa9c2a68630bed355be5f9990f"
